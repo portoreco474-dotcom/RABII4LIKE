@@ -185,9 +185,12 @@ async function load(){
  for(const x of [p,w,t,s,po,tr])if(x.error)throw x.error;
  profile=p.data;wallet=w.data;tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;
  $('balance').textContent=money(wallet.balance);$('walletmode').textContent=wallet.is_unlimited?'محفظة المدير غير المحدودة':'رصيدك الحالي';
- $('role').textContent=profile.role;$('taskcount').textContent=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id).length;
+ $('role').textContent=profile.role;
+ const isAdmin=String(profile.role||'').trim().toLowerCase()==='admin';
+ const availableTasks=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id&&(isAdmin||!Array.isArray(x.target_countries)||x.target_countries.length===0||(profile.country&&x.target_countries.includes(profile.country))));
+ $('taskcount').textContent=availableTasks.length;
  $('donecount').textContent=subs.filter(x=>x.worker_id===user.id&&x.status==='approved').length;
- const isAdmin=String(profile.role||'').trim().toLowerCase()==='admin'; $('admintab').classList.toggle('hidden',!isAdmin); $('adminQuick').classList.toggle('hidden',!isAdmin);
+ $('admintab').classList.toggle('hidden',!isAdmin); $('adminQuick').classList.toggle('hidden',!isAdmin);
  $('useremail').textContent=user.email;$('country').value=profile.country||'';$('language').value=profile.language||'ar';
  renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();refreshIcons();
  if(profile.role==='admin')await loadAdmin();refreshIcons();
