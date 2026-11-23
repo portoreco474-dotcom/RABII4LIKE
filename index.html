@@ -55,7 +55,13 @@ body{background:radial-gradient(ellipse at 18% 25%,#25106a 0,transparent 36%),ra
 <h1>تسجيل الدخول</h1><p class="muted">مرحباً بك في مجتمع RABII4LIKE التفاعلي</p>
 <div id="msg"></div><label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="email" placeholder="البريد الإلكتروني">
 <label>كلمة المرور</label><input id="password" type="password" autocomplete="current-password" placeholder="كلمة المرور">
-<div class="actions"><button id="login">➜ دخول</button><button id="signup" class="secondary">إنشاء حساب جديد</button></div>
+<div class="actions"><button id="login">➜ دخول</button><button id="signup" class="secondary">إنشاء حساب جديد</button><button id="forgotPassword" class="secondary" type="button">نسيت كلمة المرور؟</button></div>
+</div>
+<div id="recoveryScreen" class="panel auth hidden">
+<h1>تعيين كلمة مرور جديدة</h1><p class="muted">أدخل كلمة المرور الجديدة لحسابك.</p><div id="recoveryMsg"></div>
+<label>كلمة المرور الجديدة</label><input id="newPassword" type="password" autocomplete="new-password" placeholder="كلمة المرور الجديدة">
+<label>تأكيد كلمة المرور</label><input id="confirmPassword" type="password" autocomplete="new-password" placeholder="أعد كتابة كلمة المرور">
+<div class="actions"><button id="saveNewPassword" type="button">حفظ كلمة المرور</button></div>
 </div>
 <div class="landing-features" id="landingFeatures"><div class="landing-feature"><b>🎁 مكافآت يومية</b><span>500 نقطة كل 24 ساعة</span></div><div class="landing-feature"><b>📊 إحصائيات شاملة</b><span>تابع نشاطك ونقاطك</span></div><div class="landing-feature"><b>🛡️ محافظ مستقلة</b><span>رصيد خاص بكل مستخدم</span></div><div class="landing-feature"><b>👑 محفظة المدير</b><span>رصيد غير محدود</span></div><div class="landing-feature"><b>📋 إدارة المهام</b><span>تنظيم ومنع التكرار</span></div><div class="landing-feature"><b>🌐 دول متعددة</b><span>لغات ومجتمع تفاعلي</span></div></div>
 <div class="landing-social">f　◎　♪　▶　➤　𝕏</div>
@@ -116,7 +122,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const SUPABASE_URL='https://hhrqfhffainiboncsekp.supabase.co';
 const SUPABASE_KEY='sb_publishable_AEq00cksyGY19Vl4E9SnIQ_tiwXiCm3';
 const db=createClient(SUPABASE_URL,SUPABASE_KEY);
-let user=null,profile=null,wallet=null,tasks=[],subs=[],posts=[],tx=[];
+let user=null,profile=null,wallet=null,tasks=[],subs=[],posts=[],tx=[],recovering=false;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function note(id,text,kind='notice'){ $(id).innerHTML=text?`<div class="notice ${kind}">${esc(text)}</div>`:''; }
@@ -191,7 +197,9 @@ window.review=async(id,approve)=>{const n=prompt(approve?'ملاحظة (اختي
 window.cancelTask=async id=>{if(!confirm('إلغاء المهمة؟ سيتم إرجاع النقاط الخاصة بالإنجازات غير المعتمدة.'))return;try{const n=await rpc('cancel_task',{p_task_id:id});note('adminmsg',`تم إلغاء المهمة وإرجاع ${n} نقطة.`,'success');await load()}catch(e){note('adminmsg',e.message,'error')}};
 window.taskStatus=async(id,status)=>{try{await rpc('admin_set_task_status',{p_task_id:id,p_status:status});await load()}catch(e){note('adminmsg',e.message,'error')}};
 window.delPost=async id=>{if(!confirm('حذف المنشور؟'))return;try{await rpc('delete_post',{p_post_id:id});await load()}catch(e){note('dashmsg',e.message,'error')}};
-$('login').onclick=async()=>{try{const {error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)throw error;note('msg','تم تسجيل الدخول.','success')}catch(e){note('msg',e.message,'error')}};
+$('login').onclick=async()=>{try{const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error)throw error;note('msg','تم تسجيل الدخول.','success')}catch(e){note('msg',e.message,'error')}};
+$('forgotPassword').onclick=async()=>{try{const email=$('email').value.trim();if(!email)throw new Error('اكتب بريدك الإلكتروني أولاً.');const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});if(error)throw error;note('msg','تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني. افتح الرسالة واتبع الرابط.','success')}catch(e){note('msg',e.message,'error')}};
+$('saveNewPassword').onclick=async()=>{try{const password=$('newPassword').value,confirm=$('confirmPassword').value;if(password.length<6)throw new Error('كلمة المرور يجب أن تتكون من 6 أحرف على الأقل.');if(password!==confirm)throw new Error('كلمتا المرور غير متطابقتين.');const {error}=await db.auth.updateUser({password});if(error)throw error;note('recoveryMsg','تم تحديث كلمة المرور بنجاح. يمكنك الآن استعمالها للدخول.','success');$('newPassword').value='';$('confirmPassword').value='';recovering=false;setTimeout(()=>start(),900)}catch(e){note('recoveryMsg',e.message,'error')}};
 $('signup').onclick=async()=>{try{const {data,error}=await db.auth.signUp({email:$('email').value,password:$('password').value});if(error)throw error;note('msg',data.session?'تم إنشاء الحساب.':'تم إنشاء الحساب. تحقق من بريدك لتأكيده.','success')}catch(e){note('msg',e.message,'error')}};
 $('logout').onclick=async()=>{await db.auth.signOut();location.reload()};\n$('adminQuick').onclick=()=>{$('admintab').click()};
 $('daily').onclick=async()=>{try{await rpc('claim_daily_reward');note('dashmsg','مبروك! تمت إضافة 500 نقطة إلى محفظتك.','success');await load()}catch(e){note('dashmsg',e.message,'error')}};
@@ -219,7 +227,7 @@ $('sendpointsbtn').onclick=async()=>{try{const {data,error}=await db.from('profi
 $('tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(!b)return;document.querySelectorAll('.tabpane').forEach(x=>x.classList.add('hidden'));$(b.dataset.tab).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b))};
 const questions=[{q:'ما عاصمة المغرب؟',a:['الرباط','الدار البيضاء','فاس'],c:0},{q:'كم لاعباً في فريق كرة القدم داخل الملعب؟',a:['9','11','12'],c:1},{q:'ما الكوكب المعروف بالكوكب الأحمر؟',a:['الزهرة','المريخ','المشتري'],c:1},{q:'كم عدد ألوان قوس قزح التقليدية؟',a:['5','6','7'],c:2}];
 $('startquiz').onclick=()=>{let i=0,score=0;function draw(){if(i>=questions.length){$('quizbox').innerHTML=`<h3>انتهى الاختبار</h3><p>نتيجتك: ${score} من ${questions.length}</p><button id="again">إعادة الاختبار</button>`;$('again').onclick=()=>{$('startquiz').click()};return}const q=questions[i];$('quizbox').innerHTML=`<h3>${i+1}. ${q.q}</h3>${q.a.map((a,j)=>`<div class="item"><button class="secondary" data-answer="${j}">${a}</button></div>`).join('')}`;$('quizbox').querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{if(Number(b.dataset.answer)===q.c)score++;i++;draw()})}draw()};
-async function start(){const {data}=await db.auth.getSession();if(!data.session)return;user=data.session.user;$('auth').classList.add('hidden');$('landingFeatures').classList.add('hidden');document.querySelector('.landing-social').classList.add('hidden');$('app').classList.remove('hidden');$('userbox').classList.remove('hidden');try{await load()}catch(e){note('dashmsg',e.message,'error')}}
-db.auth.onAuthStateChange((_event,session)=>{if(session&&!user){user=session.user;start()}else if(!session){user=null;$('auth').classList.remove('hidden');$('landingFeatures').classList.remove('hidden');document.querySelector('.landing-social').classList.remove('hidden');$('app').classList.add('hidden');$('userbox').classList.add('hidden')}});
+async function start(){if(recovering)return;const {data}=await db.auth.getSession();if(!data.session)return;user=data.session.user;$('auth').classList.add('hidden');$('landingFeatures').classList.add('hidden');document.querySelector('.landing-social').classList.add('hidden');$('app').classList.remove('hidden');$('userbox').classList.remove('hidden');try{await load()}catch(e){note('dashmsg',e.message,'error')}}
+db.auth.onAuthStateChange((event,session)=>{if(event==='PASSWORD_RECOVERY'){recovering=true;$('auth').classList.add('hidden');$('recoveryScreen').classList.remove('hidden');$('landingFeatures').classList.add('hidden');document.querySelector('.landing-social').classList.add('hidden');$('app').classList.add('hidden');$('userbox').classList.add('hidden');return}if(session&&!recovering&&!user){user=session.user;start()}else if(!session&&!recovering){user=null;$('auth').classList.remove('hidden');$('recoveryScreen').classList.add('hidden');$('landingFeatures').classList.remove('hidden');document.querySelector('.landing-social').classList.remove('hidden');$('app').classList.add('hidden');$('userbox').classList.add('hidden')}});
 start();
 </script></body></html>
