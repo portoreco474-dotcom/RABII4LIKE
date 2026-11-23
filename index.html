@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090d1c">
+<title>RABII4LIKE</title>
+<style>
+:root{--bg:#090d1c;--panel:#111a30;--panel2:#17233e;--line:#293858;--txt:#edf3ff;--muted:#9eacc7;--cyan:#43d9ff;--purple:#a78bfa;--gold:#ffd166;--green:#43d6a0;--red:#ff6b85}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#20234e 0,transparent 35%),var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;background:linear-gradient(110deg,#3ecdf5,#8977f6);color:#07101e;font-weight:800}
+button.secondary{background:#233252;color:var(--txt);border:1px solid var(--line)}button.danger{background:#51243b;color:#ffdbe4}button.good{background:#174c49;color:#c7fff0}button:disabled{opacity:.5;cursor:not-allowed}
+input,textarea,select{width:100%;background:#0c1428;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--txt);outline:none}textarea{min-height:90px;resize:vertical}label{display:block;color:var(--muted);font-size:13px;margin:10px 0 6px}
+.wrap{max-width:1150px;margin:auto;padding:22px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}.brand{font-size:24px;font-weight:950;letter-spacing:1px;color:var(--cyan)}.brand span{color:var(--gold)}.muted{color:var(--muted)}.hidden{display:none!important}
+.panel{background:linear-gradient(145deg,rgba(22,34,60,.96),rgba(13,22,42,.96));border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 12px 35px #0003}
+.auth{max-width:430px;margin:8vh auto}.auth h1{margin:0 0 8px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:16px 0}.stat{background:#101a30;border:1px solid var(--line);border-radius:16px;padding:15px}.stat b{display:block;font-size:25px;color:var(--gold);margin-top:4px}
+.tabs{display:flex;gap:8px;overflow:auto;padding:5px 0 14px}.tabs button{white-space:nowrap}.tabs button.active{outline:2px solid var(--cyan);background:#183c56;color:#fff}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stack{display:grid;gap:12px}.item{padding:14px;border:1px solid var(--line);border-radius:14px;background:#0d172b;margin:10px 0}.item h3{margin:0 0 6px}.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.row button{flex:0 0 auto}.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#263653;color:#cfe8ff;font-size:12px}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.empty{text-align:center;padding:25px;color:var(--muted)}.notice{padding:10px 12px;border-radius:10px;background:#152943;color:#bdeeff;margin:10px 0}.error{background:#47243a;color:#ffd1dc}.success{background:#16423e;color:#c6fff0}.foot{font-size:12px;color:var(--muted);text-align:center;margin:25px 0}
+@media(max-width:780px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}.wrap{padding:14px}.top{align-items:flex-start}.brand{font-size:20px}}
+</style>
+</head>
+<body><div class="wrap">
+<header class="top"><div><div class="brand">RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعل والنقاط</div></div><div id="userbox" class="row hidden"><span id="useremail" class="muted"></span><button class="secondary" id="logout">خروج</button></div></header>
+<div id="auth" class="panel auth">
+<h1>مرحبا بك 👋</h1><p class="muted">سجّل الدخول أو أنشئ حساباً جديداً بالبريد الإلكتروني.</p>
+<div id="msg"></div><label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="email" placeholder="name@example.com">
+<label>كلمة المرور</label><input id="password" type="password" autocomplete="current-password" placeholder="••••••••">
+<div class="actions"><button id="login">تسجيل الدخول</button><button id="signup" class="secondary">إنشاء حساب</button></div>
+</div>
+<main id="app" class="hidden">
+<div class="grid">
+<div class="stat"><span class="muted">رصيد النقاط</span><b id="balance">0</b><small id="walletmode" class="muted">محفظتك</small></div>
+<div class="stat"><span class="muted">المهام المتاحة</span><b id="taskcount">0</b></div>
+<div class="stat"><span class="muted">إنجازاتي المقبولة</span><b id="donecount">0</b></div>
+<div class="stat"><span class="muted">حالة الحساب</span><b id="role" style="font-size:18px">user</b></div>
+</div>
+<div class="panel">
+<div class="row"><div><h2 style="margin:0">لوحة التحكم</h2><span class="muted">كل مستخدم لديه محفظته وسجل نقاطه الخاص</span></div><button id="daily" class="good">استلام 500 نقطة يومية</button></div>
+<div id="dashmsg"></div>
+</div>
+<nav class="tabs" id="tabs">
+<button class="active" data-tab="tasks">المهام</button><button data-tab="newtask">نشر مهمة</button><button data-tab="submissions">طلبات التحقق</button><button data-tab="completed">مهامي المكتملة</button><button data-tab="wallet">المحفظة والسجل</button><button data-tab="posts">المنشورات</button><button data-tab="quiz">اختبارات</button><button data-tab="settings">الإعدادات</button><button data-tab="admin" id="admintab" class="hidden">المدير</button>
+</nav>
+<section id="tasks" class="panel tabpane"><h2>المهام المتاحة</h2><div id="tasklist"></div></section>
+<section id="newtask" class="panel tabpane hidden"><h2>نشر مهمة جديدة</h2><p class="muted">يتم حجز مجموع النقاط (نقاط الإنجاز × عدد الإنجازات) قبل نشر المهمة.</p>
+<div class="two"><div><label>عنوان المهمة</label><input id="ttitle" placeholder="مثال: متابعة حساب"></div><div><label>المنصة</label><select id="tplatform"><option>Instagram</option><option>YouTube</option><option>TikTok</option><option>Facebook</option><option>X</option><option>Other</option></select></div>
+<div><label>نوع التفاعل</label><select id="taction"><option>Follow</option><option>Like</option><option>Subscribe</option><option>Comment</option><option>Share</option><option>View</option><option>Other</option></select></div><div><label>رابط الهدف</label><input id="turl" type="url" placeholder="https://..."></div>
+<div><label>النقاط لكل إنجاز</label><input id="tpoints" type="number" min="1" value="10"></div><div><label>عدد الإنجازات المطلوبة</label><input id="tmax" type="number" min="1" value="10"></div></div>
+<label>شرح المهمة</label><textarea id="tdesc" placeholder="اكتب التعليمات بوضوح..."></textarea><div class="actions"><button id="createTask">نشر المهمة وحجز النقاط</button></div><div id="newtaskmsg"></div></section>
+<section id="submissions" class="panel tabpane hidden"><h2>طلبات التحقق</h2><div id="submissionlist"></div></section>
+<section id="completed" class="panel tabpane hidden"><h2>المهام التي أنجزتها</h2><div id="completedlist"></div></section>
+<section id="wallet" class="panel tabpane hidden"><h2>سجل المحفظة</h2><div id="transactions"></div></section>
+<section id="posts" class="panel tabpane hidden"><h2>المنشورات</h2><label>أضف منشوراً</label><textarea id="postcontent" maxlength="1000" placeholder="شارك منشورك مع المجتمع..."></textarea><div class="actions"><button id="addpost">نشر</button></div><div id="postlist"></div></section>
+<section id="quiz" class="panel tabpane hidden"><h2>اختبار معلومات عامة ورياضية</h2><div id="quizbox"><p class="muted">اختبر معلوماتك. هذا الاختبار للتسلية ولا يضيف نقاطاً إلى المحفظة.</p><button id="startquiz">ابدأ الاختبار</button></div></section>
+<section id="settings" class="panel tabpane hidden"><h2>إعدادات الحساب</h2><div class="two"><div><label>الدولة</label><select id="country"><option value="">اختر الدولة</option><option>Morocco</option><option>Egypt</option><option>Saudi Arabia</option><option>United Arab Emirates</option><option>Qatar</option><option>Kuwait</option><option>Jordan</option><option>Tunisia</option><option>France</option><option>Spain</option><option>United States</option><option>United Kingdom</option><option>Other</option></select></div><div><label>اللغة</label><select id="language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div></div><div class="actions"><button id="saveSettings">حفظ الإعدادات</button></div><div id="settingsmsg"></div></section>
+<section id="admin" class="panel tabpane hidden"><h2>لوحة المدير</h2><div class="grid"><div class="stat">المستخدمون<b id="susers">0</b></div><div class="stat">المهام<b id="stasks">0</b></div><div class="stat">طلبات التحقق<b id="ssubs">0</b></div><div class="stat">المنشورات<b id="sposts">0</b></div></div>
+<h3>إرسال النقاط</h3><div class="two"><div><label>بريد المستلم</label><input id="recipient" type="email"></div><div><label>عدد النقاط</label><input id="sendpoints" type="number" min="1"></div></div><label>الوصف</label><input id="senddesc" placeholder="هدية من الإدارة"><div class="actions"><button id="sendpointsbtn">إرسال النقاط</button></div><div id="adminmsg"></div>
+<h3>إدارة المهام</h3><div id="admintasks"></div>
+<h3>مراجعة جميع الإنجازات</h3><div id="adminsubs"></div></section>
+</main><div class="foot">RABII4LIKE · نظام نقاط ومحافظ مستقل لكل مستخدم</div>
+</div>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const SUPABASE_URL='https://hhrqfhffainiboncsekp.supabase.co';
+const SUPABASE_KEY='sb_publishable_AEq00cksyGY19Vl4E9SnIQ_tiwXiCm3';
+const db=createClient(SUPABASE_URL,SUPABASE_KEY);
+let user=null,profile=null,wallet=null,tasks=[],subs=[],posts=[],tx=[];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function note(id,text,kind='notice'){ $(id).innerHTML=text?'<div class="notice '+kind+'">'+esc(text)+'</div>':''; }
+function money(n){return Number(n||0).toLocaleString('en-US')}
+function date(s){return s?new Date(s).toLocaleString():'—'}
+async function rpc(name,args={}){const {data,error}=await db.rpc(name,args);if(error)throw error;return data}
+async function load(){
+ const [p,w,t,s,po,tr]=await Promise.all([
+  db.from('profiles').select('*').eq('id',user.id).single(),
+  db.from('wallets').select('*').eq('user_id',user.id).single(),
+  db.from('tasks').select('*').order('created_at',{ascending:false}).limit(100),
+  db.from('task_submissions').select('*').order('created_at',{ascending:false}).limit(200),
+  db.from('posts').select('*').order('created_at',{ascending:false}).limit(100),
+  db.from('point_transactions').select('*').order('created_at',{ascending:false}).limit(100)
+ ]);
+ for(const x of [p,w,t,s,po,tr])if(x.error)throw x.error;
+ profile=p.data;wallet=w.data;tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;
+ $('balance').textContent=money(wallet.balance);$('walletmode').textContent=wallet.is_unlimited?'محفظة المدير غير المحدودة':'رصيدك الحالي';
+ $('role').textContent=profile.role;$('taskcount').textContent=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id).length;
+ $('donecount').textContent=subs.filter(x=>x.worker_id===user.id&&x.status==='approved').length;
+ $('admintab').classList.toggle('hidden',profile.role!=='admin');
+ $('useremail').textContent=user.email;$('country').value=profile.country||'';$('language').value=profile.language||'ar';
+ renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();
+ if(profile.role==='admin')await loadAdmin();
+}
+function renderTasks(){
+ const list=tasks.filter(t=>t.status==='open'&&t.creator_id!==user.id);
+ $('tasklist').innerHTML=list.length?list.map(t=>'<article class="item"><h3>'+esc(t.title)+'</h3><div class="muted">'+esc(t.platform)+' · '+esc(t.action_type)+' · '+t.points_per_completion+' نقطة لكل إنجاز</div><p>'+esc(t.description||'')+'</p><a href="'+esc(t.target_url)+'" target="_blank" rel="noopener">فتح رابط المهمة ↗</a><div class="actions"><button onclick="window.submitTask(\''+t.id+'\')">إرسال إثبات الإنجاز</button></div></article>').join(''):'<div class="empty">لا توجد مهام متاحة حالياً.</div>';
+}
+function renderSubs(){
+ const mine=subs.filter(s=>{const t=tasks.find(x=>x.id===s.task_id);return t&&(t.creator_id===user.id||profile.role==='admin')&&s.status==='pending'});
+ $('submissionlist').innerHTML=mine.length?mine.map(s=>{const t=tasks.find(x=>x.id===s.task_id);return '<article class="item"><h3>'+esc(t?.title||'مهمة')+'</h3><div class="muted">المنفذ: '+esc(s.worker_id)+'</div><p>'+esc(s.proof_text||'')+'</p>'+(s.proof_url?'<a href="'+esc(s.proof_url)+'" target="_blank" rel="noopener">رابط الإثبات ↗</a>':'')+'<div class="actions"><button class="good" onclick="window.review(\''+s.id+'\',true)">اعتماد</button><button class="danger" onclick="window.review(\''+s.id+'\',false)">رفض</button></div></article>'}).join(''):'<div class="empty">لا توجد طلبات تنتظر التحقق.</div>';
+}
+function renderCompleted(){
+ const done=subs.filter(s=>s.worker_id===user.id);
+ $('completedlist').innerHTML=done.length?done.map(s=>{const t=tasks.find(x=>x.id===s.task_id);return '<article class="item"><h3>'+esc(t?.title||'مهمة')+'</h3><span class="pill">'+esc(s.status)+'</span><p class="muted">تاريخ الإرسال: '+date(s.created_at)+' · '+(s.status==='approved'?'تاريخ الاعتماد: '+date(s.reviewed_at):'')+'</p>'+(s.review_note?'<p>'+esc(s.review_note)+'</p>':'')+'</article>'}).join(''):'<div class="empty">لم تنجز أي مهمة بعد.</div>';
+}
+function renderTx(){ $('transactions').innerHTML=tx.length?tx.map(x=>'<article class="item row"><div><b>'+esc(x.description||x.transaction_type)+'</b><div class="muted">'+date(x.created_at)+' · '+esc(x.transaction_type)+'</div></div><strong style="color:'+(x.amount>0?'var(--green)':'var(--red)')+'">'+(x.amount>0?'+':'')+money(x.amount)+'</strong></article>').join(''):'<div class="empty">لا توجد عمليات بعد.</div>'; }
+function renderPosts(){ $('postlist').innerHTML=posts.length?posts.map(p=>'<article class="item"><p>'+esc(p.content)+'</p><div class="muted">'+date(p.created_at)+' · '+esc(p.author_id===user.id?'أنت':p.author_id)+'</div>'+(p.author_id===user.id||profile.role==='admin'?'<div class="actions"><button class="danger" onclick="window.delPost(\''+p.id+'\')">حذف المنشور</button></div>':'')+'</article>').join(''):'<div class="empty">لا توجد منشورات بعد.</div>'; }
+async function loadAdmin(){
+ const [u,t,s,p]=await Promise.all([
+  db.from('profiles').select('id',{count:'exact',head:true}),
+  db.from('tasks').select('id',{count:'exact',head:true}),
+  db.from('task_submissions').select('id',{count:'exact',head:true}),
+  db.from('posts').select('id',{count:'exact',head:true})
+ ]);
+ $('susers').textContent=u.count??0;$('stasks').textContent=t.count??0;$('ssubs').textContent=s.count??0;$('sposts').textContent=p.count??0;
+ $('admintasks').innerHTML=tasks.map(t=>'<article class="item"><b>'+esc(t.title)+'</b> <span class="pill">'+esc(t.status)+'</span><div class="muted">'+t.points_per_completion+' × '+t.max_completions+'</div><div class="actions">'+(t.status==='open'?'<button class="secondary" onclick="window.taskStatus(\''+t.id+'\',\'paused\')">إيقاف</button>':'')+(t.status==='paused'?'<button onclick="window.taskStatus(\''+t.id+'\',\'open\')">إعادة فتح</button>':'')+(!['cancelled','completed'].includes(t.status)?'<button class="danger" onclick="window.cancelTask(\''+t.id+'\')">إلغاء واسترجاع المتبقي</button>':'')+'</div></article>').join('');
+ const allpending=subs.filter(s=>s.status==='pending');
+ $('adminsubs').innerHTML=allpending.length?allpending.map(s=>'<article class="item"><div>مهمة: '+esc(tasks.find(t=>t.id===s.task_id)?.title||s.task_id)+'</div><div class="muted">مستخدم: '+esc(s.worker_id)+'</div><div class="actions"><button class="good" onclick="window.review(\''+s.id+'\',true)">اعتماد</button><button class="danger" onclick="window.review(\''+s.id+'\',false)">رفض</button></div></article>').join(''):'<div class="empty">لا توجد طلبات معلقة.</div>';
+}
+window.submitTask=async id=>{const proof=prompt('اكتب إثبات الإنجاز أو وصفه:');if(!proof)return;try{await rpc('submit_task',{p_task_id:id,p_proof_url:null,p_proof_text:proof});note('dashmsg','تم إرسال الإثبات للمراجعة.','success');await load()}catch(e){note('dashmsg',e.message,'error')}};
+window.review=async(id,approve)=>{const n=prompt(approve?'ملاحظة (اختياري):':'سبب الرفض (اختياري):')||'';try{await rpc('review_submission',{p_submission_id:id,p_approve:approve,p_review_note:n});note('dashmsg',approve?'تم اعتماد الإنجاز وتحويل النقاط.':'تم رفض الإنجاز.','success');await load()}catch(e){note('dashmsg',e.message,'error')}};
+window.cancelTask=async id=>{if(!confirm('إلغاء المهمة؟ سيتم إرجاع النقاط الخاصة بالإنجازات غير المعتمدة.'))return;try{const n=await rpc('cancel_task',{p_task_id:id});note('adminmsg','تم إلغاء المهمة وإرجاع '+n+' نقطة.','success');await load()}catch(e){note('adminmsg',e.message,'error')}};
+window.taskStatus=async(id,status)=>{try{await rpc('admin_set_task_status',{p_task_id:id,p_status:status});await load()}catch(e){note('adminmsg',e.message,'error')}};
+window.delPost=async id=>{if(!confirm('حذف المنشور؟'))return;try{await rpc('delete_post',{p_post_id:id});await load()}catch(e){note('dashmsg',e.message,'error')}};
+$('login').onclick=async()=>{try{const {error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)throw error;note('msg','تم تسجيل الدخول.','success')}catch(e){note('msg',e.message,'error')}};
+$('signup').onclick=async()=>{try{const {data,error}=await db.auth.signUp({email:$('email').value,password:$('password').value});if(error)throw error;note('msg',data.session?'تم إنشاء الحساب.':'تم إنشاء الحساب. تحقق من بريدك لتأكيده.','success')}catch(e){note('msg',e.message,'error')}};
+$('logout').onclick=async()=>{await db.auth.signOut();location.reload()};
+$('daily').onclick=async()=>{try{await rpc('claim_daily_reward');note('dashmsg','مبروك! تمت إضافة 500 نقطة إلى محفظتك.','success');await load()}catch(e){note('dashmsg',e.message,'error')}};
+$('createTask').onclick=async()=>{try{await rpc('create_task',{p_title:$('ttitle').value,p_description:$('tdesc').value,p_platform:$('tplatform').value,p_action_type:$('taction').value,p_target_url:$('turl').value,p_points_per_completion:Number($('tpoints').value),p_max_completions:Number($('tmax').value)});note('newtaskmsg','تم نشر المهمة وحجز النقاط بنجاح.','success');$('ttitle').value='';$('tdesc').value='';await load()}catch(e){note('newtaskmsg',e.message,'error')}};
+$('addpost').onclick=async()=>{try{await rpc('add_post',{p_content:$('postcontent').value});$('postcontent').value='';await load()}catch(e){note('dashmsg',e.message,'error')}};
+$('saveSettings').onclick=async()=>{try{const {error}=await db.from('profiles').update({country:$('country').value||null,language:$('language').value}).eq('id',user.id);if(error)throw error;note('settingsmsg','تم حفظ الإعدادات.','success');await load()}catch(e){note('settingsmsg',e.message,'error')}};
+$('sendpointsbtn').onclick=async()=>{try{const {data,error}=await db.from('profiles').select('id').eq('email',$('recipient').value.trim()).single();if(error)throw error;await rpc('admin_transfer_points',{p_recipient_id:data.id,p_amount:Number($('sendpoints').value),p_description:$('senddesc').value});note('adminmsg','تم إرسال النقاط بنجاح.','success');await load()}catch(e){note('adminmsg',e.message,'error')}};
+$('tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(!b)return;document.querySelectorAll('.tabpane').forEach(x=>x.classList.add('hidden'));$(b.dataset.tab).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b))};
+const questions=[{q:'ما عاصمة المغرب؟',a:['الرباط','الدار البيضاء','فاس'],c:0},{q:'كم لاعباً في فريق كرة القدم داخل الملعب؟',a:['9','11','12'],c:1},{q:'ما الكوكب المعروف بالكوكب الأحمر؟',a:['الزهرة','المريخ','المشتري'],c:1},{q:'كم عدد ألوان قوس قزح التقليدية؟',a:['5','6','7'],c:2}];
+$('startquiz').onclick=()=>{let i=0,score=0;function draw(){if(i>=questions.length){$('quizbox').innerHTML='<h3>انتهى الاختبار</h3><p>نتيجتك: '+score+' من '+questions.length+'</p><button id="again">إعادة الاختبار</button>';$('again').onclick=()=>{$('startquiz').click()};return}const q=questions[i];$('quizbox').innerHTML='<h3>'+(i+1)+'. '+q.q+'</h3>'+q.a.map((a,j)=>'<div class="item"><button class="secondary" data-answer="'+j+'">'+a+'</button></div>').join('');$('quizbox').querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{if(Number(b.dataset.answer)===q.c)score++;i++;draw()})}draw()};
+async function start(){const {data}=await db.auth.getSession();if(!data.session)return;user=data.session.user;$('auth').classList.add('hidden');$('app').classList.remove('hidden');$('userbox').classList.remove('hidden');try{await load()}catch(e){note('dashmsg',e.message,'error')}}
+db.auth.onAuthStateChange((_event,session)=>{if(session&&!user){user=session.user;start()}else if(!session){user=null;$('auth').classList.remove('hidden');$('app').classList.add('hidden');$('userbox').classList.add('hidden')}});
+start();
+</script></body></html>
