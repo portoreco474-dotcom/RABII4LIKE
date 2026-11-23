@@ -50,7 +50,7 @@ body{background:radial-gradient(ellipse at 18% 25%,#25106a 0,transparent 36%),ra
 </style>
 </head>
 <body><div class="wrap">
-<header class="top"><div><div class="brand">♛ RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعلات وجمع النقاط</div></div><div id="userbox" class="row hidden"><span id="useremail" class="muted"></span><button class="secondary" id="logout">خروج</button></div></header>
+<header class="top"><div><div class="brand">♛ RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعلات وجمع النقاط</div></div><div id="userbox" class="row hidden"><span id="useremail" class="muted"></span><button id="adminQuick" class="good hidden" type="button">👑 لوحة المدير</button><button class="secondary" id="logout">خروج</button></div></header>
 <div id="auth" class="panel auth">
 <h1>تسجيل الدخول</h1><p class="muted">مرحباً بك في مجتمع RABII4LIKE التفاعلي</p>
 <div id="msg"></div><label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="email" placeholder="البريد الإلكتروني">
@@ -137,7 +137,7 @@ async function load(){
  $('balance').textContent=money(wallet.balance);$('walletmode').textContent=wallet.is_unlimited?'محفظة المدير غير المحدودة':'رصيدك الحالي';
  $('role').textContent=profile.role;$('taskcount').textContent=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id).length;
  $('donecount').textContent=subs.filter(x=>x.worker_id===user.id&&x.status==='approved').length;
- $('admintab').classList.toggle('hidden',profile.role!=='admin');
+ const isAdmin=String(profile.role||'').trim().toLowerCase()==='admin'; $('admintab').classList.toggle('hidden',!isAdmin); $('adminQuick').classList.toggle('hidden',!isAdmin);
  $('useremail').textContent=user.email;$('country').value=profile.country||'';$('language').value=profile.language||'ar';
  renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();
  if(profile.role==='admin')await loadAdmin();
@@ -193,7 +193,7 @@ window.taskStatus=async(id,status)=>{try{await rpc('admin_set_task_status',{p_ta
 window.delPost=async id=>{if(!confirm('حذف المنشور؟'))return;try{await rpc('delete_post',{p_post_id:id});await load()}catch(e){note('dashmsg',e.message,'error')}};
 $('login').onclick=async()=>{try{const {error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)throw error;note('msg','تم تسجيل الدخول.','success')}catch(e){note('msg',e.message,'error')}};
 $('signup').onclick=async()=>{try{const {data,error}=await db.auth.signUp({email:$('email').value,password:$('password').value});if(error)throw error;note('msg',data.session?'تم إنشاء الحساب.':'تم إنشاء الحساب. تحقق من بريدك لتأكيده.','success')}catch(e){note('msg',e.message,'error')}};
-$('logout').onclick=async()=>{await db.auth.signOut();location.reload()};
+$('logout').onclick=async()=>{await db.auth.signOut();location.reload()};\n$('adminQuick').onclick=()=>{$('admintab').click()};
 $('daily').onclick=async()=>{try{await rpc('claim_daily_reward');note('dashmsg','مبروك! تمت إضافة 500 نقطة إلى محفظتك.','success');await load()}catch(e){note('dashmsg',e.message,'error')}};
 function refreshInteractionOptions(){
  const platform=$('tplatform').value;
