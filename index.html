@@ -149,8 +149,9 @@ async function load(){
  if(profile.role==='admin')await loadAdmin();
 }
 function renderTasks(){
- const list=tasks.filter(t=>t.status==='open'&&t.creator_id!==user.id);
- $('tasklist').innerHTML=list.length?list.map(t=>`<article class="item"><h3>${esc(t.title)}</h3><div class="muted">${esc(t.platform)} · ${esc(t.action_type)} · ${t.points_per_completion} نقطة لكل إنجاز</div><p>${esc(t.description||'')}</p><a href="${esc(t.target_url)}" target="_blank" rel="noopener">فتح رابط المهمة ↗</a><div class="actions"><button onclick="window.submitTask('${t.id}')">إرسال إثبات الإنجاز</button></div></article>`).join(''):'<div class="empty">لا توجد مهام متاحة حالياً.</div>';
+ const isAdmin=String(profile.role||'').trim().toLowerCase()==='admin';
+ const list=tasks.filter(t=>t.status==='open'&&t.creator_id!==user.id&&(isAdmin||!Array.isArray(t.target_countries)||t.target_countries.length===0||(profile.country&&t.target_countries.includes(profile.country))));
+ $('tasklist').innerHTML=list.length?list.map(t=>`<article class="item"><h3>${esc(t.title)}</h3><div class="muted">${esc(t.platform)} · ${esc(t.action_type)} · ${t.points_per_completion} نقطة لكل إنجاز</div><div class="muted">الدول المستهدفة: ${esc((t.target_countries||[]).join('، ')||'جميع الدول')}</div><p>${esc(t.description||'')}</p><a href="${esc(t.target_url)}" target="_blank" rel="noopener">فتح رابط المهمة ↗</a><div class="actions"><button onclick="window.submitTask('${t.id}')">إرسال إثبات الإنجاز</button></div></article>`).join(''):(profile.country||isAdmin?'<div class="empty">لا توجد مهام متاحة لدولتك حالياً.</div>':'<div class="empty">حدد دولتك من إعدادات الحساب لعرض المهام المناسبة لك.</div>');
 }
 function renderSubs(){
  const mine=subs.filter(s=>{const t=tasks.find(x=>x.id===s.task_id);return t&&(t.creator_id===user.id||profile.role==='admin')&&s.status==='pending'});
