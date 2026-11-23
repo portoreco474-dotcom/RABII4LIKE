@@ -74,11 +74,22 @@ body{background:radial-gradient(ellipse at 18% 25%,#25106a 0,transparent 36%),ra
 <button class="active" data-tab="tasks">المهام</button><button data-tab="newtask">نشر مهمة</button><button data-tab="submissions">طلبات التحقق</button><button data-tab="completed">مهامي المكتملة</button><button data-tab="wallet">المحفظة والسجل</button><button data-tab="posts">المنشورات</button><button data-tab="quiz">اختبارات</button><button data-tab="settings">الإعدادات</button><button data-tab="admin" id="admintab" class="hidden">👑 المدير والإحصائيات</button>
 </nav>
 <section id="tasks" class="panel tabpane"><h2>المهام المتاحة</h2><div id="tasklist"></div></section>
-<section id="newtask" class="panel tabpane hidden"><h2>نشر مهمة جديدة</h2><p class="muted">يتم حجز مجموع النقاط (نقاط الإنجاز × عدد الإنجازات) قبل نشر المهمة.</p>
-<div class="two"><div><label>عنوان المهمة</label><input id="ttitle" placeholder="مثال: متابعة حساب"></div><div><label>المنصة</label><select id="tplatform"><option>Instagram</option><option>YouTube</option><option>TikTok</option><option>Facebook</option><option>X</option><option>Other</option></select></div>
-<div><label>نوع التفاعل</label><select id="taction"><option>Follow</option><option>Like</option><option>Subscribe</option><option>Comment</option><option>Share</option><option>View</option><option>Other</option></select></div><div><label>رابط الهدف</label><input id="turl" type="url" placeholder="https://..."></div>
-<div><label>النقاط لكل إنجاز</label><input id="tpoints" type="number" min="1" value="10"></div><div><label>عدد الإنجازات المطلوبة</label><input id="tmax" type="number" min="1" value="10"></div></div>
-<label>شرح المهمة</label><textarea id="tdesc" placeholder="اكتب التعليمات بوضوح..."></textarea><div class="actions"><button id="createTask">نشر المهمة وحجز النقاط</button></div><div id="newtaskmsg"></div></section>
+<section id="newtask" class="panel tabpane hidden"><h2>أضف محتواك – طلب تفاعل جديد</h2>
+<p class="muted">اختر المنصة أولاً، ثم نوع التفاعل المطلوب. كل تفاعل يبدأ من 20 نقطة، ويتم حجز مجموع النقاط من محفظتك عند الحفظ.</p>
+<label>رابط المنشور أو الحساب</label><input id="turl" type="url" placeholder="https://..." />
+<div class="two">
+<div><label>اختر المنصة</label><select id="tplatform">
+<option value="TikTok">TikTok</option><option value="Facebook">Facebook</option><option value="Facebook Page">Facebook Page</option><option value="Instagram">Instagram</option><option value="YouTube">YouTube</option></select></div>
+<div><label>نوع التفاعل</label><select id="taction"></select></div>
+<div><label>نقاط كل تفاعل (الحد الأدنى 20)</label><input id="tpoints" type="number" min="20" step="1" value="20"></div>
+<div><label>عدد التفاعلات المطلوبة</label><input id="tmax" type="number" min="1" step="1" value="10"></div>
+</div>
+<label>الدول التي تريد التفاعل منها (يمكن اختيار أكثر من دولة)</label>
+<select id="tcountries" multiple size="7" style="width:100%;min-height:150px">
+<option value="Morocco">المغرب</option><option value="Egypt">مصر</option><option value="Saudi Arabia">السعودية</option><option value="United Arab Emirates">الإمارات</option><option value="Qatar">قطر</option><option value="Kuwait">الكويت</option><option value="Jordan">الأردن</option><option value="Tunisia">تونس</option><option value="Algeria">الجزائر</option><option value="France">فرنسا</option><option value="Spain">إسبانيا</option><option value="United States">الولايات المتحدة</option><option value="United Kingdom">بريطانيا</option><option value="Other">دول أخرى</option></select>
+<p class="muted">على الهاتف: اضغط على الدول لاختيار أكثر من دولة.</p>
+<label>تفاصيل إضافية (اختياري)</label><textarea id="tdesc" placeholder="اكتب أي تعليمات خاصة بالتفاعل..."></textarea>
+<div class="actions"><button id="createTask">حفظ المنشور وحجز النقاط</button></div><div id="newtaskmsg"></div></section>
 <section id="submissions" class="panel tabpane hidden"><h2>طلبات التحقق</h2><div id="submissionlist"></div></section>
 <section id="completed" class="panel tabpane hidden"><h2>المهام التي أنجزتها</h2><div id="completedlist"></div></section>
 <section id="wallet" class="panel tabpane hidden"><h2>سجل المحفظة</h2><div id="transactions"></div></section>
@@ -184,7 +195,24 @@ $('login').onclick=async()=>{try{const {error}=await db.auth.signInWithPassword(
 $('signup').onclick=async()=>{try{const {data,error}=await db.auth.signUp({email:$('email').value,password:$('password').value});if(error)throw error;note('msg',data.session?'تم إنشاء الحساب.':'تم إنشاء الحساب. تحقق من بريدك لتأكيده.','success')}catch(e){note('msg',e.message,'error')}};
 $('logout').onclick=async()=>{await db.auth.signOut();location.reload()};
 $('daily').onclick=async()=>{try{await rpc('claim_daily_reward');note('dashmsg','مبروك! تمت إضافة 500 نقطة إلى محفظتك.','success');await load()}catch(e){note('dashmsg',e.message,'error')}};
-$('createTask').onclick=async()=>{try{const id=await rpc('create_task',{p_title:$('ttitle').value,p_description:$('tdesc').value,p_platform:$('tplatform').value,p_action_type:$('taction').value,p_target_url:$('turl').value,p_points_per_completion:Number($('tpoints').value),p_max_completions:Number($('tmax').value)});note('newtaskmsg','تم نشر المهمة وحجز النقاط بنجاح.','success');$('ttitle').value='';$('tdesc').value='';await load()}catch(e){note('newtaskmsg',e.message,'error')}};
+function refreshInteractionOptions(){
+ const platform=$('tplatform').value;
+ const actions=['تعليق','إعجاب','مشاركة'];
+ if(platform==='TikTok'||platform==='Instagram'||platform==='Facebook'||platform==='Facebook Page')actions.unshift('متابعة');
+ if(platform==='Facebook Page')actions.unshift('إعجاب بالصفحة');
+ if(platform==='YouTube')actions.unshift('اشتراك في القناة','مشاهدة الفيديو');
+ $('taction').innerHTML=actions.map(a=>'<option value="'+a+'">'+a+'</option>').join('');
+}
+$('tplatform').onchange=refreshInteractionOptions;refreshInteractionOptions();
+$('createTask').onclick=async()=>{try{
+ const url=$('turl').value.trim(),countries=Array.from($('tcountries').selectedOptions).map(o=>o.value),points=Number($('tpoints').value),count=Number($('tmax').value),platform=$('tplatform').value,action=$('taction').value;
+ if(!/^https?:\\/\\//i.test(url))throw new Error('أدخل رابطاً صحيحاً يبدأ بـ https://');
+ if(points<20)throw new Error('الحد الأدنى هو 20 نقطة لكل تفاعل');
+ if(!countries.length)throw new Error('اختر دولة واحدة على الأقل');
+ const title=platform+' - '+action;
+ await rpc('create_task',{p_title:title,p_description:$('tdesc').value,p_platform:platform,p_action_type:action,p_target_url:url,p_points_per_completion:points,p_max_completions:count,p_target_countries:countries});
+ note('newtaskmsg','تم حفظ طلب التفاعل وحجز النقاط بنجاح.','success');$('turl').value='';$('tdesc').value='';await load();
+}catch(e){note('newtaskmsg',e.message,'error')}};
 $('addpost').onclick=async()=>{try{await rpc('add_post',{p_content:$('postcontent').value});$('postcontent').value='';await load()}catch(e){note('dashmsg',e.message,'error')}};
 $('saveSettings').onclick=async()=>{try{const {error}=await db.from('profiles').update({country:$('country').value||null,language:$('language').value}).eq('id',user.id);if(error)throw error;note('settingsmsg','تم حفظ الإعدادات.','success');await load()}catch(e){note('settingsmsg',e.message,'error')}};
 $('sendpointsbtn').onclick=async()=>{try{const {data,error}=await db.from('profiles').select('id').eq('email',$('recipient').value.trim()).single();if(error)throw error;await rpc('admin_transfer_points',{p_recipient_id:data.id,p_amount:Number($('sendpoints').value),p_description:$('senddesc').value});note('adminmsg','تم إرسال النقاط بنجاح.','success');await load()}catch(e){note('adminmsg',e.message,'error')}};
