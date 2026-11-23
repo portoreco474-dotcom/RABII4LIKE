@@ -47,15 +47,55 @@ body{background:radial-gradient(ellipse at 18% 25%,#25106a 0,transparent 36%),ra
 @media(max-width:900px){#auth{grid-template-columns:1fr 1fr;gap:12px;min-height:0}#auth:before{min-height:390px}#auth:after{display:none}#auth>h1,#auth>p,#auth>#msg,#auth>label,#auth>input,#auth>.actions{grid-column:2}.landing-features{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:620px){.wrap{padding:0 12px}.top{margin:0 -12px 12px;padding:0 15px;min-height:65px}#auth{display:flex;flex-direction:column;gap:0;align-items:stretch;padding:8px 0}#auth:before{order:0;width:100%;min-height:230px;background-size:cover;background-position:center 32%;border-radius:18px}#auth:after{display:block;order:1;padding:14px 5px 18px;font-size:20px;line-height:1.8}#auth>h1{order:2;border-radius:18px 18px 0 0;margin:0;padding:18px 12px 0;width:100%}#auth>p{order:3;margin:0;padding:8px 18px 0;width:100%}#auth>#msg{order:4;margin:0;padding:0 18px;width:100%}#auth>label:nth-of-type(1){order:5;margin:0;padding:8px 18px 4px;width:100%}#auth>#email{order:6;margin:0 18px;width:calc(100% - 36px)}#auth>label:nth-of-type(2){order:7;margin:0;padding:8px 18px 4px;width:100%}#auth>#password{order:8;margin:0 18px;width:calc(100% - 36px)}#auth>.actions{order:9;margin:0;padding:14px 18px 20px;width:100%}.landing-features{grid-template-columns:repeat(2,1fr);gap:8px}.landing-feature{padding:13px 7px}}
 
+
+/* NEON UI refresh - RABII4LIKE */
+:root{--glow-cyan:0 0 18px #24cfff55;--glow-purple:0 0 24px #8b4dff44;--glass:rgba(13,18,46,.78)}
+html{scroll-behavior:smooth}
+body{background-image:radial-gradient(ellipse at 8% 12%,#27206f88 0,transparent 32%),radial-gradient(ellipse at 92% 20%,#0c477288 0,transparent 28%),linear-gradient(135deg,#040615,#08091d 55%,#080b20);background-attachment:fixed}
+.wrap{max-width:1480px}
+.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);border-bottom:1px solid #7751df88}
+.brand{display:flex;align-items:center;gap:8px}
+.brand:before{content:"";width:10px;height:10px;border-radius:50%;background:var(--cyan);box-shadow:0 0 18px var(--cyan)}
+.panel{background:linear-gradient(145deg,rgba(20,25,61,.91),rgba(8,15,37,.94));border:1px solid #4c55a4aa;box-shadow:0 14px 45px #0005,inset 0 1px #ffffff0b,0 0 24px #6536c522;backdrop-filter:blur(14px)}
+.grid .stat{position:relative;overflow:hidden;background:linear-gradient(145deg,#151a43,#0b142c);border-color:#5b4cb0aa;box-shadow:inset 0 1px #ffffff0b,0 8px 25px #0004}
+.grid .stat:after{content:"";position:absolute;width:95px;height:95px;left:-36px;bottom:-48px;border-radius:50%;background:#744dff22;filter:blur(2px)}
+.stat-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:11px;margin-bottom:9px;color:#69e4ff;background:#1a2a59;border:1px solid #4d74cb88;box-shadow:var(--glow-cyan)}
+.stat-icon svg{width:19px;height:19px}
+button{transition:transform .18s ease,filter .18s ease,box-shadow .18s ease;box-shadow:0 5px 18px #5a3bdb2b}
+button:hover{transform:translateY(-2px);filter:brightness(1.12);box-shadow:0 8px 24px #6b47ef55}
+button:active{transform:translateY(0) scale(.98)}
+button svg,.tabs svg{width:17px;height:17px;vertical-align:middle;margin-inline-end:6px}
+button.secondary{background:linear-gradient(135deg,#1b2850,#182044);border:1px solid #4d5da0;color:#e8edff}
+button.good{background:linear-gradient(120deg,#0e675d,#174d72);color:#d8fff7;border:1px solid #39d7bb66}
+button.danger{border:1px solid #ff6b8566}
+input:focus,textarea:focus,select:focus{border-color:#6be6ff;box-shadow:0 0 0 3px #43d9ff20,0 0 18px #43d9ff22}
+.item{background:linear-gradient(135deg,#111c3a,#0b142b);border-color:#3b4d83;box-shadow:0 7px 22px #0003}
+.item:hover{border-color:#6e66c7;box-shadow:0 8px 24px #4b36b52a}
+.tabs{position:sticky;top:76px;z-index:15;margin:12px 0;padding:9px;border:1px solid #514a9a88;border-radius:16px;background:#080d25eF;backdrop-filter:blur(16px);box-shadow:0 8px 25px #0005}
+.tabs button{background:#111a39;color:#d9e3ff;border:1px solid #303d75;padding:10px 13px}
+.tabs button.active{outline:1px solid #58e4ff;background:linear-gradient(120deg,#153d65,#35216a);box-shadow:0 0 18px #43d9ff44;color:#fff}
+.tabs button svg{color:#72e8ff}
+h2{display:flex;align-items:center;gap:9px;color:#f4f2ff;text-shadow:0 0 14px #805aff44}
+h2 svg{width:22px;height:22px;color:#73e5ff}
+h3{color:#f1eaff}
+a{color:#73e5ff;text-decoration:none}a:hover{text-decoration:underline}
+.pill{border:1px solid #6375b4;background:#1a2a51;color:#d7e8ff}
+.notice{border:1px solid #44cfff55;background:#10294a}
+.landing-feature{transition:transform .2s ease,border-color .2s ease}
+.landing-feature:hover{transform:translateY(-4px);border-color:#62dcff;box-shadow:0 0 22px #43d9ff44}
+.foot{color:#9b9cc8}
+@media(max-width:780px){.grid{gap:9px}.stat{padding:12px}.tabs{top:64px;gap:6px}.tabs button{font-size:12px;padding:9px 10px}.top{backdrop-filter:blur(12px)}}
+@media(max-width:480px){.wrap{padding:0 10px}.top{margin:0 -10px 12px;padding:0 12px}.brand{font-size:19px}.top .muted{font-size:10px}.tabs{top:60px}.tabs button{font-size:11px;padding:8px 9px}.stat b{font-size:21px}}
+
 </style>
 </head>
 <body><div class="wrap">
-<header class="top"><div><div class="brand">♛ RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعلات وجمع النقاط</div></div><div id="userbox" class="row hidden"><span id="useremail" class="muted"></span><button id="adminQuick" class="good hidden" type="button">👑 لوحة المدير</button><button class="secondary" id="logout">خروج</button></div></header>
+<header class="top"><div><div class="brand">♛ RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعلات وجمع النقاط</div></div><div id="userbox" class="row hidden"><span id="useremail" class="muted"></span><button id="adminQuick" class="good hidden" type="button"><i data-lucide="crown"></i> لوحة المدير</button><button class="secondary" id="logout"><i data-lucide="log-out"></i> خروج</button></div></header>
 <div id="auth" class="panel auth">
 <h1>تسجيل الدخول</h1><p class="muted">مرحباً بك في مجتمع RABII4LIKE التفاعلي</p>
 <div id="msg"></div><label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="email" placeholder="البريد الإلكتروني">
 <label>كلمة المرور</label><input id="password" type="password" autocomplete="current-password" placeholder="كلمة المرور">
-<div class="actions"><button id="login">➜ دخول</button><button id="signup" class="secondary">إنشاء حساب جديد</button><button id="forgotPassword" class="secondary" type="button">نسيت كلمة المرور؟</button></div>
+<div class="actions"><button id="login"><i data-lucide="log-in"></i> دخول</button><button id="signup" class="secondary"><i data-lucide="user-plus"></i> إنشاء حساب جديد</button><button id="forgotPassword" class="secondary" type="button"><i data-lucide="key-round"></i> نسيت كلمة المرور؟</button></div>
 </div>
 <div id="recoveryScreen" class="panel auth hidden">
 <h1>تعيين كلمة مرور جديدة</h1><p class="muted">أدخل كلمة المرور الجديدة لحسابك.</p><div id="recoveryMsg"></div>
@@ -67,17 +107,17 @@ body{background:radial-gradient(ellipse at 18% 25%,#25106a 0,transparent 36%),ra
 <div class="landing-social">f　◎　♪　▶　➤　𝕏</div>
 <main id="app" class="hidden">
 <div class="grid">
-<div class="stat"><span class="muted">رصيد النقاط</span><b id="balance">0</b><small id="walletmode" class="muted">محفظتك</small></div>
-<div class="stat"><span class="muted">المهام المتاحة</span><b id="taskcount">0</b></div>
-<div class="stat"><span class="muted">إنجازاتي المقبولة</span><b id="donecount">0</b></div>
-<div class="stat"><span class="muted">حالة الحساب</span><b id="role" style="font-size:18px">user</b></div>
+<div class="stat"><span class="stat-icon"><i data-lucide="wallet"></i></span><span class="muted">رصيد النقاط</span><b id="balance">0</b><small id="walletmode" class="muted">محفظتك</small></div>
+<div class="stat"><span class="stat-icon"><i data-lucide="list-checks"></i></span><span class="muted">المهام المتاحة</span><b id="taskcount">0</b></div>
+<div class="stat"><span class="stat-icon"><i data-lucide="badge-check"></i></span><span class="muted">إنجازاتي المقبولة</span><b id="donecount">0</b></div>
+<div class="stat"><span class="stat-icon"><i data-lucide="shield-check"></i></span><span class="muted">حالة الحساب</span><b id="role" style="font-size:18px">user</b></div>
 </div>
 <div class="panel">
-<div class="row"><div><h2 style="margin:0">لوحة التحكم</h2><span class="muted">كل مستخدم لديه محفظته وسجل نقاطه الخاص</span></div><button id="daily" class="good">استلام 500 نقطة يومية</button></div>
+<div class="row"><div><h2 style="margin:0">لوحة التحكم</h2><span class="muted">كل مستخدم لديه محفظته وسجل نقاطه الخاص</span></div><button id="daily" class="good"><i data-lucide="gift"></i> استلام 500 نقطة يومية</button></div>
 <div id="dashmsg"></div>
 </div>
 <nav class="tabs" id="tabs">
-<button class="active" data-tab="tasks">المهام</button><button data-tab="newtask">نشر مهمة</button><button data-tab="submissions">طلبات التحقق</button><button data-tab="completed">مهامي المكتملة</button><button data-tab="wallet">المحفظة والسجل</button><button data-tab="posts">المنشورات</button><button data-tab="quiz">اختبارات</button><button data-tab="settings">الإعدادات</button><button data-tab="admin" id="admintab" class="hidden">👑 المدير والإحصائيات</button>
+<button class="active" data-tab="tasks"><i data-lucide="list-checks"></i> المهام</button><button data-tab="newtask"><i data-lucide="plus-circle"></i> نشر مهمة</button><button data-tab="submissions"><i data-lucide="clipboard-check"></i> طلبات التحقق</button><button data-tab="completed"><i data-lucide="check-check"></i> مهامي المكتملة</button><button data-tab="wallet"><i data-lucide="wallet"></i> المحفظة والسجل</button><button data-tab="posts"><i data-lucide="messages-square"></i> المنشورات</button><button data-tab="quiz"><i data-lucide="brain"></i> اختبارات</button><button data-tab="settings"><i data-lucide="settings"></i> الإعدادات</button><button data-tab="admin" id="admintab" class="hidden"><i data-lucide="crown"></i> المدير والإحصائيات</button>
 </nav>
 <section id="tasks" class="panel tabpane"><h2>المهام المتاحة</h2><div id="tasklist"></div></section>
 <section id="newtask" class="panel tabpane hidden"><h2>أضف محتواك – طلب تفاعل جديد</h2>
@@ -95,15 +135,15 @@ body{background:radial-gradient(ellipse at 18% 25%,#25106a 0,transparent 36%),ra
 <option value="Morocco">المغرب</option><option value="Egypt">مصر</option><option value="Saudi Arabia">السعودية</option><option value="United Arab Emirates">الإمارات</option><option value="Qatar">قطر</option><option value="Kuwait">الكويت</option><option value="Jordan">الأردن</option><option value="Tunisia">تونس</option><option value="Algeria">الجزائر</option><option value="France">فرنسا</option><option value="Spain">إسبانيا</option><option value="United States">الولايات المتحدة</option><option value="United Kingdom">بريطانيا</option><option value="Other">دول أخرى</option></select>
 <p class="muted">على الهاتف: اضغط على الدول لاختيار أكثر من دولة.</p>
 <label>تفاصيل إضافية (اختياري)</label><textarea id="tdesc" placeholder="اكتب أي تعليمات خاصة بالتفاعل..."></textarea>
-<div class="actions"><button id="createTask">حفظ المنشور وحجز النقاط</button></div><div id="newtaskmsg"></div></section>
+<div class="actions"><button id="createTask"><i data-lucide="rocket"></i> حفظ المنشور وحجز النقاط</button></div><div id="newtaskmsg"></div></section>
 <section id="submissions" class="panel tabpane hidden"><h2>طلبات التحقق</h2><div id="submissionlist"></div></section>
 <section id="completed" class="panel tabpane hidden"><h2>المهام التي أنجزتها</h2><div id="completedlist"></div></section>
 <section id="wallet" class="panel tabpane hidden"><h2>سجل المحفظة</h2><div id="transactions"></div></section>
-<section id="posts" class="panel tabpane hidden"><h2>المنشورات</h2><label>أضف منشوراً</label><textarea id="postcontent" maxlength="1000" placeholder="شارك منشورك مع المجتمع..."></textarea><div class="actions"><button id="addpost">نشر</button></div><div id="postlist"></div></section>
+<section id="posts" class="panel tabpane hidden"><h2>المنشورات</h2><label>أضف منشوراً</label><textarea id="postcontent" maxlength="1000" placeholder="شارك منشورك مع المجتمع..."></textarea><div class="actions"><button id="addpost"><i data-lucide="send"></i> نشر</button></div><div id="postlist"></div></section>
 <section id="quiz" class="panel tabpane hidden"><h2>اختبار معلومات عامة ورياضية</h2><div id="quizbox"><p class="muted">اختبر معلوماتك. هذا الاختبار للتسلية ولا يضيف نقاطاً إلى المحفظة.</p><button id="startquiz">ابدأ الاختبار</button></div></section>
-<section id="settings" class="panel tabpane hidden"><h2>إعدادات الحساب</h2><div class="two"><div><label>الدولة</label><select id="country"><option value="">اختر الدولة</option><option>Morocco</option><option>Egypt</option><option>Saudi Arabia</option><option>United Arab Emirates</option><option>Qatar</option><option>Kuwait</option><option>Jordan</option><option>Tunisia</option><option>France</option><option>Spain</option><option>United States</option><option>United Kingdom</option><option>Other</option></select></div><div><label>اللغة</label><select id="language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div></div><div class="actions"><button id="saveSettings">حفظ الإعدادات</button></div><div id="settingsmsg"></div></section>
-<section id="admin" class="panel tabpane hidden"><h2>لوحة المدير</h2><div class="grid"><div class="stat">المستخدمون<b id="susers">0</b></div><div class="stat">المهام<b id="stasks">0</b></div><div class="stat">طلبات التحقق<b id="ssubs">0</b></div><div class="stat">المنشورات<b id="sposts">0</b></div></div>
-<h3>إرسال النقاط</h3><div class="two"><div><label>بريد المستلم</label><input id="recipient" type="email"></div><div><label>عدد النقاط</label><input id="sendpoints" type="number" min="1"></div></div><label>الوصف</label><input id="senddesc" placeholder="هدية من الإدارة"><div class="actions"><button id="sendpointsbtn">إرسال النقاط</button></div><div id="adminmsg"></div>
+<section id="settings" class="panel tabpane hidden"><h2>إعدادات الحساب</h2><div class="two"><div><label>الدولة</label><select id="country"><option value="">اختر الدولة</option><option>Morocco</option><option>Egypt</option><option>Saudi Arabia</option><option>United Arab Emirates</option><option>Qatar</option><option>Kuwait</option><option>Jordan</option><option>Tunisia</option><option>France</option><option>Spain</option><option>United States</option><option>United Kingdom</option><option>Other</option></select></div><div><label>اللغة</label><select id="language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div></div><div class="actions"><button id="saveSettings"><i data-lucide="save"></i> حفظ الإعدادات</button></div><div id="settingsmsg"></div></section>
+<section id="admin" class="panel tabpane hidden"><h2><i data-lucide="crown"></i> لوحة المدير</h2><div class="grid"><div class="stat">المستخدمون<b id="susers">0</b></div><div class="stat">المهام<b id="stasks">0</b></div><div class="stat">طلبات التحقق<b id="ssubs">0</b></div><div class="stat">المنشورات<b id="sposts">0</b></div></div>
+<h3>إرسال النقاط</h3><div class="two"><div><label>بريد المستلم</label><input id="recipient" type="email"></div><div><label>عدد النقاط</label><input id="sendpoints" type="number" min="1"></div></div><label>الوصف</label><input id="senddesc" placeholder="هدية من الإدارة"><div class="actions"><button id="sendpointsbtn"><i data-lucide="send"></i> إرسال النقاط</button></div><div id="adminmsg"></div>
 <h3>إدارة المهام</h3><div id="admintasks"></div>
 <h3>إحصائيات المنصة الكاملة</h3>
 <div class="grid"><div class="stat">الإنجازات المقبولة<b id="sapproved">0</b></div><div class="stat">الإنجازات المرفوضة<b id="srejected">0</b></div><div class="stat">المعلّقة<b id="spending">0</b></div><div class="stat">إجمالي النقاط المحوّلة<b id="spoints">0</b></div></div>
@@ -112,11 +152,12 @@ body{background:radial-gradient(ellipse at 18% 25%,#25106a 0,transparent 36%),ra
 <h3>جميع المستخدمين ومحافظهم</h3><div id="adminusers"></div>
 <h3>جميع الإنجازات وتواريخها</h3><div id="allcompleted"></div>
 <h3>مراجعة طلبات الإنجاز المعلّقة</h3><div id="adminsubs"></div>
-<h3>إرسال النقاط</h3><div class="two"><div><label>بريد المستلم</label><input id="recipient" type="email"></div><div><label>عدد النقاط</label><input id="sendpoints" type="number" min="1"></div></div><label>الوصف</label><input id="senddesc" placeholder="هدية من الإدارة"><div class="actions"><button id="sendpointsbtn">إرسال النقاط</button></div>
-<h3>إدارة المهام</h3><div id="admintasks"></div>
+
+
 <h3>إدارة المنشورات</h3><p class="muted">إضافة منشور وحذف أي منشور من المنصة.</p><div id="adminposts"></div></section>
 </main><div class="foot">RABII4LIKE · نظام نقاط ومحافظ مستقل لكل مستخدم</div>
 </div>
+<script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const SUPABASE_URL='https://hhrqfhffainiboncsekp.supabase.co';
@@ -125,6 +166,7 @@ const db=createClient(SUPABASE_URL,SUPABASE_KEY);
 let user=null,profile=null,wallet=null,tasks=[],subs=[],posts=[],tx=[],recovering=false;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function refreshIcons(){if(window.lucide?.createIcons)window.lucide.createIcons();}
 function note(id,text,kind='notice'){ $(id).innerHTML=text?`<div class="notice ${kind}">${esc(text)}</div>`:''; }
 function money(n){return Number(n||0).toLocaleString('en-US')}
 function date(s){return s?new Date(s).toLocaleString():'—'}
@@ -145,8 +187,8 @@ async function load(){
  $('donecount').textContent=subs.filter(x=>x.worker_id===user.id&&x.status==='approved').length;
  const isAdmin=String(profile.role||'').trim().toLowerCase()==='admin'; $('admintab').classList.toggle('hidden',!isAdmin); $('adminQuick').classList.toggle('hidden',!isAdmin);
  $('useremail').textContent=user.email;$('country').value=profile.country||'';$('language').value=profile.language||'ar';
- renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();
- if(profile.role==='admin')await loadAdmin();
+ renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();refreshIcons();
+ if(profile.role==='admin')await loadAdmin();refreshIcons();
 }
 function renderTasks(){
  const isAdmin=String(profile.role||'').trim().toLowerCase()==='admin';
