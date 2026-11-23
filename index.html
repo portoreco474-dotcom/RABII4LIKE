@@ -49,6 +49,8 @@ body{background:radial-gradient(ellipse at 18% 25%,#25106a 0,transparent 36%),ra
 
 
 /* NEON UI refresh - RABII4LIKE */
+.landing-feature b{display:flex;align-items:center;justify-content:center;gap:7px}.landing-feature b svg{width:18px;height:18px;color:#70e6ff;filter:drop-shadow(0 0 7px #43d9ff88)}.item h3 svg{width:18px;height:18px;color:#72e6ff;vertical-align:middle;margin-inline-end:5px}
+
 :root{--glow-cyan:0 0 18px #24cfff55;--glow-purple:0 0 24px #8b4dff44;--glass:rgba(13,18,46,.78)}
 html{scroll-behavior:smooth}
 body{background-image:radial-gradient(ellipse at 8% 12%,#27206f88 0,transparent 32%),radial-gradient(ellipse at 92% 20%,#0c477288 0,transparent 28%),linear-gradient(135deg,#040615,#08091d 55%,#080b20);background-attachment:fixed}
@@ -103,7 +105,7 @@ a{color:#73e5ff;text-decoration:none}a:hover{text-decoration:underline}
 <label>تأكيد كلمة المرور</label><input id="confirmPassword" type="password" autocomplete="new-password" placeholder="أعد كتابة كلمة المرور">
 <div class="actions"><button id="saveNewPassword" type="button">حفظ كلمة المرور</button></div>
 </div>
-<div class="landing-features" id="landingFeatures"><div class="landing-feature"><b>🎁 مكافآت يومية</b><span>500 نقطة كل 24 ساعة</span></div><div class="landing-feature"><b>📊 إحصائيات شاملة</b><span>تابع نشاطك ونقاطك</span></div><div class="landing-feature"><b>🛡️ محافظ مستقلة</b><span>رصيد خاص بكل مستخدم</span></div><div class="landing-feature"><b>👑 محفظة المدير</b><span>رصيد غير محدود</span></div><div class="landing-feature"><b>📋 إدارة المهام</b><span>تنظيم ومنع التكرار</span></div><div class="landing-feature"><b>🌐 دول متعددة</b><span>لغات ومجتمع تفاعلي</span></div></div>
+<div class="landing-features" id="landingFeatures"><div class="landing-feature"><b><i data-lucide="gift"></i> مكافآت يومية</b><span>500 نقطة كل 24 ساعة</span></div><div class="landing-feature"><b><i data-lucide="chart-no-axes-combined"></i> إحصائيات شاملة</b><span>تابع نشاطك ونقاطك</span></div><div class="landing-feature"><b><i data-lucide="shield-check"></i> محافظ مستقلة</b><span>رصيد خاص بكل مستخدم</span></div><div class="landing-feature"><b><i data-lucide="crown"></i> محفظة المدير</b><span>رصيد غير محدود</span></div><div class="landing-feature"><b><i data-lucide="clipboard-list"></i> إدارة المهام</b><span>تنظيم ومنع التكرار</span></div><div class="landing-feature"><b><i data-lucide="globe-2"></i> دول متعددة</b><span>لغات ومجتمع تفاعلي</span></div></div>
 <div class="landing-social">f　◎　♪　▶　➤　𝕏</div>
 <main id="app" class="hidden">
 <div class="grid">
@@ -119,8 +121,8 @@ a{color:#73e5ff;text-decoration:none}a:hover{text-decoration:underline}
 <nav class="tabs" id="tabs">
 <button class="active" data-tab="tasks"><i data-lucide="list-checks"></i> المهام</button><button data-tab="newtask"><i data-lucide="plus-circle"></i> نشر مهمة</button><button data-tab="submissions"><i data-lucide="clipboard-check"></i> طلبات التحقق</button><button data-tab="completed"><i data-lucide="check-check"></i> مهامي المكتملة</button><button data-tab="wallet"><i data-lucide="wallet"></i> المحفظة والسجل</button><button data-tab="posts"><i data-lucide="messages-square"></i> المنشورات</button><button data-tab="quiz"><i data-lucide="brain"></i> اختبارات</button><button data-tab="settings"><i data-lucide="settings"></i> الإعدادات</button><button data-tab="admin" id="admintab" class="hidden"><i data-lucide="crown"></i> المدير والإحصائيات</button>
 </nav>
-<section id="tasks" class="panel tabpane"><h2>المهام المتاحة</h2><div id="tasklist"></div></section>
-<section id="newtask" class="panel tabpane hidden"><h2>أضف محتواك – طلب تفاعل جديد</h2>
+<section id="tasks" class="panel tabpane"><h2><i data-lucide="target"></i> المهام المتاحة</h2><div id="tasklist"></div></section>
+<section id="newtask" class="panel tabpane hidden"><h2><i data-lucide="plus-circle"></i> أضف محتواك – طلب تفاعل جديد</h2>
 <p class="muted">اختر المنصة أولاً، ثم نوع التفاعل المطلوب. كل تفاعل يبدأ من 20 نقطة، ويتم حجز مجموع النقاط من محفظتك عند الحفظ.</p>
 <label>رابط المنشور أو الحساب</label><input id="turl" type="url" placeholder="https://..." />
 <div class="two">
@@ -136,25 +138,25 @@ a{color:#73e5ff;text-decoration:none}a:hover{text-decoration:underline}
 <p class="muted">على الهاتف: اضغط على الدول لاختيار أكثر من دولة.</p>
 <label>تفاصيل إضافية (اختياري)</label><textarea id="tdesc" placeholder="اكتب أي تعليمات خاصة بالتفاعل..."></textarea>
 <div class="actions"><button id="createTask"><i data-lucide="rocket"></i> حفظ المنشور وحجز النقاط</button></div><div id="newtaskmsg"></div></section>
-<section id="submissions" class="panel tabpane hidden"><h2>طلبات التحقق</h2><div id="submissionlist"></div></section>
-<section id="completed" class="panel tabpane hidden"><h2>المهام التي أنجزتها</h2><div id="completedlist"></div></section>
-<section id="wallet" class="panel tabpane hidden"><h2>سجل المحفظة</h2><div id="transactions"></div></section>
-<section id="posts" class="panel tabpane hidden"><h2>المنشورات</h2><label>أضف منشوراً</label><textarea id="postcontent" maxlength="1000" placeholder="شارك منشورك مع المجتمع..."></textarea><div class="actions"><button id="addpost"><i data-lucide="send"></i> نشر</button></div><div id="postlist"></div></section>
-<section id="quiz" class="panel tabpane hidden"><h2>اختبار معلومات عامة ورياضية</h2><div id="quizbox"><p class="muted">اختبر معلوماتك. هذا الاختبار للتسلية ولا يضيف نقاطاً إلى المحفظة.</p><button id="startquiz">ابدأ الاختبار</button></div></section>
-<section id="settings" class="panel tabpane hidden"><h2>إعدادات الحساب</h2><div class="two"><div><label>الدولة</label><select id="country"><option value="">اختر الدولة</option><option>Morocco</option><option>Egypt</option><option>Saudi Arabia</option><option>United Arab Emirates</option><option>Qatar</option><option>Kuwait</option><option>Jordan</option><option>Tunisia</option><option>France</option><option>Spain</option><option>United States</option><option>United Kingdom</option><option>Other</option></select></div><div><label>اللغة</label><select id="language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div></div><div class="actions"><button id="saveSettings"><i data-lucide="save"></i> حفظ الإعدادات</button></div><div id="settingsmsg"></div></section>
+<section id="submissions" class="panel tabpane hidden"><h2><i data-lucide="clipboard-check"></i> طلبات التحقق</h2><div id="submissionlist"></div></section>
+<section id="completed" class="panel tabpane hidden"><h2><i data-lucide="check-check"></i> المهام التي أنجزتها</h2><div id="completedlist"></div></section>
+<section id="wallet" class="panel tabpane hidden"><h2><i data-lucide="wallet"></i> سجل المحفظة</h2><div id="transactions"></div></section>
+<section id="posts" class="panel tabpane hidden"><h2><i data-lucide="messages-square"></i> المنشورات</h2><label>أضف منشوراً</label><textarea id="postcontent" maxlength="1000" placeholder="شارك منشورك مع المجتمع..."></textarea><div class="actions"><button id="addpost"><i data-lucide="send"></i> نشر</button></div><div id="postlist"></div></section>
+<section id="quiz" class="panel tabpane hidden"><h2><i data-lucide="brain"></i> اختبار معلومات عامة ورياضية</h2><div id="quizbox"><p class="muted">اختبر معلوماتك. هذا الاختبار للتسلية ولا يضيف نقاطاً إلى المحفظة.</p><button id="startquiz">ابدأ الاختبار</button></div></section>
+<section id="settings" class="panel tabpane hidden"><h2><i data-lucide="settings"></i> إعدادات الحساب</h2><div class="two"><div><label>الدولة</label><select id="country"><option value="">اختر الدولة</option><option>Morocco</option><option>Egypt</option><option>Saudi Arabia</option><option>United Arab Emirates</option><option>Qatar</option><option>Kuwait</option><option>Jordan</option><option>Tunisia</option><option>France</option><option>Spain</option><option>United States</option><option>United Kingdom</option><option>Other</option></select></div><div><label>اللغة</label><select id="language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div></div><div class="actions"><button id="saveSettings"><i data-lucide="save"></i> حفظ الإعدادات</button></div><div id="settingsmsg"></div></section>
 <section id="admin" class="panel tabpane hidden"><h2><i data-lucide="crown"></i> لوحة المدير</h2><div class="grid"><div class="stat">المستخدمون<b id="susers">0</b></div><div class="stat">المهام<b id="stasks">0</b></div><div class="stat">طلبات التحقق<b id="ssubs">0</b></div><div class="stat">المنشورات<b id="sposts">0</b></div></div>
-<h3>إرسال النقاط</h3><div class="two"><div><label>بريد المستلم</label><input id="recipient" type="email"></div><div><label>عدد النقاط</label><input id="sendpoints" type="number" min="1"></div></div><label>الوصف</label><input id="senddesc" placeholder="هدية من الإدارة"><div class="actions"><button id="sendpointsbtn"><i data-lucide="send"></i> إرسال النقاط</button></div><div id="adminmsg"></div>
-<h3>إدارة المهام</h3><div id="admintasks"></div>
+<h3><i data-lucide="send"></i> إرسال النقاط</h3><div class="two"><div><label>بريد المستلم</label><input id="recipient" type="email"></div><div><label>عدد النقاط</label><input id="sendpoints" type="number" min="1"></div></div><label>الوصف</label><input id="senddesc" placeholder="هدية من الإدارة"><div class="actions"><button id="sendpointsbtn"><i data-lucide="send"></i> إرسال النقاط</button></div><div id="adminmsg"></div>
+<h3><i data-lucide="list-checks"></i> إدارة المهام</h3><div id="admintasks"></div>
 <h3>إحصائيات المنصة الكاملة</h3>
 <div class="grid"><div class="stat">الإنجازات المقبولة<b id="sapproved">0</b></div><div class="stat">الإنجازات المرفوضة<b id="srejected">0</b></div><div class="stat">المعلّقة<b id="spending">0</b></div><div class="stat">إجمالي النقاط المحوّلة<b id="spoints">0</b></div></div>
 <div class="two"><div class="item"><h3>توزيع المستخدمين حسب الدولة</h3><div id="countryStats"></div></div><div class="item"><h3>توزيع اللغات</h3><div id="languageStats"></div></div></div>
-<h3>استبيان / مؤشرات التفاعل</h3><div class="item"><p class="muted">مؤشرات نشاط المنصة حسب البيانات المسجلة حالياً</p><div id="engagementStats"></div></div>
+<h3><i data-lucide="activity"></i> استبيان / مؤشرات التفاعل</h3><div class="item"><p class="muted">مؤشرات نشاط المنصة حسب البيانات المسجلة حالياً</p><div id="engagementStats"></div></div>
 <h3>جميع المستخدمين ومحافظهم</h3><div id="adminusers"></div>
 <h3>جميع الإنجازات وتواريخها</h3><div id="allcompleted"></div>
 <h3>مراجعة طلبات الإنجاز المعلّقة</h3><div id="adminsubs"></div>
 
 
-<h3>إدارة المنشورات</h3><p class="muted">إضافة منشور وحذف أي منشور من المنصة.</p><div id="adminposts"></div></section>
+<h3><i data-lucide="messages-square"></i> إدارة المنشورات</h3><p class="muted">إضافة منشور وحذف أي منشور من المنصة.</p><div id="adminposts"></div></section>
 </main><div class="foot">RABII4LIKE · نظام نقاط ومحافظ مستقل لكل مستخدم</div>
 </div>
 <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
