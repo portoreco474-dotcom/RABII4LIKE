@@ -201,7 +201,8 @@ $('login').onclick=async()=>{try{const {error}=await db.auth.signInWithPassword(
 $('forgotPassword').onclick=async()=>{try{const email=$('email').value.trim();if(!email)throw new Error('اكتب بريدك الإلكتروني أولاً.');const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});if(error)throw error;note('msg','تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني. افتح الرسالة واتبع الرابط.','success')}catch(e){note('msg',e.message,'error')}};
 $('saveNewPassword').onclick=async()=>{try{const password=$('newPassword').value,confirm=$('confirmPassword').value;if(password.length<6)throw new Error('كلمة المرور يجب أن تتكون من 6 أحرف على الأقل.');if(password!==confirm)throw new Error('كلمتا المرور غير متطابقتين.');const {error}=await db.auth.updateUser({password});if(error)throw error;note('recoveryMsg','تم تحديث كلمة المرور بنجاح. يمكنك الآن استعمالها للدخول.','success');$('newPassword').value='';$('confirmPassword').value='';recovering=false;setTimeout(()=>start(),900)}catch(e){note('recoveryMsg',e.message,'error')}};
 $('signup').onclick=async()=>{try{const {data,error}=await db.auth.signUp({email:$('email').value,password:$('password').value});if(error)throw error;note('msg',data.session?'تم إنشاء الحساب.':'تم إنشاء الحساب. تحقق من بريدك لتأكيده.','success')}catch(e){note('msg',e.message,'error')}};
-$('logout').onclick=async()=>{await db.auth.signOut();location.reload()};\n$('adminQuick').onclick=()=>{$('admintab').click()};
+$('logout').onclick=async()=>{await db.auth.signOut();location.reload()};
+$('adminQuick').onclick=()=>{$('admintab').click()};
 $('daily').onclick=async()=>{try{await rpc('claim_daily_reward');note('dashmsg','مبروك! تمت إضافة 500 نقطة إلى محفظتك.','success');await load()}catch(e){note('dashmsg',e.message,'error')}};
 function refreshInteractionOptions(){
  const platform=$('tplatform').value;
@@ -214,7 +215,7 @@ function refreshInteractionOptions(){
 $('tplatform').onchange=refreshInteractionOptions;refreshInteractionOptions();
 $('createTask').onclick=async()=>{try{
  const url=$('turl').value.trim(),countries=Array.from($('tcountries').selectedOptions).map(o=>o.value),points=Number($('tpoints').value),count=Number($('tmax').value),platform=$('tplatform').value,action=$('taction').value;
- if(!/^https?:\\/\\//i.test(url))throw new Error('أدخل رابطاً صحيحاً يبدأ بـ https://');
+ if(!/^https?:\/\//i.test(url))throw new Error('أدخل رابطاً صحيحاً يبدأ بـ https://');
  if(points<20)throw new Error('الحد الأدنى هو 20 نقطة لكل تفاعل');
  if(!countries.length)throw new Error('اختر دولة واحدة على الأقل');
  const title=platform+' - '+action;
