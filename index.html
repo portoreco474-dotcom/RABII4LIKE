@@ -89,6 +89,129 @@ a{color:#73e5ff;text-decoration:none}a:hover{text-decoration:underline}
 @media(max-width:780px){.grid{gap:9px}.stat{padding:12px}.tabs{top:64px;gap:6px}.tabs button{font-size:12px;padding:9px 10px}.top{backdrop-filter:blur(12px)}}
 @media(max-width:480px){.wrap{padding:0 10px}.top{margin:0 -10px 12px;padding:0 12px}.brand{font-size:19px}.top .muted{font-size:10px}.tabs{top:60px}.tabs button{font-size:11px;padding:8px 9px}.stat b{font-size:21px}}
 
+
+
+/* ===== RABII4LIKE / NEON PRO INTERFACE ===== */
+:root{
+ --neon-cyan:#54eaff;--neon-violet:#a879ff;--neon-pink:#ff65d4;
+ --neon-gold:#ffd36a;--surface:rgba(13,18,48,.88);
+ --edge:rgba(126,105,255,.38);
+}
+body{
+ background:
+ radial-gradient(ellipse at 12% 8%,rgba(99,55,220,.25),transparent 32%),
+ radial-gradient(ellipse at 88% 18%,rgba(0,195,255,.16),transparent 28%),
+ radial-gradient(ellipse at 50% 100%,rgba(126,42,210,.12),transparent 40%),
+ #050714;
+ color:#f4f5ff;
+}
+.wrap{max-width:1500px;padding:0 22px}
+.top{
+ min-height:82px;margin:0 -22px 25px;padding:12px 28px;
+ background:rgba(5,8,27,.82);border-bottom:1px solid rgba(122,91,255,.5);
+ box-shadow:0 12px 40px #0007,0 1px 18px #713cff18;
+ backdrop-filter:blur(22px);
+}
+.brand{font-size:27px;letter-spacing:1.2px;text-shadow:0 0 18px #8c62ff99}
+.brand:before{width:11px;height:11px;box-shadow:0 0 8px var(--neon-cyan),0 0 20px var(--neon-cyan)}
+.top .muted{letter-spacing:.4px}
+.panel{
+ border:1px solid var(--edge);border-radius:22px;
+ background:linear-gradient(145deg,rgba(19,23,59,.94),rgba(8,13,34,.96));
+ box-shadow:0 18px 55px #0006,inset 0 1px #ffffff0c,0 0 28px #693dff17;
+}
+#app>.grid{gap:16px;margin:0 0 20px}
+.stat{
+ min-height:126px;padding:18px;border-radius:19px;
+ background:linear-gradient(145deg,rgba(25,30,76,.94),rgba(9,17,43,.97));
+ border:1px solid rgba(111,102,221,.48);
+ box-shadow:inset 0 1px #ffffff10,0 12px 30px #0004,0 0 22px #6b48ff13;
+}
+.stat b{font-size:29px;color:#fff;text-shadow:0 0 16px #9c7cff66}
+.stat-icon{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#23366d,#202052);border-color:#58cfff77}
+#app>.panel:not(.tabpane){padding:22px 24px;margin-bottom:18px}
+#app>.panel:not(.tabpane) h2{font-size:22px;margin:0 0 7px}
+.tabs{
+ display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;
+ position:relative;top:auto;margin:18px 0;padding:12px;
+ border-radius:20px;background:rgba(7,11,32,.9);
+ border:1px solid rgba(125,100,255,.45);
+ box-shadow:0 12px 36px #0005,0 0 24px #5c39d51c;
+}
+.tabs button{
+ min-height:48px;border-radius:13px;padding:11px 10px;
+ display:flex;align-items:center;justify-content:center;gap:6px;
+ background:linear-gradient(145deg,#151d46,#101733);
+ border:1px solid #3d4b87;color:#e8eaff;font-size:13px;
+}
+.tabs button.active{
+ outline:0;border-color:var(--neon-cyan);
+ background:linear-gradient(120deg,#17456a,#42236d);
+ box-shadow:0 0 0 1px #54eaff33,0 0 22px #54eaff30,inset 0 1px #ffffff24;
+}
+.tabs button svg{margin:0;color:var(--neon-cyan)}
+.tabpane{padding:24px;min-height:250px;animation:neonIn .24s ease both}
+.tabpane h2{padding-bottom:14px;border-bottom:1px solid #6654b344;margin-top:0}
+@keyframes neonIn{from{opacity:.55;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.item{
+ border-radius:17px;padding:17px;margin:12px 0;
+ background:linear-gradient(145deg,rgba(19,29,65,.94),rgba(9,17,39,.97));
+ border:1px solid rgba(87,112,190,.48);
+ box-shadow:0 9px 25px #0003,inset 0 1px #ffffff08;
+}
+.item:hover{transform:translateY(-2px);border-color:#61dfff;box-shadow:0 12px 30px #0005,0 0 22px #48cfff20}
+button{
+ border-radius:13px;padding:12px 17px;
+ background:linear-gradient(115deg,#42dfff,#8e6cff 72%,#b36aff);
+ box-shadow:0 7px 22px #5b45df3d, inset 0 1px #ffffff55;
+}
+button.secondary{background:linear-gradient(135deg,#202d5b,#24204b);border-color:#5c63a5;color:#f0edff}
+button.good{background:linear-gradient(120deg,#087f79,#1762a0);border-color:#3be3d088;color:#e2fffb}
+button.danger{background:linear-gradient(120deg,#652b56,#49254b);border-color:#ff76a477;color:#ffe3ef}
+input,textarea,select{background:rgba(5,11,31,.88);border:1px solid #48558f;border-radius:13px;padding:13px 14px}
+label{font-weight:650;color:#c3c9ed}
+input:focus,textarea:focus,select:focus{border-color:var(--neon-cyan);box-shadow:0 0 0 3px #54eaff20,0 0 22px #54eaff20}
+.notice{border-radius:13px;border-color:#54dfff66;background:#102c4b}
+.pill{border-color:#6b78c5;background:#202d59}
+#admin.tabpane{border-color:#a67aff88;box-shadow:0 18px 55px #0007,0 0 35px #9b58ff20}
+#admin h3{margin-top:28px;padding-bottom:10px;border-bottom:1px solid #8d67ff38;color:#d9caff}
+#admin .stat{border-color:#936cff66}
+#auth{border:1px solid #8664ed88;box-shadow:0 22px 65px #0008,0 0 40px #774cff26}
+.landing-feature{
+ background:linear-gradient(145deg,rgba(26,30,75,.94),rgba(9,16,39,.96));
+ border:1px solid #6b5bc477;border-radius:18px;
+ box-shadow:0 12px 28px #0004,inset 0 1px #ffffff0b;
+}
+.landing-feature b{color:#f2eaff}
+.landing-feature span{color:#aebbe4}
+.landing-social a{border:1px solid #6c64b7;background:#151c42;box-shadow:0 0 18px #6444d522}
+.foot{padding:18px 0 25px;letter-spacing:.4px}
+@media(max-width:900px){
+ .tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+ #app>.grid{gap:10px}
+}
+@media(max-width:620px){
+ .wrap{padding:0 11px}
+ .top{margin:0 -11px 14px;padding:10px 14px;min-height:68px}
+ .brand{font-size:21px}
+ #app>.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .stat{min-height:112px;padding:13px}
+ .stat b{font-size:23px}
+ .tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:9px;border-radius:16px}
+ .tabs button{min-height:45px;font-size:12px;padding:9px 6px}
+ .tabpane{padding:16px 13px;border-radius:17px}
+ #app>.panel:not(.tabpane){padding:16px 14px}
+ .tabpane h2{font-size:19px}
+ .row{align-items:stretch}
+ .row>*{min-width:0}
+ .actions button{flex:1 1 auto}
+}
+@media(max-width:380px){
+ .tabs{grid-template-columns:1fr 1fr}
+ .tabs button{font-size:11px}
+ .stat-icon{width:34px;height:34px}
+}
+
 </style>
 </head>
 <body><div class="wrap">
