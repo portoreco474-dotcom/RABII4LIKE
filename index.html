@@ -321,7 +321,10 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 <div class="grid"><div class="stat">الإنجازات المقبولة<b id="sapproved">0</b></div><div class="stat">الإنجازات المرفوضة<b id="srejected">0</b></div><div class="stat">المعلّقة<b id="spending">0</b></div><div class="stat">إجمالي النقاط المحوّلة<b id="spoints">0</b></div></div>
 <div class="two"><div class="item"><h3>توزيع المستخدمين حسب الدولة</h3><div id="countryStats"></div></div><div class="item"><h3>توزيع اللغات</h3><div id="languageStats"></div></div></div>
 <h3><i data-lucide="activity"></i> استبيان / مؤشرات التفاعل</h3><div class="item"><p class="muted">مؤشرات نشاط المنصة حسب البيانات المسجلة حالياً</p><div id="engagementStats"></div></div>
-<h3>جميع المستخدمين ومحافظهم</h3><div id="adminusers"></div>
+<h3>جميع المستخدمين ومحافظهم</h3>
+<label for="adminUserSearch">البحث عن مستخدم بالبريد الإلكتروني</label><input id="adminUserSearch" type="search" placeholder="اكتب البريد للبحث...">
+<div id="adminusers"></div>
+<h3>سجل معاملات النقاط للمنصة</h3><div id="adminLedger"></div>
 <h3>جميع الإنجازات وتواريخها</h3><div id="allcompleted"></div>
 <h3>مراجعة طلبات الإنجاز المعلّقة</h3><div id="adminsubs"></div>
 
@@ -388,7 +391,7 @@ async function loadAdmin(){
   db.from('posts').select('id',{count:'exact',head:true}),
   db.from('profiles').select('id,email,role,country,language,created_at').order('created_at',{ascending:false}).limit(500),
   db.from('wallets').select('user_id,balance,is_unlimited').limit(500),
-  db.from('point_transactions').select('amount,transaction_type,created_at').limit(1000)
+  db.from('point_transactions').select('user_id,amount,transaction_type,description,performed_by,created_at').order('created_at',{ascending:false}).limit(1000)
  ]);
  for(const x of [u,t,s,p,profiles,wallets,transactions])if(x.error)throw x.error;
  const people=profiles.data||[], ws=wallets.data||[], ledger=transactions.data||[];
@@ -403,7 +406,8 @@ async function loadAdmin(){
  $('languageStats').innerHTML=bars(group(people,'language'));
  const approved=subs.filter(x=>x.status==='approved').length;
  $('engagementStats').innerHTML=bars({'المهام المنشورة':tasks.length,'طلبات الإنجاز':subs.length,'إنجازات مقبولة':approved,'المنشورات':posts.length,'عمليات النقاط':ledger.length});
- $('adminusers').innerHTML=people.length?people.map(person=>{const w=ws.find(x=>x.user_id===person.id);return '<article class="item"><b>'+esc(person.email||person.id)+'</b> <span class="pill">'+esc(person.role)+'</span><div class="muted">'+esc(person.email||'')+' · '+esc(person.country||'الدولة غير محددة')+' · '+esc(person.language||'ar')+' · انضم: '+date(person.created_at)+'</div><div>الرصيد: '+(w?.is_unlimited?'غير محدود':money(w?.balance))+'</div></article>'}).join(''):'<div class="empty">لا يوجد مستخدمون.</div>';
+ const renderAdminUsers=()=>{const term=$('adminUserSearch').value.trim().toLowerCase();const filtered=people.filter(person=>(person.email||person.id).toLowerCase().includes(term));$('adminusers').innerHTML=filtered.length?filtered.map(person=>{const w=ws.find(x=>x.user_id===person.id);return '<article class="item"><b>'+esc(person.email||person.id)+'</b> <span class="pill">'+esc(person.role)+'</span><div class="muted">'+esc(person.country||'الدولة غير محددة')+' · '+esc(person.language||'ar')+' · انضم: '+date(person.created_at)+'</div><div>الرصيد: '+(w?.is_unlimited?'غير محدود':money(w?.balance))+'</div></article>'}).join(''):'<div class="empty">لا توجد نتائج مطابقة.</div>'};renderAdminUsers();$('adminUserSearch').oninput=renderAdminUsers;
+  $('adminLedger').innerHTML=ledger.length?ledger.slice().sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,100).map(x=>{const person=people.find(p=>p.id===x.user_id);const actor=people.find(p=>p.id===x.performed_by);return '<article class="item"><div class="row"><b>'+esc(person?.email||x.user_id)+'</b><span class="pill">'+esc(x.transaction_type)+'</span><b style="color:'+(Number(x.amount)>=0?'#43d6a0':'#ff9aae')+'">'+(Number(x.amount)>0?'+':'')+money(x.amount)+'</b></div><div class="muted">'+esc(x.description||'بدون وصف')+' · المنفذ: '+esc(actor?.email||'النظام')+' · '+date(x.created_at)+'</div></article>'}).join(''):'<div class="empty">لا توجد معاملات مسجلة.</div>';
  $('allcompleted').innerHTML=subs.length?subs.slice().sort((a,b)=>new Date(b.reviewed_at||b.created_at)-new Date(a.reviewed_at||a.created_at)).map(s=>{const task=tasks.find(x=>x.id===s.task_id);const person=people.find(x=>x.id===s.worker_id);return '<article class="item"><b>'+esc(task?.title||'مهمة محذوفة')+'</b> <span class="pill">'+esc(s.status)+'</span><div class="muted">المستخدم: '+esc(person?.email||s.worker_id)+' · أُرسل: '+date(s.created_at)+' · تاريخ المراجعة/الاعتماد: '+date(s.reviewed_at)+'</div><p>'+esc(s.proof_text||'لا يوجد وصف للإثبات')+'</p>'+(s.proof_url?'<a target="_blank" rel="noopener" href="'+esc(s.proof_url)+'">فتح إثبات الإنجاز ↗</a>':'')+'</article>'}).join(''):'<div class="empty">لا توجد إنجازات مسجلة.</div>';
  $('admintasks').innerHTML=tasks.map(t=>'<article class="item"><b>'+esc(t.title)+'</b> <span class="pill">'+esc(t.status)+'</span><div class="muted">'+money(t.points_per_completion)+' نقطة × '+money(t.max_completions)+' · '+date(t.created_at)+'</div><div class="actions">'+(t.status==='open'?'<button class="secondary" onclick="window.taskStatus(\''+t.id+'\',\'paused\')">إيقاف</button>':'')+(t.status==='paused'?'<button onclick="window.taskStatus(\''+t.id+'\',\'open\')">إعادة فتح</button>':'')+(!['cancelled','completed'].includes(t.status)?'<button class="danger" onclick="window.cancelTask(\''+t.id+'\')">إلغاء واسترجاع المتبقي</button>':'')+'</div></article>').join('')||'<div class="empty">لا توجد مهام.</div>';
  const pending=subs.filter(x=>x.status==='pending');
