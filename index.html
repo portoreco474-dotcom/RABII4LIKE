@@ -212,10 +212,48 @@ input:focus,textarea:focus,select:focus{border-color:var(--neon-cyan);box-shadow
  .stat-icon{width:34px;height:34px}
 }
 
+
+/* RABII4LIKE clean premium layout */
+:root{--bg:#05060c;--panel:#10101c;--panel2:#17152a;--line:#46316e;--txt:#f8f5ff;--muted:#b7accb;--cyan:#48a9ff;--purple:#9b5cff;--gold:#f4c65e;--green:#45d6a1}
+body{background:radial-gradient(ellipse at 12% 8%,#35106a 0,transparent 32%),radial-gradient(ellipse at 88% 12%,#102d65 0,transparent 34%),linear-gradient(145deg,#03040a,#090613 55%,#050a16);color:var(--txt)}
+.wrap{max-width:1180px;padding:0 18px}
+.top{min-height:74px;margin:0 -18px 22px;padding:10px 22px;background:rgba(5,6,15,.94);border-bottom:1px solid #49317b;box-shadow:0 8px 28px #0008}
+.brand{font-size:24px;color:#fff;text-shadow:0 0 15px #8e4cff}.brand span{color:var(--gold)}
+#auth{display:block!important;position:relative;max-width:470px;min-height:0;margin:42px auto 28px;padding:26px!important;border:1px solid #5a3a91!important;border-radius:24px;background:linear-gradient(145deg,#171128f5,#080d1cf5)!important;box-shadow:0 20px 70px #0009,0 0 35px #702bce22!important}
+#auth:before{display:none!important}
+#auth h1{font-size:clamp(27px,5vw,38px);text-align:center;color:#fff;margin:0 0 8px;text-shadow:0 0 18px #9b5cff}
+#auth .muted{text-align:center;color:#c9b9e8;font-size:14px;line-height:1.7}
+#auth label{text-align:right}
+#auth .actions{display:grid;grid-template-columns:1fr 1fr}
+#auth .actions button:last-child{grid-column:1/-1}
+.landing-features{max-width:1000px;margin:24px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.landing-feature{background:linear-gradient(145deg,#151329,#0a1020);border:1px solid #3e2d66;border-radius:16px;padding:15px;box-shadow:0 8px 24px #0005}
+.landing-feature b{display:block;color:var(--gold);margin-bottom:6px}.landing-feature span{font-size:13px;color:#c1b6d5}
+.landing-social{display:flex;justify-content:center;gap:15px;margin:18px auto 35px}
+.landing-social a{color:#d9c7ff;background:#17132b;border:1px solid #62439b;border-radius:14px;padding:10px;box-shadow:0 0 18px #783dce33}
+#app>.grid{gap:12px;margin:16px 0}
+.stat,.panel{background:linear-gradient(145deg,rgba(22,18,39,.97),rgba(8,14,29,.98));border-color:#3c2b60;box-shadow:0 12px 32px #0005}
+.stat b{color:var(--gold)}
+.tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:9px;overflow:visible;padding:10px 0 16px}
+.tabs button{min-width:0;white-space:normal;min-height:48px;background:linear-gradient(135deg,#252044,#121b34);border:1px solid #47336d;color:#eee5ff;padding:10px 8px}
+.tabs button.active{outline:2px solid #48a9ff;background:linear-gradient(120deg,#472078,#12436b);color:#fff}
+.avatar-trigger{width:54px;height:54px;min-width:54px;padding:3px;border-radius:50%;background:linear-gradient(135deg,#f7d779,#9a4fff,#318bff);border:2px solid #e9c56a;box-shadow:0 0 20px #854dff88;overflow:hidden}
+.avatar-trigger img{width:100%;height:100%;display:block;object-fit:cover;object-position:35% 35%;border-radius:50%;background:#0a0b18}
+.settings-wallet{margin-top:22px;padding:16px;border:1px solid #59407e;border-radius:16px;background:#080d1bcc}
+.settings-wallet h3{color:var(--gold);margin-top:0}
+.settings-exit{display:flex;justify-content:flex-start;margin-top:20px;padding-top:15px;border-top:1px solid #38284f}
+#taskCostPreview{border:1px solid #5a4382;background:#17132b;color:#e6d9ff}
+.item{background:linear-gradient(135deg,#101a30,#15102a);border-color:#382b5c}
+input:focus,textarea:focus,select:focus{border-color:#9d6aff;box-shadow:0 0 0 3px #8c4cff22}
+button{background:linear-gradient(110deg,#3e9fff,#8a50e8);color:#fff;box-shadow:0 5px 16px #5631a733}
+button.secondary{background:#20233a;color:#f1eaff;border-color:#51406f}
+button.good{background:linear-gradient(110deg,#167c72,#2fba91);color:#fff}
+button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
+@media(max-width:700px){.wrap{padding:0 12px}.top{margin:0 -12px 16px;padding:9px 14px}.brand{font-size:20px}.tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.tabs button{font-size:12px;padding:9px 5px}.avatar-trigger{width:48px;height:48px;min-width:48px}.panel{padding:14px}#auth{margin:24px auto;padding:19px!important}.landing-features{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body><div class="wrap">
-<header class="top"><div><div class="brand">♛ RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعلات وجمع النقاط</div></div><div id="userbox" class="row hidden"><span id="useremail" class="muted"></span><button id="adminQuick" class="good hidden" type="button"><i data-lucide="crown"></i> لوحة المدير</button><button class="secondary" id="logout"><i data-lucide="log-out"></i> خروج</button></div></header>
+<header class="top"><div><div class="brand">♛ RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعلات وجمع النقاط</div></div><div id="userbox" class="row hidden"><span id="useremail" class="hidden"></span><button id="profileAvatar" class="avatar-trigger" type="button" aria-label="فتح الإعدادات" title="الإعدادات"><img id="siteAvatar" alt="RABII4LIKE"/></button></div></header>
 <div id="auth" class="panel auth">
 <h1>تسجيل الدخول</h1><p class="muted">مرحباً بك في مجتمع RABII4LIKE التفاعلي</p>
 <div id="msg"></div><label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="email" placeholder="البريد الإلكتروني">
@@ -242,7 +280,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--neon-cyan);box-shadow
 <div id="dashmsg"></div>
 </div>
 <nav class="tabs" id="tabs">
-<button class="active" data-tab="tasks"><i data-lucide="list-checks"></i> المهام</button><button data-tab="newtask"><i data-lucide="plus-circle"></i> نشر مهمة</button><button data-tab="submissions"><i data-lucide="clipboard-check"></i> طلبات التحقق</button><button data-tab="completed"><i data-lucide="check-check"></i> مهامي المكتملة</button><button data-tab="wallet"><i data-lucide="wallet"></i> المحفظة والسجل</button><button data-tab="posts"><i data-lucide="messages-square"></i> المنشورات</button><button data-tab="quiz"><i data-lucide="brain"></i> اختبارات</button><button data-tab="settings"><i data-lucide="settings"></i> الإعدادات</button><button data-tab="admin" id="admintab" class="hidden"><i data-lucide="crown"></i> المدير والإحصائيات</button>
+<button class="active" data-tab="tasks"><i data-lucide="list-checks"></i> المهام</button><button data-tab="newtask"><i data-lucide="plus-circle"></i> نشر مهمة</button><button data-tab="submissions"><i data-lucide="clipboard-check"></i> طلبات التحقق</button><button data-tab="completed"><i data-lucide="check-check"></i> مهامي المكتملة</button><button data-tab="posts"><i data-lucide="messages-square"></i> المنشورات</button><button data-tab="quiz"><i data-lucide="brain"></i> اختبارات</button><button data-tab="settings"><i data-lucide="settings"></i> الإعدادات</button><button data-tab="admin" id="admintab" class="hidden"><i data-lucide="crown"></i> المدير والإحصائيات</button>
 </nav>
 <section id="tasks" class="panel tabpane"><h2><i data-lucide="target"></i> المهام المتاحة</h2><div id="tasklist"></div></section>
 <section id="newtask" class="panel tabpane hidden"><h2><i data-lucide="plus-circle"></i> أضف محتواك – طلب تفاعل جديد</h2>
@@ -253,20 +291,20 @@ input:focus,textarea:focus,select:focus{border-color:var(--neon-cyan);box-shadow
 <option value="TikTok">TikTok</option><option value="Facebook">Facebook</option><option value="Facebook Page">Facebook Page</option><option value="Instagram">Instagram</option><option value="YouTube">YouTube</option></select></div>
 <div><label>نوع التفاعل</label><select id="taction"></select></div>
 <div><label>نقاط كل تفاعل (الحد الأدنى 20)</label><input id="tpoints" type="number" min="20" step="1" value="20"></div>
-<div><label>عدد التفاعلات المطلوبة</label><input id="tmax" type="number" min="1" step="1" value="10"></div>
+<div><label>عدد التفاعلات المطلوبة</label><input id="tmax" type="text" inputmode="numeric" autocomplete="off" maxlength="19" value="10" placeholder="اكتب العدد الذي يسمح به رصيدك"></div>
 </div>
 <label>الدول التي تريد التفاعل منها (يمكن اختيار أكثر من دولة)</label>
 <select id="tcountries" multiple size="7" style="width:100%;min-height:150px">
 <option value="Morocco">المغرب</option><option value="Egypt">مصر</option><option value="Saudi Arabia">السعودية</option><option value="United Arab Emirates">الإمارات</option><option value="Qatar">قطر</option><option value="Kuwait">الكويت</option><option value="Jordan">الأردن</option><option value="Tunisia">تونس</option><option value="Algeria">الجزائر</option><option value="France">فرنسا</option><option value="Spain">إسبانيا</option><option value="United States">الولايات المتحدة</option><option value="United Kingdom">بريطانيا</option><option value="Other">دول أخرى</option></select>
 <p class="muted">على الهاتف: اضغط على الدول لاختيار أكثر من دولة.</p>
 <label>تفاصيل إضافية (اختياري)</label><textarea id="tdesc" placeholder="اكتب أي تعليمات خاصة بالتفاعل..."></textarea>
-<div class="actions"><button id="createTask"><i data-lucide="rocket"></i> حفظ المنشور وحجز النقاط</button></div><div id="newtaskmsg"></div></section>
+<div id="taskCostPreview" class="notice">سيتم حساب التكلفة حسب عدد التفاعلات ورصيد محفظتك.</div><div class="actions"><button id="createTask"><i data-lucide="rocket"></i> حفظ المنشور وحجز النقاط</button></div><div id="newtaskmsg"></div></section>
 <section id="submissions" class="panel tabpane hidden"><h2><i data-lucide="clipboard-check"></i> طلبات التحقق</h2><div id="submissionlist"></div></section>
 <section id="completed" class="panel tabpane hidden"><h2><i data-lucide="check-check"></i> المهام التي أنجزتها</h2><div id="completedlist"></div></section>
-<section id="wallet" class="panel tabpane hidden"><h2><i data-lucide="wallet"></i> سجل المحفظة</h2><div id="transactions"></div></section>
+
 <section id="posts" class="panel tabpane hidden"><h2><i data-lucide="messages-square"></i> المنشورات</h2><label>أضف منشوراً</label><textarea id="postcontent" maxlength="1000" placeholder="شارك منشورك مع المجتمع..."></textarea><div class="actions"><button id="addpost"><i data-lucide="send"></i> نشر</button></div><div id="postlist"></div></section>
-<section id="quiz" class="panel tabpane hidden"><h2><i data-lucide="brain"></i> اختبار معلومات عامة ورياضية</h2><div id="quizbox"><p class="muted">اختبر معلوماتك. هذا الاختبار للتسلية ولا يضيف نقاطاً إلى المحفظة.</p><button id="startquiz">ابدأ الاختبار</button></div></section>
-<section id="settings" class="panel tabpane hidden"><h2><i data-lucide="settings"></i> إعدادات الحساب</h2><div class="two"><div><label>الدولة</label><select id="country"><option value="">اختر الدولة</option><option>Morocco</option><option>Egypt</option><option>Saudi Arabia</option><option>United Arab Emirates</option><option>Qatar</option><option>Kuwait</option><option>Jordan</option><option>Tunisia</option><option>France</option><option>Spain</option><option>United States</option><option>United Kingdom</option><option>Other</option></select></div><div><label>اللغة</label><select id="language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div></div><div class="actions"><button id="saveSettings"><i data-lucide="save"></i> حفظ الإعدادات</button></div><div id="settingsmsg"></div></section>
+<section id="quiz" class="panel tabpane hidden"><h2><i data-lucide="brain"></i> الألغاز والأسئلة العامة</h2><p class="muted">أجب عن الأسئلة الثمانية كلها بشكل صحيح لتحصل على 50 نقطة في محفظتك.</p><div id="quizbox"><button id="startquiz">ابدأ الاختبار</button></div></section>
+<section id="settings" class="panel tabpane hidden"><h2><i data-lucide="settings"></i> إعدادات الحساب</h2><div class="two"><div><label>الدولة</label><select id="country"><option value="">اختر الدولة</option><option>Morocco</option><option>Egypt</option><option>Saudi Arabia</option><option>United Arab Emirates</option><option>Qatar</option><option>Kuwait</option><option>Jordan</option><option>Tunisia</option><option>France</option><option>Spain</option><option>United States</option><option>United Kingdom</option><option>Other</option></select></div><div><label>اللغة</label><select id="language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div></div><div class="actions"><button id="saveSettings"><i data-lucide="save"></i> حفظ الإعدادات</button><button id="adminQuick" class="good hidden" type="button"><i data-lucide="crown"></i> لوحة المدير</button></div><div id="settingsmsg"></div><div class="settings-wallet"><h3><i data-lucide="wallet"></i> محفظتي وسجل النقاط</h3><p class="muted">رصيدك الحالي: <strong id="settingsBalance">0</strong> نقطة</p><div id="transactions"></div></div><div class="settings-exit"><button id="logout" class="danger"><i data-lucide="log-out"></i> تسجيل الخروج</button></div></section>
 <section id="admin" class="panel tabpane hidden"><h2><i data-lucide="crown"></i> لوحة المدير</h2><div class="grid"><div class="stat">المستخدمون<b id="susers">0</b></div><div class="stat">المهام<b id="stasks">0</b></div><div class="stat">طلبات التحقق<b id="ssubs">0</b></div><div class="stat">المنشورات<b id="sposts">0</b></div></div>
 <h3><i data-lucide="send"></i> إرسال النقاط</h3><div class="two"><div><label>بريد المستلم</label><input id="recipient" type="email"></div><div><label>عدد النقاط</label><input id="sendpoints" type="number" min="1"></div></div><label>الوصف</label><input id="senddesc" placeholder="هدية من الإدارة"><div class="actions"><button id="sendpointsbtn"><i data-lucide="send"></i> إرسال النقاط</button></div><div id="adminmsg"></div>
 <h3><i data-lucide="list-checks"></i> إدارة المهام</h3><div id="admintasks"></div>
@@ -307,7 +345,7 @@ async function load(){
  ]);
  for(const x of [p,w,t,s,po,tr])if(x.error)throw x.error;
  profile=p.data;wallet=w.data;tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;
- $('balance').textContent=money(wallet.balance);$('walletmode').textContent=wallet.is_unlimited?'محفظة المدير غير المحدودة':'رصيدك الحالي';
+ $('balance').textContent=money(wallet.balance);$('settingsBalance').textContent=wallet.is_unlimited?'غير محدود':money(wallet.balance);$('walletmode').textContent=wallet.is_unlimited?'محفظة المدير غير المحدودة':'رصيدك الحالي';
  $('role').textContent=profile.role;
  const isAdmin=String(profile.role||'').trim().toLowerCase()==='admin';
  const availableTasks=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id&&(isAdmin||!Array.isArray(x.target_countries)||x.target_countries.length===0||(profile.country&&x.target_countries.includes(profile.country))));
@@ -373,6 +411,8 @@ $('forgotPassword').onclick=async()=>{try{const email=$('email').value.trim();if
 $('saveNewPassword').onclick=async()=>{try{const password=$('newPassword').value,confirm=$('confirmPassword').value;if(password.length<6)throw new Error('كلمة المرور يجب أن تتكون من 6 أحرف على الأقل.');if(password!==confirm)throw new Error('كلمتا المرور غير متطابقتين.');const {error}=await db.auth.updateUser({password});if(error)throw error;note('recoveryMsg','تم تحديث كلمة المرور بنجاح. يمكنك الآن استعمالها للدخول.','success');$('newPassword').value='';$('confirmPassword').value='';recovering=false;setTimeout(()=>start(),900)}catch(e){note('recoveryMsg',e.message,'error')}};
 $('signup').onclick=async()=>{try{const {data,error}=await db.auth.signUp({email:$('email').value,password:$('password').value},{options:{emailRedirectTo:'https://portoreco474-dotcom.github.io/RABII4LIKE/'}});if(error)throw error;note('msg',data.session?'تم إنشاء الحساب.':'تم إنشاء الحساب. تحقق من بريدك لتأكيده.','success')}catch(e){note('msg',e.message,'error')}};
 $('logout').onclick=async()=>{await db.auth.signOut();location.reload()};
+$('profileAvatar').onclick=()=>document.querySelector('[data-tab="settings"]').click();
+const heroBackground=getComputedStyle($('auth'),'::before').backgroundImage;const heroImage=heroBackground.match(/url\\([\"']?(.*?)[\"']?\\)/);if(heroImage&&heroImage[1])$('siteAvatar').src=heroImage[1];
 $('adminQuick').onclick=()=>{$('admintab').click()};
 $('daily').onclick=async()=>{try{await rpc('claim_daily_reward');note('dashmsg','مبروك! تمت إضافة 500 نقطة إلى محفظتك.','success');await load()}catch(e){note('dashmsg',e.message,'error')}};
 $('refreshData').onclick=async()=>{const b=$('refreshData');b.disabled=true;try{await load();note('dashmsg','تم تحديث جميع البيانات من قاعدة البيانات.','success')}catch(e){note('dashmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
@@ -385,21 +425,33 @@ function refreshInteractionOptions(){
  $('taction').innerHTML=actions.map(a=>'<option value="'+a+'">'+a+'</option>').join('');
 }
 $('tplatform').onchange=refreshInteractionOptions;refreshInteractionOptions();
+function updateTaskCostPreview(){const countText=$('tmax').value.trim(),points=Number($('tpoints').value);try{if(!/^\\d+$/.test(countText)||!Number.isSafeInteger(points)||points<20){$('taskCostPreview').textContent='اكتب عدد التفاعلات وحدد نقاط كل تفاعل لحساب التكلفة.';return}const total=BigInt(countText)*BigInt(points);$('taskCostPreview').textContent='التكلفة الإجمالية: '+total.toString()+' نقطة · رصيدك: '+(wallet?.is_unlimited?'غير محدود':String(wallet?.balance??0))+' نقطة. سيتم قبول العدد حسب رصيدك.'}catch{$('taskCostPreview').textContent='راجع عدد التفاعلات المدخل.'}}
+$('tmax').addEventListener('input',updateTaskCostPreview);$('tpoints').addEventListener('input',updateTaskCostPreview);
 $('createTask').onclick=async()=>{try{
- const url=$('turl').value.trim(),countries=Array.from($('tcountries').selectedOptions).map(o=>o.value),points=Number($('tpoints').value),count=Number($('tmax').value),platform=$('tplatform').value,action=$('taction').value;
+ const url=$('turl').value.trim(),countries=Array.from($('tcountries').selectedOptions).map(o=>o.value),points=Number($('tpoints').value),countText=$('tmax').value.trim(),platform=$('tplatform').value,action=$('taction').value;
+ const maxCount=9223372036854775807n; if(!/^\\d+$/.test(countText))throw new Error('اكتب عدد التفاعلات بأرقام صحيحة فقط.'); const count=BigInt(countText); if(count<=0n||count>maxCount)throw new Error('عدد التفاعلات غير صالح.'); if(!Number.isSafeInteger(points)||points<20)throw new Error('نقاط كل تفاعل يجب أن تكون 20 على الأقل.'); const totalCost=BigInt(points)*count; if(totalCost>maxCount)throw new Error('التكلفة الإجمالية تتجاوز الحد التقني المسموح.'); if(!wallet.is_unlimited&&totalCost>BigInt(String(wallet.balance)))throw new Error('رصيدك غير كافٍ. التكلفة المطلوبة: '+totalCost.toString()+' نقطة.');
  if(!/^https?:\/\//i.test(url))throw new Error('أدخل رابطاً صحيحاً يبدأ بـ https://');
  if(points<20)throw new Error('الحد الأدنى هو 20 نقطة لكل تفاعل');
  if(!countries.length)throw new Error('اختر دولة واحدة على الأقل');
  const title=platform+' - '+action;
- await rpc('create_task',{p_title:title,p_description:$('tdesc').value,p_platform:platform,p_action_type:action,p_target_url:url,p_points_per_completion:points,p_max_completions:count,p_target_countries:countries});
+ await rpc('create_task',{p_title:title,p_description:$('tdesc').value,p_platform:platform,p_action_type:action,p_target_url:url,p_points_per_completion:points,p_max_completions:count.toString(),p_target_countries:countries});
  note('newtaskmsg','تم حفظ طلب التفاعل وحجز النقاط بنجاح.','success');$('turl').value='';$('tdesc').value='';await load();
 }catch(e){note('newtaskmsg',e.message,'error')}};
 $('addpost').onclick=async()=>{try{await rpc('add_post',{p_content:$('postcontent').value});$('postcontent').value='';await load()}catch(e){note('dashmsg',e.message,'error')}};
 $('saveSettings').onclick=async()=>{try{const {error}=await db.from('profiles').update({country:$('country').value||null,language:$('language').value}).eq('id',user.id);if(error)throw error;note('settingsmsg','تم حفظ الإعدادات.','success');await load()}catch(e){note('settingsmsg',e.message,'error')}};
 $('sendpointsbtn').onclick=async()=>{try{const {data,error}=await db.from('profiles').select('id').eq('email',$('recipient').value.trim()).single();if(error)throw error;await rpc('admin_transfer_points',{p_recipient_id:data.id,p_amount:Number($('sendpoints').value),p_description:$('senddesc').value});note('adminmsg','تم إرسال النقاط بنجاح.','success');await load()}catch(e){note('adminmsg',e.message,'error')}};
 $('tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(!b)return;document.querySelectorAll('.tabpane').forEach(x=>x.classList.add('hidden'));$(b.dataset.tab).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b))};
-const questions=[{q:'ما عاصمة المغرب؟',a:['الرباط','الدار البيضاء','فاس'],c:0},{q:'كم لاعباً في فريق كرة القدم داخل الملعب؟',a:['9','11','12'],c:1},{q:'ما الكوكب المعروف بالكوكب الأحمر؟',a:['الزهرة','المريخ','المشتري'],c:1},{q:'كم عدد ألوان قوس قزح التقليدية؟',a:['5','6','7'],c:2}];
-$('startquiz').onclick=()=>{let i=0,score=0;function draw(){if(i>=questions.length){$('quizbox').innerHTML=`<h3>انتهى الاختبار</h3><p>نتيجتك: ${score} من ${questions.length}</p><button id="again">إعادة الاختبار</button>`;$('again').onclick=()=>{$('startquiz').click()};return}const q=questions[i];$('quizbox').innerHTML=`<h3>${i+1}. ${q.q}</h3>${q.a.map((a,j)=>`<div class="item"><button class="secondary" data-answer="${j}">${a}</button></div>`).join('')}`;$('quizbox').querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{if(Number(b.dataset.answer)===q.c)score++;i++;draw()})}draw()};
+const questions=[
+{q:'ما عاصمة المغرب؟',a:['الدار البيضاء','الرباط','فاس'],c:1},
+{q:'ما أكبر محيط في العالم؟',a:['المحيط الهادئ','المحيط الأطلسي','المحيط الهندي'],c:0},
+{q:'لغز: شيء كلما أخذت منه كبر، ما هو؟',a:['البحر','العمر','الحفرة'],c:2},
+{q:'ما أسرع حيوان بري؟',a:['الحصان','الفهد','الأسد'],c:1},
+{q:'ما الصيغة الكيميائية للماء؟',a:['H2O','CO2','O2'],c:0},
+{q:'أي كوكب يعرف بالكوكب الأحمر؟',a:['الزهرة','المشتري','المريخ'],c:2},
+{q:'في أي قارة تقع مصر؟',a:['آسيا','أفريقيا','أوروبا'],c:1},
+{q:'لغز: له أسنان ولا يعض، ما هو؟',a:['المشط','المفتاح','الساعة'],c:0}
+];
+$('startquiz').onclick=()=>{let i=0,score=0;const answers=[];function draw(){if(i>=questions.length){const perfect=score===questions.length;$('quizbox').innerHTML=`<h3>${perfect?'مبروك! اجتزت الاختبار':'انتهى الاختبار'}</h3><p>نتيجتك: ${score} من ${questions.length}</p><div id="quizRewardMsg" class="notice">${perfect?'جاري إضافة مكافأتك...':'أكمل جميع الإجابات الصحيحة لتحصل على 50 نقطة.'}</div><button id="again">اختبار جديد</button>`;$('again').onclick=()=>{$('startquiz').click()};if(perfect){rpc('award_quiz_reward',{p_answers:answers}).then(async()=>{note('quizRewardMsg','مبروك! تمت إضافة 50 نقطة إلى محفظتك.','success');await load()}).catch(e=>note('quizRewardMsg',e.message,'error'))}return}const q=questions[i];$('quizbox').innerHTML=`<div class="row"><span class="pill">السؤال ${i+1} من ${questions.length}</span><span class="pill">المكافأة: 50 نقطة عند النجاح</span></div><h3>${q.q}</h3>${q.a.map((a,j)=>`<div class="item"><button class="secondary" data-answer="${j}">${a}</button></div>`).join('')}`;$('quizbox').querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{const answer=Number(b.dataset.answer);answers.push(answer);if(answer===q.c)score++;i++;draw()})}draw()};
 let entering=false;async function start(sessionUser=null){if(recovering||entering)return;entering=true;try{if(sessionUser){user=sessionUser}else{const {data,error}=await db.auth.getSession();if(error)throw error;if(!data.session)return;user=data.session.user}$('auth').classList.add('hidden');$('landingFeatures').classList.add('hidden');document.querySelector('.landing-social').classList.add('hidden');$('app').classList.remove('hidden');$('userbox').classList.remove('hidden');await load()}catch(e){note('msg',e.message,'error')}finally{entering=false}}
 db.auth.onAuthStateChange((event,session)=>{if(event==='PASSWORD_RECOVERY'){recovering=true;$('auth').classList.add('hidden');$('recoveryScreen').classList.remove('hidden');$('landingFeatures').classList.add('hidden');document.querySelector('.landing-social').classList.add('hidden');$('app').classList.add('hidden');$('userbox').classList.add('hidden');return}if(session&&!recovering&&!user){start(session.user)}else if(!session&&!recovering){user=null;$('auth').classList.remove('hidden');$('recoveryScreen').classList.add('hidden');$('landingFeatures').classList.remove('hidden');document.querySelector('.landing-social').classList.remove('hidden');$('app').classList.add('hidden');$('userbox').classList.add('hidden')}});
 refreshIcons();start();
