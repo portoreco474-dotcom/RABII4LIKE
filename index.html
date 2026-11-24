@@ -42,7 +42,7 @@ body{background:radial-gradient(ellipse at 18% 25%,#25106a 0,transparent 36%),ra
 .landing-features{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:8px 0 28px}
 .landing-feature{text-align:center;padding:18px 10px;border:1px solid #6427d6;border-radius:18px;background:linear-gradient(145deg,#17113d,#0b1532);box-shadow:inset 0 0 22px #5420a322,0 0 16px #4217a333}
 .landing-feature b{display:block;color:#ffcf36;font-size:17px;margin-bottom:6px}.landing-feature span{font-size:13px;color:#d9d7f3}
-.landing-social{display:flex;align-items:center;justify-content:center;gap:22px;color:#a9a5d6;margin:18px 0 26px}.landing-social i{width:25px;height:25px;stroke-width:1.8}.landing-social i:hover{color:#69e4ff;filter:drop-shadow(0 0 7px #69e4ff)}
+.landing-social{display:flex;align-items:center;justify-content:center;gap:22px;color:#a9a5d6;margin:18px 0 26px}.landing-social a{display:grid;place-items:center;width:46px;height:46px;border:1px solid #5545a0;border-radius:14px;background:#111638;color:#a9a5d6;transition:.2s}.landing-social a:hover,.landing-social a:focus-visible{color:#69e4ff;border-color:#69e4ff;filter:drop-shadow(0 0 7px #69e4ff);transform:translateY(-3px);outline:none}.landing-social i{width:25px;height:25px;stroke-width:1.8}
 .foot{border-top:1px solid #5220b9;padding:18px}
 @media(max-width:900px){#auth{grid-template-columns:1fr 1fr;gap:12px;min-height:0}#auth:before{min-height:390px}#auth:after{display:none}#auth>h1,#auth>p,#auth>#msg,#auth>label,#auth>input,#auth>.actions{grid-column:2}.landing-features{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:620px){.wrap{padding:0 12px}.top{margin:0 -12px 12px;padding:0 15px;min-height:65px}#auth{display:flex;flex-direction:column;gap:0;align-items:stretch;padding:8px 0}#auth:before{order:0;width:100%;min-height:230px;background-size:cover;background-position:center 32%;border-radius:18px}#auth:after{display:block;order:1;padding:14px 5px 18px;font-size:20px;line-height:1.8}#auth>h1{order:2;border-radius:18px 18px 0 0;margin:0;padding:18px 12px 0;width:100%}#auth>p{order:3;margin:0;padding:8px 18px 0;width:100%}#auth>#msg{order:4;margin:0;padding:0 18px;width:100%}#auth>label:nth-of-type(1){order:5;margin:0;padding:8px 18px 4px;width:100%}#auth>#email{order:6;margin:0 18px;width:calc(100% - 36px)}#auth>label:nth-of-type(2){order:7;margin:0;padding:8px 18px 4px;width:100%}#auth>#password{order:8;margin:0 18px;width:calc(100% - 36px)}#auth>.actions{order:9;margin:0;padding:14px 18px 20px;width:100%}.landing-features{grid-template-columns:repeat(2,1fr);gap:8px}.landing-feature{padding:13px 7px}}
@@ -106,7 +106,7 @@ a{color:#73e5ff;text-decoration:none}a:hover{text-decoration:underline}
 <div class="actions"><button id="saveNewPassword" type="button">حفظ كلمة المرور</button></div>
 </div>
 <div class="landing-features" id="landingFeatures"><div class="landing-feature"><b><i data-lucide="gift"></i> مكافآت يومية</b><span>500 نقطة كل 24 ساعة</span></div><div class="landing-feature"><b><i data-lucide="chart-no-axes-combined"></i> إحصائيات شاملة</b><span>تابع نشاطك ونقاطك</span></div><div class="landing-feature"><b><i data-lucide="shield-check"></i> محافظ مستقلة</b><span>رصيد خاص بكل مستخدم</span></div><div class="landing-feature"><b><i data-lucide="crown"></i> محفظة المدير</b><span>رصيد غير محدود</span></div><div class="landing-feature"><b><i data-lucide="clipboard-list"></i> إدارة المهام</b><span>تنظيم ومنع التكرار</span></div><div class="landing-feature"><b><i data-lucide="globe-2"></i> دول متعددة</b><span>لغات ومجتمع تفاعلي</span></div></div>
-<div class="landing-social" aria-label="منصات التواصل"><i data-lucide="facebook"></i><i data-lucide="instagram"></i><i data-lucide="music-2"></i><i data-lucide="youtube"></i><i data-lucide="send"></i><i data-lucide="twitter"></i></div>
+<div class="landing-social" aria-label="منصات التواصل"><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><i data-lucide="facebook"></i></a><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><i data-lucide="instagram"></i></a><a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok"><i data-lucide="music-2"></i></a><a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><i data-lucide="youtube"></i></a></div>
 <main id="app" class="hidden">
 <div class="grid">
 <div class="stat"><span class="stat-icon"><i data-lucide="wallet"></i></span><span class="muted">رصيد النقاط</span><b id="balance">0</b><small id="walletmode" class="muted">محفظتك</small></div>
@@ -115,7 +115,7 @@ a{color:#73e5ff;text-decoration:none}a:hover{text-decoration:underline}
 <div class="stat"><span class="stat-icon"><i data-lucide="shield-check"></i></span><span class="muted">حالة الحساب</span><b id="role" style="font-size:18px">user</b></div>
 </div>
 <div class="panel">
-<div class="row"><div><h2 style="margin:0">لوحة التحكم</h2><span class="muted">كل مستخدم لديه محفظته وسجل نقاطه الخاص</span></div><button id="daily" class="good"><i data-lucide="gift"></i> استلام 500 نقطة يومية</button></div>
+<div class="row"><div><h2 style="margin:0">لوحة التحكم</h2><span class="muted">كل مستخدم لديه محفظته وسجل نقاطه الخاص</span></div><div class="actions"><button id="refreshData" class="secondary" type="button"><i data-lucide="refresh-cw"></i> تحديث البيانات</button><button id="daily" class="good"><i data-lucide="gift"></i> استلام 500 نقطة يومية</button></div></div>
 <div id="dashmsg"></div>
 </div>
 <nav class="tabs" id="tabs">
@@ -252,6 +252,7 @@ $('signup').onclick=async()=>{try{const {data,error}=await db.auth.signUp({email
 $('logout').onclick=async()=>{await db.auth.signOut();location.reload()};
 $('adminQuick').onclick=()=>{$('admintab').click()};
 $('daily').onclick=async()=>{try{await rpc('claim_daily_reward');note('dashmsg','مبروك! تمت إضافة 500 نقطة إلى محفظتك.','success');await load()}catch(e){note('dashmsg',e.message,'error')}};
+$('refreshData').onclick=async()=>{const b=$('refreshData');b.disabled=true;try{await load();note('dashmsg','تم تحديث جميع البيانات من قاعدة البيانات.','success')}catch(e){note('dashmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
 function refreshInteractionOptions(){
  const platform=$('tplatform').value;
  const actions=['تعليق','إعجاب','مشاركة'];
