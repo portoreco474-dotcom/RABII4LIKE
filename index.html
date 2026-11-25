@@ -276,7 +276,7 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 <div class="stat"><span class="stat-icon"><i data-lucide="shield-check"></i></span><span class="muted">حالة الحساب</span><b id="role" style="font-size:18px">user</b></div>
 </div>
 <div class="panel">
-<div class="row"><div><h2 style="margin:0">لوحة التحكم</h2><span class="muted">كل مستخدم لديه محفظته وسجل نقاطه الخاص</span></div><div class="actions"><button id="refreshData" class="secondary" type="button"><i data-lucide="refresh-cw"></i> تحديث البيانات</button><button id="daily" class="good"><i data-lucide="gift"></i> استلام 500 نقطة يومية</button></div></div>
+<div class="row"><div><h2 style="margin:0">لوحة التحكم</h2><span class="muted">كل مستخدم لديه محفظته وسجل نقاطه الخاص</span></div><div class="actions"><button id="refreshData" class="secondary" type="button"><i data-lucide="refresh-cw"></i> تحديث البيانات</button><button id="daily" class="good"><i data-lucide="gift"></i> استلام 500 نقطة يومية</button><button id="adminQuick" class="good hidden" type="button"><i data-lucide="crown"></i> لوحة تحكم المدير</button></div></div>
 <div id="dashmsg"></div>
 </div>
 <nav class="tabs" id="tabs">
@@ -304,7 +304,7 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 
 <section id="posts" class="panel tabpane hidden"><h2><i data-lucide="messages-square"></i> المنشورات</h2><label>أضف منشوراً</label><textarea id="postcontent" maxlength="1000" placeholder="شارك منشورك مع المجتمع..."></textarea><div class="actions"><button id="addpost"><i data-lucide="send"></i> نشر</button></div><div id="postlist"></div></section>
 <section id="quiz" class="panel tabpane hidden"><h2><i data-lucide="brain"></i> الألغاز والأسئلة العامة</h2><p class="muted">أجب عن الأسئلة الثمانية كلها بشكل صحيح لتحصل على 50 نقطة في محفظتك.</p><div id="quizbox"><button id="startquiz">ابدأ الاختبار</button></div></section>
-<section id="settings" class="panel tabpane hidden"><h2><i data-lucide="settings"></i> إعدادات الحساب</h2><div class="two"><div><label>الدولة</label><select id="country"><option value="">اختر الدولة</option><option>Morocco</option><option>Egypt</option><option>Saudi Arabia</option><option>United Arab Emirates</option><option>Qatar</option><option>Kuwait</option><option>Jordan</option><option>Tunisia</option><option>France</option><option>Spain</option><option>United States</option><option>United Kingdom</option><option>Other</option></select></div><div><label>اللغة</label><select id="language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div></div><div class="actions"><button id="saveSettings"><i data-lucide="save"></i> حفظ الإعدادات</button><button id="logout" class="danger" type="button"><i data-lucide="log-out"></i> تسجيل الخروج</button><button id="adminQuick" class="good hidden" type="button"><i data-lucide="crown"></i> لوحة المدير</button></div><div id="settingsmsg"></div><div class="settings-wallet"><h3><i data-lucide="wallet"></i> محفظتي وسجل النقاط</h3><p class="muted">رصيدك الحالي: <strong id="settingsBalance">0</strong> نقطة</p><div id="transactions"></div></div></section>
+<section id="settings" class="panel tabpane hidden"><h2><i data-lucide="settings"></i> إعدادات الحساب</h2><div><label>اللغة</label><select id="language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div><div class="actions"><button id="saveSettings"><i data-lucide="save"></i> حفظ الإعدادات</button><button id="logout" class="danger" type="button"><i data-lucide="log-out"></i> تسجيل الخروج</button></div><div id="settingsmsg"></div><div class="settings-wallet"><h3><i data-lucide="wallet"></i> محفظتي وسجل النقاط</h3><p class="muted">رصيدك الحالي: <strong id="settingsBalance">0</strong> نقطة</p><div id="transactions"></div></div></section>
 <section id="admin" class="panel tabpane hidden"><h2><i data-lucide="crown"></i> لوحة المدير</h2><div class="grid"><div class="stat">المستخدمون<b id="susers">0</b></div><div class="stat">المهام<b id="stasks">0</b></div><div class="stat">طلبات التحقق<b id="ssubs">0</b></div><div class="stat">المنشورات<b id="sposts">0</b></div></div>
 <h3><i data-lucide="send"></i> إرسال النقاط</h3><div class="two"><div><label>بريد المستلم</label><input id="recipient" type="email"></div><div><label>عدد النقاط</label><input id="sendpoints" type="number" min="1"></div></div><label>الوصف</label><input id="senddesc" placeholder="هدية من الإدارة"><div class="actions"><button id="sendpointsbtn"><i data-lucide="send"></i> إرسال النقاط</button></div><div id="adminmsg"></div>
 <h3><i data-lucide="sliders-horizontal"></i> تعديل رصيد المستخدم</h3>
@@ -338,6 +338,7 @@ const SUPABASE_KEY='sb_publishable_AEq00cksyGY19Vl4E9SnIQ_tiwXiCm3';
 const db=createClient(SUPABASE_URL,SUPABASE_KEY);
 let user=null,profile=null,wallet=null,tasks=[],subs=[],posts=[],tx=[],recovering=false;
 const $=id=>document.getElementById(id);
+function isAdmin(){return String(profile?.role||'').trim().toLowerCase()==='admin';}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function refreshIcons(){if(window.lucide?.createIcons)window.lucide.createIcons();}
 function note(id,text,kind='notice'){ $(id).innerHTML=text?`<div class="notice ${kind}">${esc(text)}</div>`:''; }
@@ -358,21 +359,21 @@ async function load(){
  $('balance').textContent=money(wallet.balance);$('settingsBalance').textContent=wallet.is_unlimited?'غير محدود':money(wallet.balance);$('walletmode').textContent=wallet.is_unlimited?'محفظة المدير غير المحدودة':'رصيدك الحالي';
  $('role').textContent=profile.role;
  const isAdmin=String(profile.role||'').trim().toLowerCase()==='admin';
- const availableTasks=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id&&(isAdmin||!Array.isArray(x.target_countries)||x.target_countries.length===0||(profile.country&&x.target_countries.includes(profile.country))));
+ const availableTasks=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id&&(isAdmin||!profile.country||!Array.isArray(x.target_countries)||x.target_countries.length===0||x.target_countries.includes(profile.country)));
  $('taskcount').textContent=availableTasks.length;
  $('donecount').textContent=subs.filter(x=>x.worker_id===user.id&&x.status==='approved').length;
  $('admintab').classList.toggle('hidden',!isAdmin); $('adminQuick').classList.toggle('hidden',!isAdmin);
- $('country').value=profile.country||'';$('language').value=profile.language||'ar';
+ $('language').value=profile.language||'ar';
  renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();refreshIcons();
- if(profile.role==='admin')await loadAdmin();refreshIcons();
+ if(isAdmin())await loadAdmin();refreshIcons();
 }
 function renderTasks(){
  const isAdmin=String(profile.role||'').trim().toLowerCase()==='admin';
- const list=tasks.filter(t=>t.status==='open'&&t.creator_id!==user.id&&(isAdmin||!Array.isArray(t.target_countries)||t.target_countries.length===0||(profile.country&&t.target_countries.includes(profile.country))));
- $('tasklist').innerHTML=list.length?list.map(t=>`<article class="item"><h3><i data-lucide="target"></i> ${esc(t.title)}</h3><div class="muted">${esc(t.platform)} · ${esc(t.action_type)} · ${t.points_per_completion} نقطة لكل إنجاز</div><div class="muted">الدول المستهدفة: ${esc((t.target_countries||[]).join('، ')||'جميع الدول')}</div><p>${esc(t.description||'')}</p><a href="${esc(t.target_url)}" target="_blank" rel="noopener">فتح رابط المهمة ↗</a><div class="actions"><button onclick="window.submitTask('${t.id}')"><i data-lucide="send"></i> إرسال إثبات الإنجاز</button></div></article>`).join(''):(profile.country||isAdmin?'<div class="empty">لا توجد مهام متاحة لدولتك حالياً.</div>':'<div class="empty">حدد دولتك من إعدادات الحساب لعرض المهام المناسبة لك.</div>');
+ const list=tasks.filter(t=>t.status==='open'&&t.creator_id!==user.id&&(isAdmin||!profile.country||!Array.isArray(t.target_countries)||t.target_countries.length===0||t.target_countries.includes(profile.country)));
+ $('tasklist').innerHTML=list.length?list.map(t=>`<article class="item"><h3><i data-lucide="target"></i> ${esc(t.title)}</h3><div class="muted">${esc(t.platform)} · ${esc(t.action_type)} · ${t.points_per_completion} نقطة لكل إنجاز</div><div class="muted">الدول المستهدفة: ${esc((t.target_countries||[]).join('، ')||'جميع الدول')}</div><p>${esc(t.description||'')}</p><a href="${esc(t.target_url)}" target="_blank" rel="noopener">فتح رابط المهمة ↗</a><div class="actions"><button onclick="window.submitTask('${t.id}')"><i data-lucide="send"></i> إرسال إثبات الإنجاز</button></div></article>`).join(''):'<div class="empty">لا توجد مهام متاحة حالياً.</div>';
 }
 function renderSubs(){
- const mine=subs.filter(s=>{const t=tasks.find(x=>x.id===s.task_id);return t&&(t.creator_id===user.id||profile.role==='admin')&&s.status==='pending'});
+ const mine=subs.filter(s=>{const t=tasks.find(x=>x.id===s.task_id);return t&&(t.creator_id===user.id||isAdmin())&&s.status==='pending'});
  $('submissionlist').innerHTML=mine.length?mine.map(s=>{const t=tasks.find(x=>x.id===s.task_id);return `<article class="item"><h3>${esc(t?.title||'مهمة')}</h3><div class="muted">المنفذ: عضو</div><p>${esc(s.proof_text||'')}</p>${s.proof_url?`<a href="${esc(s.proof_url)}" target="_blank" rel="noopener">رابط الإثبات ↗</a>`:''}<div class="actions"><button class="good" onclick="window.review('${s.id}',true)"><i data-lucide="check"></i> اعتماد</button><button class="danger" onclick="window.review('${s.id}',false)"><i data-lucide="x"></i> رفض</button></div></article>`}).join(''):'<div class="empty">لا توجد طلبات تنتظر التحقق.</div>';
 }
 function renderCompleted(){
@@ -380,7 +381,7 @@ function renderCompleted(){
  $('completedlist').innerHTML=done.length?done.map(s=>{const t=tasks.find(x=>x.id===s.task_id);return `<article class="item"><h3>${esc(t?.title||'مهمة')}</h3><span class="pill">${esc(s.status)}</span><p class="muted">تاريخ الإرسال: ${date(s.created_at)} · ${s.status==='approved'?'تاريخ الاعتماد: '+date(s.reviewed_at):''}</p>${s.review_note?`<p>${esc(s.review_note)}</p>`:''}</article>`}).join(''):'<div class="empty">لم تنجز أي مهمة بعد.</div>';
 }
 function renderTx(){ $('transactions').innerHTML=tx.length?tx.map(x=>`<article class="item row"><div><b>${esc(x.description||x.transaction_type)}</b><div class="muted">${date(x.created_at)} · ${esc(x.transaction_type)}</div></div><strong style="color:${x.amount>0?'var(--green)':'var(--red)'}">${x.amount>0?'+':''}${money(x.amount)}</strong></article>`).join(''):'<div class="empty">لا توجد عمليات بعد.</div>'; }
-function renderPosts(){ $('postlist').innerHTML=posts.length?posts.map(p=>`<article class="item"><p>${esc(p.content)}</p><div class="muted">${date(p.created_at)} · ${esc(p.author_id===user.id?'أنت':'عضو')}</div>${p.author_id===user.id||profile.role==='admin'?`<div class="actions"><button class="danger" onclick="window.delPost('${p.id}')"><i data-lucide="trash-2"></i> حذف المنشور</button></div>`:''}</article>`).join(''):'<div class="empty">لا توجد منشورات بعد.</div>'; }
+function renderPosts(){ $('postlist').innerHTML=posts.length?posts.map(p=>`<article class="item"><p>${esc(p.content)}</p><div class="muted">${date(p.created_at)} · ${esc(p.author_id===user.id?'أنت':'عضو')}</div>${p.author_id===user.id||isAdmin()?`<div class="actions"><button class="danger" onclick="window.delPost('${p.id}')"><i data-lucide="trash-2"></i> حذف المنشور</button></div>`:''}</article>`).join(''):'<div class="empty">لا توجد منشورات بعد.</div>'; }
 async function loadAdmin(){
  const [u,t,s,p,profiles,wallets,transactions]=await Promise.all([
   db.from('profiles').select('id',{count:'exact',head:true}),
@@ -424,7 +425,7 @@ $('signup').onclick=async()=>{try{const {data,error}=await db.auth.signUp({email
 $('logout').onclick=async()=>{await db.auth.signOut();location.reload()};
 $('profileAvatar').onclick=()=>document.querySelector('[data-tab="settings"]').click();
 const heroBackground=getComputedStyle($('auth'),'::before').backgroundImage;const heroImage=heroBackground.match(/url\(["']?(.*?)["']?\)/);if(heroImage&&heroImage[1])$('siteAvatar').src=heroImage[1];
-$('adminQuick').onclick=()=>{$('admintab').click()};
+$('adminQuick').onclick=()=>{if(!isAdmin())return;$('admintab').click()};
 $('daily').onclick=async()=>{try{await rpc('claim_daily_reward');note('dashmsg','مبروك! تمت إضافة 500 نقطة إلى محفظتك.','success');await load()}catch(e){note('dashmsg',e.message,'error')}};
 $('refreshData').onclick=async()=>{const b=$('refreshData');b.disabled=true;try{await load();note('dashmsg','تم تحديث جميع البيانات من قاعدة البيانات.','success')}catch(e){note('dashmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
 function refreshInteractionOptions(){
@@ -449,7 +450,7 @@ $('createTask').onclick=async()=>{try{
  note('newtaskmsg','تم حفظ طلب التفاعل وحجز النقاط بنجاح.','success');$('turl').value='';$('tdesc').value='';await load();
 }catch(e){note('newtaskmsg',e.message,'error')}};
 $('addpost').onclick=async()=>{try{await rpc('add_post',{p_content:$('postcontent').value});$('postcontent').value='';await load()}catch(e){note('dashmsg',e.message,'error')}};
-$('saveSettings').onclick=async()=>{try{const {error}=await db.from('profiles').update({country:$('country').value||null,language:$('language').value}).eq('id',user.id);if(error)throw error;note('settingsmsg','تم حفظ الإعدادات.','success');await load()}catch(e){note('settingsmsg',e.message,'error')}};
+$('saveSettings').onclick=async()=>{try{const {error}=await db.from('profiles').update({language:$('language').value}).eq('id',user.id);if(error)throw error;note('settingsmsg','تم حفظ الإعدادات.','success');await load()}catch(e){note('settingsmsg',e.message,'error')}};
 $('sendpointsbtn').onclick=async()=>{try{const {data,error}=await db.from('profiles').select('id').eq('email',$('recipient').value.trim()).single();if(error)throw error;await rpc('admin_transfer_points',{p_recipient_id:data.id,p_amount:Number($('sendpoints').value),p_description:$('senddesc').value});note('adminmsg','تم إرسال النقاط بنجاح.','success');await load()}catch(e){note('adminmsg',e.message,'error')}};
 $('adjustPointsBtn').onclick=async()=>{const b=$('adjustPointsBtn');b.disabled=true;try{
  const email=$('adjustRecipient').value.trim(),amount=Number($('adjustAmount').value),mode=$('adjustMode').value;
@@ -461,7 +462,7 @@ $('adjustPointsBtn').onclick=async()=>{const b=$('adjustPointsBtn');b.disabled=t
  note('adminmsg',mode==='subtract'?'تم خصم النقاط وتسجيل العملية.':'تمت إضافة النقاط وتسجيل العملية.','success');
  $('adjustAmount').value='';$('adjustDescription').value='';await load();
 }catch(e){note('adminmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
-$('tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(!b)return;document.querySelectorAll('.tabpane').forEach(x=>x.classList.add('hidden'));$(b.dataset.tab).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b))};
+$('tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(!b)return;if(b.dataset.tab==='admin'&&!isAdmin())return;document.querySelectorAll('.tabpane').forEach(x=>x.classList.add('hidden'));$(b.dataset.tab).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b))};
 const questions=[
 {q:'ما عاصمة المغرب؟',a:['الدار البيضاء','الرباط','فاس'],c:1},
 {q:'ما أكبر محيط في العالم؟',a:['المحيط الهادئ','المحيط الأطلسي','المحيط الهندي'],c:0},
