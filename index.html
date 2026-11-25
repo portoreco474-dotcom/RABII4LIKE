@@ -309,10 +309,7 @@ body.auth-only #auth{display:block!important}
 <label>تفاصيل إضافية (اختياري)</label><textarea id="tdesc" placeholder="اكتب أي تعليمات خاصة بالتفاعل..."></textarea>
 <div id="taskCostPreview" class="notice">سيتم حساب التكلفة حسب عدد التفاعلات ورصيد محفظتك.</div><div class="actions"><button id="createTask"><i data-lucide="rocket"></i> حفظ المنشور وحجز النقاط</button></div><div id="newtaskmsg"></div></section>
 <section id="submissions" class="panel tabpane hidden"><h2><i data-lucide="clipboard-check"></i> طلبات التحقق</h2><div id="submissionlist"></div></section>
-<section id="completed" class="panel tabpane hidden"><h2><i data-lucide="check-check"></i> المهام التي أنجزتها</h2><div id="completedlist"></div></section>
-
-<section id="posts" class="panel tabpane hidden"><h2><i data-lucide="messages-square"></i> المنشورات</h2><label>أضف منشوراً</label><textarea id="postcontent" maxlength="1000" placeholder="شارك منشورك مع المجتمع..."></textarea><div class="actions"><button id="addpost"><i data-lucide="send"></i> نشر</button></div><div id="postlist"></div></section>
-<section id="quiz" class="panel tabpane hidden"><h2><i data-lucide="brain"></i> الألغاز والأسئلة العامة</h2><p class="muted">أجب عن الأسئلة الثمانية كلها بشكل صحيح لتحصل على 50 نقطة في محفظتك.</p><div id="quizbox"><button id="startquiz">ابدأ الاختبار</button></div></section>
+<section id="completed" class="panel tabpane hidden"><h2><i data-lucide="check-check"></i> المهام التي أنجزتها</h2><div id="completedlist"></div><div class="item" style="margin-top:16px"><h3><i data-lucide="brain"></i> الأسئلة الثقافية والألغاز</h3><p class="muted">اختبر معلوماتك في الثقافة والرياضة والعلوم والألغاز.</p><div id="quizbox"><button id="startquiz" type="button">ابدأ الأسئلة الثقافية</button></div></div></section> <section id="posts" class="panel tabpane hidden"><h2><i data-lucide="messages-square"></i> المنشورات</h2><label>أضف منشوراً</label><textarea id="postcontent" maxlength="1000" placeholder="شارك منشورك مع المجتمع..."></textarea><div class="actions"><button id="addpost"><i data-lucide="send"></i> نشر</button></div><div id="postlist"></div></section>
 <section id="purchase" class="panel tabpane hidden"><h2>شراء النقاط</h2><p class="muted">اختر Western Union أو Cash Plus. لا تُضاف النقاط إلا بعد مراجعة المدير.</p><div class="notice"><strong>ثمن النقاط:</strong> 4000 نقطة = 50 درهماً مغربياً. <br><strong>المستلم:</strong> malak jymmy<br><strong>رقم الهاتف لاستلام كود الحوالة:</strong> +212779264577<br><strong>مهم:</strong> أرسل الحوالة عبر الطريقة المختارة، واحتفظ برقمها. لا تُضاف النقاط إلا بعد التحقق من وصول المبلغ.<br><strong>💳 عند وصول المبلغ وتأكيد استلامه، سيتم إضافة رصيد النقاط إلى حسابك مباشرة.</strong><br>يرجى التأكد من إرسال المبلغ الصحيح وإدخال معلومات الحوالة بشكل صحيح. شكراً لثقتكم بنا ❤️</div><p class="muted">المبلغ المطلوب: <strong id="purchasePrice">12.50 درهم مغربي</strong></p><div class="two"><div><label>طريقة التحويل</label><select id="purchaseMethod"><option>Western Union</option><option>Cash Plus</option></select></div><div><label>عدد النقاط (100 على الأقل)</label><input id="purchasePoints" type="number" min="100" step="100" value="1000"></div><div><label>اسم المرسل</label><input id="purchaseSender" maxlength="120"></div><div><label>رقم الحوالة / مرجع التحويل</label><input id="purchaseReference" maxlength="120"></div></div><div class="actions"><button id="submitPurchase">إرسال طلب شراء النقاط</button></div><div id="purchaseMsg"></div><h3>طلباتي السابقة</h3><div id="myPurchases"></div></section>
 <section id="wallet" class="panel tabpane hidden"><h2><i data-lucide="wallet"></i> محفظتي وسجل النقاط</h2><p class="muted">رصيدك الحالي: <strong id="walletPageBalance">0</strong> نقطة</p><div id="walletPageTransactions"></div></section>
 <div id="walletCompat" class="hidden" aria-hidden="true"><strong id="settingsBalance">0</strong><div id="transactions"></div></div>
@@ -376,7 +373,7 @@ async function load(){
  const availableTasks=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id&&(adminMode||!profile.country||!Array.isArray(x.target_countries)||x.target_countries.length===0||x.target_countries.includes(profile.country)));
  $('taskcount').textContent=availableTasks.length;
  $('donecount').textContent=subs.filter(x=>x.worker_id===user.id&&x.status==='approved').length;
- $('admintab').classList.toggle('hidden',!adminMode); $('adminQuick').classList.toggle('hidden',!adminMode); document.querySelector('#tabs [data-tab="newtask"]').classList.toggle('hidden',!adminMode); document.querySelector('#tabs [data-tab="submissions"]').classList.toggle('hidden',!adminMode);
+ $('admintab').classList.toggle('hidden',!adminMode); $('adminQuick').classList.toggle('hidden',!adminMode); document.querySelector('#tabs [data-tab="newtask"]').classList.remove('hidden'); document.querySelector('#tabs [data-tab="submissions"]').classList.remove('hidden');
  $('language').value=profile.language||'ar';
  renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();renderMyPurchases();renderPublicArticles();refreshIcons();
  if(adminMode)await loadAdmin();refreshIcons();
@@ -492,17 +489,15 @@ $('adjustPointsBtn').onclick=async()=>{const b=$('adjustPointsBtn');b.disabled=t
  note('adminmsg',mode==='subtract'?'تم خصم النقاط وتسجيل العملية.':'تمت إضافة النقاط وتسجيل العملية.','success');
  $('adjustAmount').value='';$('adjustDescription').value='';await load();
 }catch(e){note('adminmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
-const pageNames={menu:'القائمة الرئيسية',home:'الرئيسية ولوحة التحكم',tasks:'المهام المتاحة',newtask:'نشر مهمة جديدة',submissions:'طلبات التحقق',completed:'مهامي المكتملة',posts:'المنشورات',wallet:'المحفظة وسجل العمليات',settings:'إعدادات الحساب',admin:'لوحة المدير والإحصائيات'};
+const pageNames={menu:'القائمة الرئيسية',home:'الرئيسية ولوحة التحكم',tasks:'المهام المتاحة',newtask:'أضف محتواك',submissions:'طلبات التحقق',completed:'مهامي المكتملة',posts:'المنشورات',wallet:'المحفظة وسجل العمليات',settings:'إعدادات الحساب',admin:'لوحة المدير والإحصائيات'};
 function showPage(page,updateUrl=true){
- if((page==='admin'||page==='newtask'||page==='submissions')&&!isAdmin())page='menu'; if(page==='quiz'||page==='purchase')page='menu'; if(!pageNames[page])page='menu';
+ if(page==='admin'&&!isAdmin())page='menu'; if(page==='purchase')page='menu'; if(!pageNames[page])page='menu';
  const menu=page==='menu',home=page==='home';
  document.querySelectorAll('.tabpane').forEach(x=>x.classList.toggle('hidden',menu||x.id!==page));
  const stats=$('app').querySelector(':scope > .grid'),dashboard=$('app').querySelector(':scope > .panel');
  if(stats)stats.classList.toggle('hidden',!home);
  if(dashboard)dashboard.classList.toggle('hidden',!home);
- $('tabs').classList.toggle('hidden',!menu);
- $('pagebar').classList.toggle('hidden',menu);
- $('pageTitle').textContent=pageNames[page];
+ $('tabs').classList.toggle('hidden',!menu); $('pagebar').classList.remove('hidden'); $('pageTitle').textContent=menu?'القائمة الرئيسية':pageNames[page]; $('userbox').classList.toggle('hidden',menu);
  document.querySelectorAll('#tabs button[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===page));
  if(page==='wallet'){ $('walletPageBalance').textContent=$('settingsBalance').textContent; $('walletPageTransactions').innerHTML=$('transactions').innerHTML; }
  if(updateUrl&&location.hash!=='#'+page)history.pushState({page},'', '#'+page);
