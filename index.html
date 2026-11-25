@@ -253,7 +253,7 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 </style>
 </head>
 <body><div class="wrap">
-<header class="top"><div><div class="brand">♛ RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعلات وجمع النقاط</div></div><div id="userbox" class="row hidden"><span id="useremail" class="hidden"></span><button id="profileAvatar" class="avatar-trigger" type="button" aria-label="فتح الإعدادات" title="الإعدادات"><img id="siteAvatar" alt="RABII4LIKE"/></button></div></header>
+<header class="top"><div><div class="brand">♛ RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعلات وجمع النقاط</div></div><div id="userbox" class="row hidden"><button id="profileAvatar" class="avatar-trigger" type="button" aria-label="فتح الإعدادات" title="الإعدادات"><img id="siteAvatar" alt="RABII4LIKE"/></button></div></header>
 <div id="auth" class="panel auth">
 <h1>تسجيل الدخول</h1><p class="muted">مرحباً بك في مجتمع RABII4LIKE التفاعلي</p>
 <div id="msg"></div><label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="email" placeholder="البريد الإلكتروني">
@@ -362,7 +362,7 @@ async function load(){
  $('taskcount').textContent=availableTasks.length;
  $('donecount').textContent=subs.filter(x=>x.worker_id===user.id&&x.status==='approved').length;
  $('admintab').classList.toggle('hidden',!isAdmin); $('adminQuick').classList.toggle('hidden',!isAdmin);
- $('useremail').textContent=user.email;$('country').value=profile.country||'';$('language').value=profile.language||'ar';
+ $('country').value=profile.country||'';$('language').value=profile.language||'ar';
  renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();refreshIcons();
  if(profile.role==='admin')await loadAdmin();refreshIcons();
 }
@@ -373,14 +373,14 @@ function renderTasks(){
 }
 function renderSubs(){
  const mine=subs.filter(s=>{const t=tasks.find(x=>x.id===s.task_id);return t&&(t.creator_id===user.id||profile.role==='admin')&&s.status==='pending'});
- $('submissionlist').innerHTML=mine.length?mine.map(s=>{const t=tasks.find(x=>x.id===s.task_id);return `<article class="item"><h3>${esc(t?.title||'مهمة')}</h3><div class="muted">المنفذ: ${esc(s.worker_id)}</div><p>${esc(s.proof_text||'')}</p>${s.proof_url?`<a href="${esc(s.proof_url)}" target="_blank" rel="noopener">رابط الإثبات ↗</a>`:''}<div class="actions"><button class="good" onclick="window.review('${s.id}',true)"><i data-lucide="check"></i> اعتماد</button><button class="danger" onclick="window.review('${s.id}',false)"><i data-lucide="x"></i> رفض</button></div></article>`}).join(''):'<div class="empty">لا توجد طلبات تنتظر التحقق.</div>';
+ $('submissionlist').innerHTML=mine.length?mine.map(s=>{const t=tasks.find(x=>x.id===s.task_id);return `<article class="item"><h3>${esc(t?.title||'مهمة')}</h3><div class="muted">المنفذ: عضو</div><p>${esc(s.proof_text||'')}</p>${s.proof_url?`<a href="${esc(s.proof_url)}" target="_blank" rel="noopener">رابط الإثبات ↗</a>`:''}<div class="actions"><button class="good" onclick="window.review('${s.id}',true)"><i data-lucide="check"></i> اعتماد</button><button class="danger" onclick="window.review('${s.id}',false)"><i data-lucide="x"></i> رفض</button></div></article>`}).join(''):'<div class="empty">لا توجد طلبات تنتظر التحقق.</div>';
 }
 function renderCompleted(){
  const done=subs.filter(s=>s.worker_id===user.id);
  $('completedlist').innerHTML=done.length?done.map(s=>{const t=tasks.find(x=>x.id===s.task_id);return `<article class="item"><h3>${esc(t?.title||'مهمة')}</h3><span class="pill">${esc(s.status)}</span><p class="muted">تاريخ الإرسال: ${date(s.created_at)} · ${s.status==='approved'?'تاريخ الاعتماد: '+date(s.reviewed_at):''}</p>${s.review_note?`<p>${esc(s.review_note)}</p>`:''}</article>`}).join(''):'<div class="empty">لم تنجز أي مهمة بعد.</div>';
 }
 function renderTx(){ $('transactions').innerHTML=tx.length?tx.map(x=>`<article class="item row"><div><b>${esc(x.description||x.transaction_type)}</b><div class="muted">${date(x.created_at)} · ${esc(x.transaction_type)}</div></div><strong style="color:${x.amount>0?'var(--green)':'var(--red)'}">${x.amount>0?'+':''}${money(x.amount)}</strong></article>`).join(''):'<div class="empty">لا توجد عمليات بعد.</div>'; }
-function renderPosts(){ $('postlist').innerHTML=posts.length?posts.map(p=>`<article class="item"><p>${esc(p.content)}</p><div class="muted">${date(p.created_at)} · ${esc(p.author_id===user.id?'أنت':p.author_id)}</div>${p.author_id===user.id||profile.role==='admin'?`<div class="actions"><button class="danger" onclick="window.delPost('${p.id}')"><i data-lucide="trash-2"></i> حذف المنشور</button></div>`:''}</article>`).join(''):'<div class="empty">لا توجد منشورات بعد.</div>'; }
+function renderPosts(){ $('postlist').innerHTML=posts.length?posts.map(p=>`<article class="item"><p>${esc(p.content)}</p><div class="muted">${date(p.created_at)} · ${esc(p.author_id===user.id?'أنت':'عضو')}</div>${p.author_id===user.id||profile.role==='admin'?`<div class="actions"><button class="danger" onclick="window.delPost('${p.id}')"><i data-lucide="trash-2"></i> حذف المنشور</button></div>`:''}</article>`).join(''):'<div class="empty">لا توجد منشورات بعد.</div>'; }
 async function loadAdmin(){
  const [u,t,s,p,profiles,wallets,transactions]=await Promise.all([
   db.from('profiles').select('id',{count:'exact',head:true}),
