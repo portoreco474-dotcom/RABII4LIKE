@@ -257,9 +257,9 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 <body><div class="wrap">
 <header class="top"><div><div class="brand">♛ RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعلات وجمع النقاط</div></div><div id="userbox" class="row hidden"><button id="profileAvatar" class="avatar-trigger" type="button" aria-label="فتح الإعدادات" title="الإعدادات"><img id="siteAvatar" alt="RABII4LIKE"/></button></div></header>
 <div id="auth" class="panel auth">
-<h1>تسجيل الدخول</h1><p class="muted">أدخل بريدك الإلكتروني وسنرسل لك رابط دخول آمن. بعد التحقق ستظهر لك واجهة الموقع كاملة.</p>
+<h1>تسجيل الدخول</h1><p class="muted">أدخل بريدك الإلكتروني وكلمة المرور للدخول إلى حسابك.</p>
 <div id="msg"></div><label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="email" placeholder="البريد الإلكتروني">
-
+<label>كلمة السر</label><input id="password" type="password" autocomplete="current-password" placeholder="كلمة السر">
 <div class="actions"><button id="login" type="button"><i data-lucide="log-in"></i> دخول</button></div>
 </div>
 <div class="landing-features hidden" id="landingFeatures"><div class="landing-feature"><b><i data-lucide="gift"></i> مكافآت يومية</b><span>500 نقطة كل 24 ساعة</span></div><div class="landing-feature"><b><i data-lucide="chart-no-axes-combined"></i> إحصائيات شاملة</b><span>تابع نشاطك ونقاطك</span></div><div class="landing-feature"><b><i data-lucide="shield-check"></i> محافظ مستقلة</b><span>رصيد خاص بكل مستخدم</span></div><div class="landing-feature"><b><i data-lucide="crown"></i> محفظة المدير</b><span>رصيد غير محدود</span></div><div class="landing-feature"><b><i data-lucide="clipboard-list"></i> إدارة المهام</b><span>تنظيم ومنع التكرار</span></div><div class="landing-feature"><b><i data-lucide="globe-2"></i> دول متعددة</b><span>لغات ومجتمع تفاعلي</span></div></div>
@@ -423,7 +423,7 @@ window.review=async(id,approve)=>{const n=prompt(approve?'ملاحظة (اختي
 window.cancelTask=async id=>{if(!confirm('إلغاء المهمة؟ سيتم إرجاع النقاط الخاصة بالإنجازات غير المعتمدة.'))return;try{const n=await rpc('cancel_task',{p_task_id:id});note('adminmsg',`تم إلغاء المهمة وإرجاع ${n} نقطة.`,'success');await load()}catch(e){note('adminmsg',e.message,'error')}};
 window.taskStatus=async(id,status)=>{try{await rpc('admin_set_task_status',{p_task_id:id,p_status:status});await load()}catch(e){note('adminmsg',e.message,'error')}};
 window.delPost=async id=>{if(!confirm('حذف المنشور؟'))return;try{await rpc('delete_post',{p_post_id:id});await load()}catch(e){note('dashmsg',e.message,'error')}};
-$('login').onclick=async()=>{const email=$('email').value.trim();try{if(!email||!/^\S+@\S+\.\S+$/.test(email))throw new Error('أدخل بريداً إلكترونياً صحيحاً.');$('login').disabled=true;const {error}=await db.auth.signInWithOtp({email,options:{emailRedirectTo:'https://portoreco474-dotcom.github.io/RABII4LIKE/',shouldCreateUser:true}});if(error)throw error;note('msg','تم إرسال رابط الدخول إلى بريدك الإلكتروني. افتح الرسالة واضغط على الرابط للولوج إلى الموقع.','success')}catch(e){note('msg',e.message,'error')}finally{$('login').disabled=false}};
+$('login').onclick=async()=>{const email=$('email').value.trim(),password=$('password').value;try{if(!email||!/\S+@\S+\.\S+/.test(email))throw new Error('أدخل بريداً إلكترونياً صحيحاً.');if(!password)throw new Error('أدخل كلمة السر.');$('login').disabled=true;const {error}=await db.auth.signInWithPassword({email,password});if(error)throw error;note('msg','تم تسجيل الدخول بنجاح.','success')}catch(e){note('msg',e.message,'error')}finally{$('login').disabled=false}};
 $('logout').onclick=async()=>{await db.auth.signOut();location.reload()};
 $('profileAvatar').onclick=()=>document.querySelector('[data-tab="settings"]').click();
 const heroBackground=getComputedStyle($('auth'),'::before').backgroundImage;const heroImage=heroBackground.match(/url\(["']?(.*?)["']?\)/);if(heroImage&&heroImage[1])$('siteAvatar').src=heroImage[1];
