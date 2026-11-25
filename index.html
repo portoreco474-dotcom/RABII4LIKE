@@ -267,7 +267,7 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 <div class="actions"><button id="saveNewPassword" type="button">حفظ كلمة المرور</button></div>
 </div>
 <div class="landing-features" id="landingFeatures"><div class="landing-feature"><b><i data-lucide="gift"></i> مكافآت يومية</b><span>500 نقطة كل 24 ساعة</span></div><div class="landing-feature"><b><i data-lucide="chart-no-axes-combined"></i> إحصائيات شاملة</b><span>تابع نشاطك ونقاطك</span></div><div class="landing-feature"><b><i data-lucide="shield-check"></i> محافظ مستقلة</b><span>رصيد خاص بكل مستخدم</span></div><div class="landing-feature"><b><i data-lucide="crown"></i> محفظة المدير</b><span>رصيد غير محدود</span></div><div class="landing-feature"><b><i data-lucide="clipboard-list"></i> إدارة المهام</b><span>تنظيم ومنع التكرار</span></div><div class="landing-feature"><b><i data-lucide="globe-2"></i> دول متعددة</b><span>لغات ومجتمع تفاعلي</span></div></div>
-<div class="landing-social" aria-label="فيسبوك فقط"><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><i data-lucide="facebook"></i><span class="sr-only">Facebook</span></a></div>
+<div class="landing-social" aria-label="منصات التواصل"><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><i data-lucide="facebook"></i></a><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><i data-lucide="instagram"></i></a><a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok"><i data-lucide="music-2"></i></a><a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><i data-lucide="youtube"></i></a></div>
 <main id="app" class="hidden">
 <div class="grid">
 <div class="stat"><span class="stat-icon"><i data-lucide="wallet"></i></span><span class="muted">رصيد النقاط</span><b id="balance">0</b><small id="walletmode" class="muted">محفظتك</small></div>
@@ -287,7 +287,7 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 <p class="muted">اختر المنصة أولاً، ثم نوع التفاعل المطلوب. كل تفاعل يبدأ من 20 نقطة، ويتم حجز مجموع النقاط من محفظتك عند الحفظ.</p>
 <label>رابط المنشور أو الحساب</label><input id="turl" type="url" placeholder="https://..." />
 <div class="two">
-<div><label>المنصة</label><select id="tplatform" disabled><option value="Facebook" selected>Facebook فقط</option></select></div>
+<div><label>اختر المنصة</label><select id="tplatform"><option value="TikTok">TikTok</option><option value="Facebook">Facebook</option><option value="Facebook Page">Facebook Page</option><option value="Instagram">Instagram</option><option value="YouTube">YouTube</option></select></div>
 <div><label>نوع التفاعل</label><select id="taction"></select></div>
 <div><label>نقاط كل تفاعل (الحد الأدنى 20)</label><input id="tpoints" type="number" min="20" step="1" value="20"></div>
 <div><label>عدد التفاعلات المطلوبة</label><input id="tmax" type="text" inputmode="numeric" autocomplete="off" maxlength="19" value="10" placeholder="اكتب العدد الذي يسمح به رصيدك"></div>
@@ -369,8 +369,8 @@ async function load(){
 function renderTasks(){
  const isAdmin=String(profile.role||'').trim().toLowerCase()==='admin';
  const list=tasks.filter(t=>t.status==='open'&&t.creator_id!==user.id&&(isAdmin||!profile.country||!Array.isArray(t.target_countries)||t.target_countries.length===0||t.target_countries.includes(profile.country)));
- const facebookTasks=list.filter(t=>String(t.platform||'').toLowerCase().includes('facebook'));
- $('tasklist').innerHTML=facebookTasks.length?facebookTasks.map(t=>`<article class="item"><h3><i data-lucide="facebook"></i> ${esc(t.title)}</h3><div class="muted">Facebook · ${esc(t.action_type)} · ${t.points_per_completion} نقطة لكل إنجاز</div><div class="muted">الدول المستهدفة: ${esc((t.target_countries||[]).join('، ')||'جميع الدول')}</div><p>${esc(t.description||'')}</p><a href="${esc(t.target_url)}" target="_blank" rel="noopener noreferrer">فتح المنشور على Facebook ↗</a><div class="notice">نفّذ التفاعل المطلوب على فيسبوك، ثم أرسل إثبات الإنجاز. تُضاف النقاط بعد مراجعة المدير.</div><div class="actions"><button onclick="window.submitTask('${t.id}')"><i data-lucide="send"></i> إرسال إثبات الإنجاز</button></div></article>`).join(''):'<div class="empty">لا توجد مهام Facebook متاحة حالياً.</div>';
+ const visibleTasks=list;
+ $('tasklist').innerHTML=visibleTasks.length?visibleTasks.map(t=>`<article class="item"><h3><i data-lucide="target"></i> ${esc(t.title)}</h3><div class="muted">${esc(t.platform)} · ${esc(t.action_type)} · ${t.points_per_completion} نقطة لكل إنجاز</div><div class="muted">الدول المستهدفة: ${esc((t.target_countries||[]).join('، ')||'جميع الدول')}</div><p>${esc(t.description||'')}</p><a href="${esc(t.target_url)}" target="_blank" rel="noopener noreferrer">فتح المنشور ↗</a><div class="actions"><button onclick="window.submitTask('${t.id}')"><i data-lucide="send"></i> إرسال إثبات الإنجاز</button></div></article>`).join(''):'<div class="empty">لا توجد مهام متاحة حالياً.</div>';
 }
 function renderSubs(){
  const mine=subs.filter(s=>{const t=tasks.find(x=>x.id===s.task_id);return t&&(t.creator_id===user.id||isAdmin())&&s.status==='pending'});
@@ -431,14 +431,17 @@ $('daily').onclick=async()=>{try{await rpc('claim_daily_reward');note('dashmsg',
 $('refreshData').onclick=async()=>{const b=$('refreshData');b.disabled=true;try{await load();note('dashmsg','تم تحديث جميع البيانات من قاعدة البيانات.','success')}catch(e){note('dashmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
 function refreshInteractionOptions(){
  const platform=$('tplatform').value;
- const actions=['إعجاب','تعليق','مشاركة','متابعة الصفحة'];
+ const actions=['إعجاب','تعليق','مشاركة'];
+ if(platform==='TikTok'||platform==='Instagram'||platform==='Facebook'||platform==='Facebook Page')actions.unshift('متابعة');
+ if(platform==='Facebook Page')actions.unshift('إعجاب بالصفحة');
+ if(platform==='YouTube')actions.unshift('اشتراك في القناة','مشاهدة الفيديو');
  $('taction').innerHTML=actions.map(a=>'<option value="'+a+'">'+a+'</option>').join('');
 }
 $('tplatform').onchange=refreshInteractionOptions;refreshInteractionOptions();
 function updateTaskCostPreview(){const countText=$('tmax').value.trim(),points=Number($('tpoints').value);try{if(!/^\\d+$/.test(countText)||!Number.isSafeInteger(points)||points<20){$('taskCostPreview').textContent='اكتب عدد التفاعلات وحدد نقاط كل تفاعل لحساب التكلفة.';return}const total=BigInt(countText)*BigInt(points);$('taskCostPreview').textContent='التكلفة الإجمالية: '+total.toString()+' نقطة · رصيدك: '+(wallet?.is_unlimited?'غير محدود':String(wallet?.balance??0))+' نقطة. سيتم قبول العدد حسب رصيدك.'}catch{$('taskCostPreview').textContent='راجع عدد التفاعلات المدخل.'}}
 $('tmax').addEventListener('input',updateTaskCostPreview);$('tpoints').addEventListener('input',updateTaskCostPreview);
 $('createTask').onclick=async()=>{try{
- const url=$('turl').value.trim(),countries=Array.from($('tcountries').selectedOptions).map(o=>o.value),points=Number($('tpoints').value),countText=$('tmax').value.trim(),platform='Facebook',action=$('taction').value;
+ const url=$('turl').value.trim(),countries=Array.from($('tcountries').selectedOptions).map(o=>o.value),points=Number($('tpoints').value),countText=$('tmax').value.trim(),platform=$('tplatform').value,action=$('taction').value;
  const maxCount=9223372036854775807n; if(!/^\\d+$/.test(countText))throw new Error('اكتب عدد التفاعلات بأرقام صحيحة فقط.'); const count=BigInt(countText); if(count<=0n||count>maxCount)throw new Error('عدد التفاعلات غير صالح.'); if(!Number.isSafeInteger(points)||points<20)throw new Error('نقاط كل تفاعل يجب أن تكون 20 على الأقل.'); const totalCost=BigInt(points)*count; if(totalCost>maxCount)throw new Error('التكلفة الإجمالية تتجاوز الحد التقني المسموح.'); if(!wallet.is_unlimited&&totalCost>BigInt(String(wallet.balance)))throw new Error('رصيدك غير كافٍ. التكلفة المطلوبة: '+totalCost.toString()+' نقطة.');
  if(!/^https?:\/\//i.test(url))throw new Error('أدخل رابطاً صحيحاً يبدأ بـ https://');
  if(points<20)throw new Error('الحد الأدنى هو 20 نقطة لكل تفاعل');
