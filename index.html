@@ -240,7 +240,7 @@ body{background:radial-gradient(ellipse at 12% 8%,#35106a 0,transparent 32%),rad
 .tabs button{min-width:0;white-space:normal;min-height:48px;background:linear-gradient(135deg,#252044,#121b34);border:1px solid #47336d;color:#eee5ff;padding:10px 8px}
 .tabs button.active{outline:2px solid #48a9ff;background:linear-gradient(120deg,#472078,#12436b);color:#fff}
 .avatar-trigger{width:54px;height:54px;min-width:54px;padding:3px;border-radius:50%;background:linear-gradient(135deg,#f7d779,#9a4fff,#318bff);border:2px solid #e9c56a;box-shadow:0 0 20px #854dff88;overflow:hidden}
-.avatar-trigger img{width:100%;height:100%;display:block;object-fit:cover;object-position:35% 35%;border-radius:50%;background:#0a0b18}\n\n.top{position:relative;padding-left:90px!important}\n@media(max-width:700px){.top{padding-left:68px!important}}
+.avatar-trigger img{width:100%;height:100%;display:block;object-fit:cover;object-position:35% 35%;border-radius:50%;background:#0a0b18}\n\n.top{position:relative;padding-left:90px!important}\n.tabs.hidden{display:none!important}#tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:14px;margin:18px 0 26px;padding:20px;background:linear-gradient(145deg,rgba(35,29,75,.96),rgba(13,29,57,.96));border:1px solid rgba(130,110,255,.28);border-radius:22px}#tabs button{min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;white-space:normal;text-align:center;font-size:14px;border-radius:16px;padding:14px 8px}#tabs button i{width:25px;height:25px}#pagebar{margin:16px 0} @media(max-width:700px){.top{padding-left:68px!important}}
 .settings-wallet{margin-top:22px;padding:16px;border:1px solid #59407e;border-radius:16px;background:#080d1bcc}
 .settings-wallet h3{color:var(--gold);margin-top:0}
 .settings-exit{display:flex;justify-content:flex-start;margin-top:20px;padding-top:15px;border-top:1px solid #38284f}
@@ -493,16 +493,17 @@ $('adjustPointsBtn').onclick=async()=>{const b=$('adjustPointsBtn');b.disabled=t
  note('adminmsg',mode==='subtract'?'تم خصم النقاط وتسجيل العملية.':'تمت إضافة النقاط وتسجيل العملية.','success');
  $('adjustAmount').value='';$('adjustDescription').value='';await load();
 }catch(e){note('adminmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
-const pageNames={home:'الرئيسية ولوحة التحكم',tasks:'المهام المتاحة',newtask:'نشر مهمة جديدة',submissions:'طلبات التحقق',completed:'مهامي المكتملة',posts:'المنشورات',quiz:'الألغاز والاختبارات',purchase:'شراء النقاط',wallet:'المحفظة وسجل العمليات',settings:'إعدادات الحساب',admin:'لوحة المدير والإحصائيات'};
+const pageNames={menu:'القائمة الرئيسية',home:'الرئيسية ولوحة التحكم',tasks:'المهام المتاحة',newtask:'نشر مهمة جديدة',submissions:'طلبات التحقق',completed:'مهامي المكتملة',posts:'المنشورات',quiz:'الألغاز والاختبارات',purchase:'شراء النقاط',wallet:'المحفظة وسجل العمليات',settings:'إعدادات الحساب',admin:'لوحة المدير والإحصائيات'};
 function showPage(page,updateUrl=true){
- if(page==='admin'&&!isAdmin())page='home';
- if(!pageNames[page])page='home';
- const home=page==='home';
- document.querySelectorAll('.tabpane').forEach(x=>x.classList.toggle('hidden',x.id!==page));
+ if(page==='admin'&&!isAdmin())page='menu';
+ if(!pageNames[page])page='menu';
+ const menu=page==='menu',home=page==='home';
+ document.querySelectorAll('.tabpane').forEach(x=>x.classList.toggle('hidden',menu||x.id!==page));
  const stats=$('app').querySelector(':scope > .grid'),dashboard=$('app').querySelector(':scope > .panel');
  if(stats)stats.classList.toggle('hidden',!home);
  if(dashboard)dashboard.classList.toggle('hidden',!home);
- $('pagebar').classList.toggle('hidden',home);
+ $('tabs').classList.toggle('hidden',!menu);
+ $('pagebar').classList.toggle('hidden',menu);
  $('pageTitle').textContent=pageNames[page];
  document.querySelectorAll('#tabs button[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===page));
  if(page==='wallet'){ $('walletPageBalance').textContent=$('settingsBalance').textContent; $('walletPageTransactions').innerHTML=$('transactions').innerHTML; }
@@ -510,8 +511,9 @@ function showPage(page,updateUrl=true){
  refreshIcons();
 }
 $('tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(!b)return;showPage(b.dataset.tab)};
-$('homePageBtn').onclick=()=>showPage('home');
-window.addEventListener('popstate',()=>showPage(location.hash.slice(1)||'home',false));
+$('homePageBtn').textContent='⌂ القائمة الرئيسية';
+$('homePageBtn').onclick=()=>showPage('menu');
+window.addEventListener('popstate',()=>showPage(location.hash.slice(1)||'menu',false));
 document.querySelectorAll('#app .stat').forEach((card,i)=>{card.setAttribute('role','button');card.setAttribute('tabindex','0');const pages=['wallet','tasks','completed','settings'];card.addEventListener('click',()=>showPage(pages[i]));card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();showPage(pages[i])}})});
 
 const questions=[
@@ -525,7 +527,7 @@ const questions=[
 {q:'لغز: له أسنان ولا يعض، ما هو؟',a:['المشط','المفتاح','الساعة'],c:0}
 ];
 $('startquiz').onclick=()=>{let i=0,score=0;const answers=[];function draw(){if(i>=questions.length){const perfect=score===questions.length;$('quizbox').innerHTML=`<h3>${perfect?'مبروك! اجتزت الاختبار':'انتهى الاختبار'}</h3><p>نتيجتك: ${score} من ${questions.length}</p><div id="quizRewardMsg" class="notice">${perfect?'جاري إضافة مكافأتك...':'أكمل جميع الإجابات الصحيحة لتحصل على 50 نقطة.'}</div><button id="again">اختبار جديد</button>`;$('again').onclick=()=>{$('startquiz').click()};if(perfect){rpc('award_quiz_reward',{p_answers:answers}).then(async()=>{note('quizRewardMsg','مبروك! تمت إضافة 50 نقطة إلى محفظتك.','success');await load()}).catch(e=>note('quizRewardMsg',e.message,'error'))}return}const q=questions[i];$('quizbox').innerHTML=`<div class="row"><span class="pill">السؤال ${i+1} من ${questions.length}</span><span class="pill">المكافأة: 50 نقطة عند النجاح</span></div><h3>${q.q}</h3>${q.a.map((a,j)=>`<div class="item"><button class="secondary" data-answer="${j}">${a}</button></div>`).join('')}`;$('quizbox').querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{const answer=Number(b.dataset.answer);answers.push(answer);if(answer===q.c)score++;i++;draw()})}draw()};
-let entering=false,pendingStartUser=null;async function start(sessionUser=null){if(entering){if(sessionUser)pendingStartUser=sessionUser;return}entering=true;try{if(sessionUser){user=sessionUser}else{const {data,error}=await db.auth.getSession();if(error)throw error;if(!data.session)return;const verified=await db.auth.getUser();if(verified.error||!verified.data.user){await db.auth.signOut();return}user=verified.data.user}$('auth').classList.add('hidden');$('siteHeader').classList.remove('hidden');$('landingFeatures').classList.remove('hidden');document.querySelector('.landing-social').classList.remove('hidden');$('publicArticles').classList.remove('hidden');$('app').classList.remove('hidden');$('userbox').classList.remove('hidden');$('siteFooter').classList.remove('hidden');await load();showPage(location.hash.slice(1)||'home',false);document.body.classList.remove('auth-only')}catch(e){document.body.classList.add('auth-only');$('auth').classList.remove('hidden');note('msg',e.message,'error')}finally{entering=false;const queuedUser=pendingStartUser;pendingStartUser=null;if(queuedUser)start(queuedUser)}}
+let entering=false,pendingStartUser=null;async function start(sessionUser=null){if(entering){if(sessionUser)pendingStartUser=sessionUser;return}entering=true;try{if(sessionUser){user=sessionUser}else{const {data,error}=await db.auth.getSession();if(error)throw error;if(!data.session)return;const verified=await db.auth.getUser();if(verified.error||!verified.data.user){await db.auth.signOut();return}user=verified.data.user}$('auth').classList.add('hidden');$('siteHeader').classList.remove('hidden');$('landingFeatures').classList.add('hidden');document.querySelector('.landing-social').classList.add('hidden');$('publicArticles').classList.add('hidden');$('app').classList.remove('hidden');$('userbox').classList.remove('hidden');$('siteFooter').classList.remove('hidden');await load();showPage(location.hash.slice(1)||'menu',false);document.body.classList.remove('auth-only')}catch(e){document.body.classList.add('auth-only');$('auth').classList.remove('hidden');note('msg',e.message,'error')}finally{entering=false;const queuedUser=pendingStartUser;pendingStartUser=null;if(queuedUser)start(queuedUser)}}
 db.auth.onAuthStateChange((event,session)=>{if(event==='PASSWORD_RECOVERY'){recoveringPassword=true;user=session?.user||user;showRecoveryForm();return}if(recoveringPassword)return;if(session&&!user){start(session.user)}else if(!session){user=null;profile=null;wallet=null;document.body.classList.add('auth-only');resetAuthForm();$('siteHeader').classList.add('hidden');$('auth').classList.remove('hidden');$('landingFeatures').classList.add('hidden');document.querySelector('.landing-social').classList.add('hidden');$('publicArticles').classList.add('hidden');$('app').classList.add('hidden');$('userbox').classList.add('hidden');$('siteFooter').classList.add('hidden')}});
 db.from('site_articles').select('title,slug,excerpt,body,created_at').eq('published',true).order('created_at',{ascending:false}).limit(50).then(({data,error})=>{if(!error){siteArticles=data||[];renderPublicArticles();}});
 refreshIcons();start();
