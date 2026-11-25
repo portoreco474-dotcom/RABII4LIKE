@@ -240,7 +240,7 @@ body{background:radial-gradient(ellipse at 12% 8%,#35106a 0,transparent 32%),rad
 .tabs button{min-width:0;white-space:normal;min-height:48px;background:linear-gradient(135deg,#252044,#121b34);border:1px solid #47336d;color:#eee5ff;padding:10px 8px}
 .tabs button.active{outline:2px solid #48a9ff;background:linear-gradient(120deg,#472078,#12436b);color:#fff}
 .avatar-trigger{width:54px;height:54px;min-width:54px;padding:3px;border-radius:50%;background:linear-gradient(135deg,#f7d779,#9a4fff,#318bff);border:2px solid #e9c56a;box-shadow:0 0 20px #854dff88;overflow:hidden}
-.avatar-trigger img{width:100%;height:100%;display:block;object-fit:cover;object-position:35% 35%;border-radius:50%;background:#0a0b18}\n.header-mascot{position:absolute;left:22px;top:12px;width:54px;height:54px;border-radius:50%;object-fit:cover;object-position:35% 35%;border:2px solid #e9c56a;box-shadow:0 0 20px #854dff88}\n.top{position:relative;padding-left:90px!important}\n@media(max-width:700px){.header-mascot{left:12px;top:8px;width:46px;height:46px}.top{padding-left:68px!important}}
+.avatar-trigger img{width:100%;height:100%;display:block;object-fit:cover;object-position:35% 35%;border-radius:50%;background:#0a0b18}\n\n.top{position:relative;padding-left:90px!important}\n@media(max-width:700px){.top{padding-left:68px!important}}
 .settings-wallet{margin-top:22px;padding:16px;border:1px solid #59407e;border-radius:16px;background:#080d1bcc}
 .settings-wallet h3{color:var(--gold);margin-top:0}
 .settings-exit{display:flex;justify-content:flex-start;margin-top:20px;padding-top:15px;border-top:1px solid #38284f}
@@ -255,7 +255,7 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 </style>
 </head>
 <body><div class="wrap">
-<header class="top"><div><div class="brand">♛ RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعلات وجمع النقاط</div></div><img id="headerMascot" class="header-mascot" alt="الشخصية المقنّعة"><div id="userbox" class="row hidden"><button id="profileAvatar" class="avatar-trigger" type="button" aria-label="فتح الإعدادات" title="الإعدادات"><img id="siteAvatar" alt="RABII4LIKE"/></button></div></header>
+<header class="top"><div><div class="brand">♛ RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعلات وجمع النقاط</div></div><div id="userbox" class="row hidden"><button id="profileAvatar" class="avatar-trigger" type="button" aria-label="فتح الإعدادات" title="الإعدادات"><img id="siteAvatar" alt="RABII4LIKE"/></button></div></header>
 <div id="auth" class="panel auth">
 <h1>تسجيل الدخول</h1><p class="muted">مرحباً بك في مجتمع RABII4LIKE التفاعلي</p>
 <div id="msg"></div><label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="email" placeholder="البريد الإلكتروني">
@@ -435,7 +435,7 @@ $('saveNewPassword').onclick=async()=>{try{const password=$('newPassword').value
 $('signup').onclick=async()=>{try{const {data,error}=await db.auth.signUp({email:$('email').value,password:$('password').value,options:{emailRedirectTo:'https://portoreco474-dotcom.github.io/RABII4LIKE/'}});if(error)throw error;note('msg',data.session?'تم إنشاء الحساب.':'تم إنشاء الحساب. تحقق من بريدك لتأكيده.','success')}catch(e){note('msg',e.message,'error')}};
 $('logout').onclick=async()=>{await db.auth.signOut();location.reload()};
 $('profileAvatar').onclick=()=>document.querySelector('[data-tab="settings"]').click();
-const heroBackground=getComputedStyle($('auth'),'::before').backgroundImage;const heroImage=heroBackground.match(/url\(["']?(.*?)["']?\)/);if(heroImage&&heroImage[1]){$('siteAvatar').src=heroImage[1];$('headerMascot').src=heroImage[1];}
+const heroBackground=getComputedStyle($('auth'),'::before').backgroundImage;const heroImage=heroBackground.match(/url\(["']?(.*?)["']?\)/);if(heroImage&&heroImage[1])$('siteAvatar').src=heroImage[1];
 $('adminQuick').onclick=()=>{if(!isAdmin())return;$('admintab').click()};
 $('daily').onclick=async()=>{try{await rpc('claim_daily_reward');note('dashmsg','مبروك! تمت إضافة 500 نقطة إلى محفظتك.','success');await load()}catch(e){note('dashmsg',e.message,'error')}};
 $('refreshData').onclick=async()=>{const b=$('refreshData');b.disabled=true;try{await load();note('dashmsg','تم تحديث جميع البيانات من قاعدة البيانات.','success')}catch(e){note('dashmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
