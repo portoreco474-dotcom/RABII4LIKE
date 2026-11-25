@@ -376,7 +376,7 @@ async function load(){
  const availableTasks=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id&&(adminMode||!profile.country||!Array.isArray(x.target_countries)||x.target_countries.length===0||x.target_countries.includes(profile.country)));
  $('taskcount').textContent=availableTasks.length;
  $('donecount').textContent=subs.filter(x=>x.worker_id===user.id&&x.status==='approved').length;
- $('admintab').classList.toggle('hidden',!adminMode); $('adminQuick').classList.toggle('hidden',!adminMode);
+ $('admintab').classList.toggle('hidden',!adminMode); $('adminQuick').classList.toggle('hidden',!adminMode); document.querySelector('#tabs [data-tab="newtask"]').classList.toggle('hidden',!adminMode); document.querySelector('#tabs [data-tab="submissions"]').classList.toggle('hidden',!adminMode);
  $('language').value=profile.language||'ar';
  renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();renderMyPurchases();renderPublicArticles();refreshIcons();
  if(adminMode)await loadAdmin();refreshIcons();
@@ -494,7 +494,7 @@ $('adjustPointsBtn').onclick=async()=>{const b=$('adjustPointsBtn');b.disabled=t
 }catch(e){note('adminmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
 const pageNames={menu:'القائمة الرئيسية',home:'الرئيسية ولوحة التحكم',tasks:'المهام المتاحة',newtask:'نشر مهمة جديدة',submissions:'طلبات التحقق',completed:'مهامي المكتملة',posts:'المنشورات',wallet:'المحفظة وسجل العمليات',settings:'إعدادات الحساب',admin:'لوحة المدير والإحصائيات'};
 function showPage(page,updateUrl=true){
- if(page==='admin'&&!isAdmin())page='menu'; if(page==='quiz'||page==='purchase')page='menu'; if(!pageNames[page])page='menu';
+ if((page==='admin'||page==='newtask'||page==='submissions')&&!isAdmin())page='menu'; if(page==='quiz'||page==='purchase')page='menu'; if(!pageNames[page])page='menu';
  const menu=page==='menu',home=page==='home';
  document.querySelectorAll('.tabpane').forEach(x=>x.classList.toggle('hidden',menu||x.id!==page));
  const stats=$('app').querySelector(':scope > .grid'),dashboard=$('app').querySelector(':scope > .panel');
