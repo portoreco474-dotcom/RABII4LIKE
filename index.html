@@ -268,6 +268,7 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 </div>
 <div class="landing-features" id="landingFeatures"><div class="landing-feature"><b><i data-lucide="gift"></i> مكافآت يومية</b><span>500 نقطة كل 24 ساعة</span></div><div class="landing-feature"><b><i data-lucide="chart-no-axes-combined"></i> إحصائيات شاملة</b><span>تابع نشاطك ونقاطك</span></div><div class="landing-feature"><b><i data-lucide="shield-check"></i> محافظ مستقلة</b><span>رصيد خاص بكل مستخدم</span></div><div class="landing-feature"><b><i data-lucide="crown"></i> محفظة المدير</b><span>رصيد غير محدود</span></div><div class="landing-feature"><b><i data-lucide="clipboard-list"></i> إدارة المهام</b><span>تنظيم ومنع التكرار</span></div><div class="landing-feature"><b><i data-lucide="globe-2"></i> دول متعددة</b><span>لغات ومجتمع تفاعلي</span></div></div>
 <div class="landing-social" aria-label="منصات التواصل"><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><i data-lucide="facebook"></i></a><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><i data-lucide="instagram"></i></a><a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok"><i data-lucide="music-2"></i></a><a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><i data-lucide="youtube"></i></a></div>
+<section id="publicArticles" class="panel" style="margin:20px 0"><h2>مقالات ونصائح</h2><p class="muted">محتوى تعليمي ومعلومات مفيدة من RABII4LIKE.</p><div id="publicArticleList"><div class="empty">سيتم عرض المقالات المنشورة هنا.</div></div></section>
 <main id="app" class="hidden">
 <div class="grid">
 <div class="stat"><span class="stat-icon"><i data-lucide="wallet"></i></span><span class="muted">رصيد النقاط</span><b id="balance">0</b><small id="walletmode" class="muted">محفظتك</small></div>
@@ -280,7 +281,7 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 <div id="dashmsg"></div>
 </div>
 <nav class="tabs" id="tabs">
-<button class="active" data-tab="tasks"><i data-lucide="list-checks"></i> المهام</button><button data-tab="newtask"><i data-lucide="plus-circle"></i> نشر مهمة</button><button data-tab="submissions"><i data-lucide="clipboard-check"></i> طلبات التحقق</button><button data-tab="completed"><i data-lucide="check-check"></i> مهامي المكتملة</button><button data-tab="posts"><i data-lucide="messages-square"></i> المنشورات</button><button data-tab="quiz"><i data-lucide="brain"></i> اختبارات</button><button data-tab="settings"><i data-lucide="settings"></i> الإعدادات</button><button data-tab="admin" id="admintab" class="hidden"><i data-lucide="crown"></i> المدير والإحصائيات</button>
+<button class="active" data-tab="tasks"><i data-lucide="list-checks"></i> المهام</button><button data-tab="newtask"><i data-lucide="plus-circle"></i> نشر مهمة</button><button data-tab="submissions"><i data-lucide="clipboard-check"></i> طلبات التحقق</button><button data-tab="completed"><i data-lucide="check-check"></i> مهامي المكتملة</button><button data-tab="posts"><i data-lucide="messages-square"></i> المنشورات</button><button data-tab="quiz"><i data-lucide="brain"></i> اختبارات</button><button data-tab="purchase"><i data-lucide="coins"></i> شراء النقاط</button><button data-tab="settings"><i data-lucide="settings"></i> الإعدادات</button><button data-tab="admin" id="admintab" class="hidden"><i data-lucide="crown"></i> المدير والإحصائيات</button>
 </nav>
 <section id="tasks" class="panel tabpane"><h2><i data-lucide="target"></i> المهام المتاحة</h2><div id="tasklist"></div></section>
 <section id="newtask" class="panel tabpane hidden"><h2><i data-lucide="plus-circle"></i> أضف محتواك – طلب تفاعل جديد</h2>
@@ -303,6 +304,7 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 
 <section id="posts" class="panel tabpane hidden"><h2><i data-lucide="messages-square"></i> المنشورات</h2><label>أضف منشوراً</label><textarea id="postcontent" maxlength="1000" placeholder="شارك منشورك مع المجتمع..."></textarea><div class="actions"><button id="addpost"><i data-lucide="send"></i> نشر</button></div><div id="postlist"></div></section>
 <section id="quiz" class="panel tabpane hidden"><h2><i data-lucide="brain"></i> الألغاز والأسئلة العامة</h2><p class="muted">أجب عن الأسئلة الثمانية كلها بشكل صحيح لتحصل على 50 نقطة في محفظتك.</p><div id="quizbox"><button id="startquiz">ابدأ الاختبار</button></div></section>
+<section id="purchase" class="panel tabpane hidden"><h2>شراء النقاط</h2><p class="muted">اختر Western Union أو Cash Plus. لا تُضاف النقاط إلا بعد مراجعة المدير.</p><div class="notice">تواصل مع الإدارة للحصول على بيانات الاستلام قبل إرسال أي أموال.</div><div class="two"><div><label>طريقة التحويل</label><select id="purchaseMethod"><option>Western Union</option><option>Cash Plus</option></select></div><div><label>عدد النقاط (100 على الأقل)</label><input id="purchasePoints" type="number" min="100" step="100" value="1000"></div><div><label>اسم المرسل</label><input id="purchaseSender" maxlength="120"></div><div><label>رقم الحوالة / مرجع التحويل</label><input id="purchaseReference" maxlength="120"></div></div><div class="actions"><button id="submitPurchase">إرسال طلب شراء النقاط</button></div><div id="purchaseMsg"></div><h3>طلباتي السابقة</h3><div id="myPurchases"></div></section>
 <section id="settings" class="panel tabpane hidden"><h2><i data-lucide="settings"></i> إعدادات الحساب</h2><div><label>اللغة</label><select id="language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div><div class="actions"><button id="saveSettings"><i data-lucide="save"></i> حفظ الإعدادات</button><button id="logout" class="danger" type="button"><i data-lucide="log-out"></i> تسجيل الخروج</button></div><div id="settingsmsg"></div><div class="settings-wallet"><h3><i data-lucide="wallet"></i> محفظتي وسجل النقاط</h3><p class="muted">رصيدك الحالي: <strong id="settingsBalance">0</strong> نقطة</p><div id="transactions"></div></div></section>
 <section id="admin" class="panel tabpane hidden"><h2><i data-lucide="crown"></i> لوحة المدير</h2><div class="grid"><div class="stat">المستخدمون<b id="susers">0</b></div><div class="stat">المهام<b id="stasks">0</b></div><div class="stat">طلبات التحقق<b id="ssubs">0</b></div><div class="stat">المنشورات<b id="sposts">0</b></div></div>
 <h3><i data-lucide="send"></i> إرسال النقاط</h3><div class="two"><div><label>بريد المستلم</label><input id="recipient" type="email"></div><div><label>عدد النقاط</label><input id="sendpoints" type="number" min="1"></div></div><label>الوصف</label><input id="senddesc" placeholder="هدية من الإدارة"><div class="actions"><button id="sendpointsbtn"><i data-lucide="send"></i> إرسال النقاط</button></div><div id="adminmsg"></div>
@@ -326,7 +328,7 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 <h3>مراجعة طلبات الإنجاز المعلّقة</h3><div id="adminsubs"></div>
 
 
-<h3><i data-lucide="messages-square"></i> إدارة المنشورات</h3><p class="muted">إضافة منشور وحذف أي منشور من المنصة.</p><div id="adminposts"></div></section>
+<h3>مراجعة طلبات شراء النقاط</h3><div id="adminPurchases"></div><h3>إضافة مقال للموقع</h3><div class="two"><div><label>عنوان المقال</label><input id="articleTitle" maxlength="160"></div><div><label>الرابط المختصر</label><input id="articleSlug" maxlength="180"></div></div><label>ملخص المقال</label><textarea id="articleExcerpt" maxlength="300"></textarea><label>نص المقال (100 حرف على الأقل)</label><textarea id="articleBody" rows="7"></textarea><label><input id="articlePublished" type="checkbox" style="width:auto"> نشر المقال</label><button id="saveArticle">حفظ المقال</button><div id="articleMsg"></div><div id="adminArticles"></div><h3><i data-lucide="messages-square"></i> إدارة المنشورات</h3><p class="muted">إضافة منشور وحذف أي منشور من المنصة.</p><div id="adminposts"></div></section>
 </main><div class="foot">RABII4LIKE · نظام نقاط ومحافظ مستقل لكل مستخدم</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
@@ -335,7 +337,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const SUPABASE_URL='https://hhrqfhffainiboncsekp.supabase.co';
 const SUPABASE_KEY='sb_publishable_AEq00cksyGY19Vl4E9SnIQ_tiwXiCm3';
 const db=createClient(SUPABASE_URL,SUPABASE_KEY);
-let user=null,profile=null,wallet=null,tasks=[],subs=[],posts=[],tx=[],recovering=false;
+let user=null,profile=null,wallet=null,tasks=[],subs=[],posts=[],tx=[],recovering=false,purchaseRequests=[],siteArticles=[];
 const $=id=>document.getElementById(id);
 function isAdmin(){return String(profile?.role||'').trim().toLowerCase()==='admin';}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -345,16 +347,18 @@ function money(n){try{return BigInt(String(n??0)).toLocaleString('en-US')}catch{
 function date(s){return s?new Date(s).toLocaleString():'—'}
 async function rpc(name,args={}){const {data,error}=await db.rpc(name,args);if(error)throw error;return data}
 async function load(){
- const [p,w,t,s,po,tr]=await Promise.all([
+ const [p,w,t,s,po,tr,pr,ar]=await Promise.all([
   db.from('profiles').select('*').eq('id',user.id).single(),
   db.from('wallets').select('*').eq('user_id',user.id).single(),
   db.from('tasks').select('*').order('created_at',{ascending:false}).limit(100),
   db.from('task_submissions').select('*').order('created_at',{ascending:false}).limit(200),
   db.from('posts').select('*').order('created_at',{ascending:false}).limit(100),
-  db.from('point_transactions').select('*').order('created_at',{ascending:false}).limit(100)
+  db.from('point_transactions').select('*').order('created_at',{ascending:false}).limit(100),
+  db.from('point_purchase_requests').select('*').order('created_at',{ascending:false}).limit(100),
+  db.from('site_articles').select('*').eq('published',true).order('created_at',{ascending:false}).limit(50)
  ]);
- for(const x of [p,w,t,s,po,tr])if(x.error)throw x.error;
- profile=p.data;wallet=w.data;tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;
+ for(const x of [p,w,t,s,po,tr,pr,ar])if(x.error)throw x.error;
+ profile=p.data;wallet=w.data;tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;purchaseRequests=pr.data||[];siteArticles=ar.data||[];
  $('balance').textContent=money(wallet.balance);$('settingsBalance').textContent=wallet.is_unlimited?'غير محدود':money(wallet.balance);$('walletmode').textContent=wallet.is_unlimited?'محفظة المدير غير المحدودة':'رصيدك الحالي';
  $('role').textContent=profile.role;
  const adminMode=String(profile.role||'').trim().toLowerCase()==='admin';
@@ -363,7 +367,7 @@ async function load(){
  $('donecount').textContent=subs.filter(x=>x.worker_id===user.id&&x.status==='approved').length;
  $('admintab').classList.toggle('hidden',!adminMode); $('adminQuick').classList.toggle('hidden',!adminMode);
  $('language').value=profile.language||'ar';
- renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();refreshIcons();
+ renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();renderMyPurchases();renderPublicArticles();refreshIcons();
  if(adminMode)await loadAdmin();refreshIcons();
 }
 function renderTasks(){
@@ -383,16 +387,18 @@ function renderCompleted(){
 function renderTx(){ $('transactions').innerHTML=tx.length?tx.map(x=>`<article class="item row"><div><b>${esc(x.description||x.transaction_type)}</b><div class="muted">${date(x.created_at)} · ${esc(x.transaction_type)}</div></div><strong style="color:${x.amount>0?'var(--green)':'var(--red)'}">${x.amount>0?'+':''}${money(x.amount)}</strong></article>`).join(''):'<div class="empty">لا توجد عمليات بعد.</div>'; }
 function renderPosts(){ $('postlist').innerHTML=posts.length?posts.map(p=>`<article class="item"><p>${esc(p.content)}</p><div class="muted">${date(p.created_at)} · ${esc(p.author_id===user.id?'أنت':'عضو')}</div>${p.author_id===user.id||isAdmin()?`<div class="actions"><button class="danger" onclick="window.delPost('${p.id}')"><i data-lucide="trash-2"></i> حذف المنشور</button></div>`:''}</article>`).join(''):'<div class="empty">لا توجد منشورات بعد.</div>'; }
 async function loadAdmin(){
- const [u,t,s,p,profiles,wallets,transactions]=await Promise.all([
+ const [u,t,s,p,profiles,wallets,transactions,purchases,articles]=await Promise.all([
   db.from('profiles').select('id',{count:'exact',head:true}),
   db.from('tasks').select('id',{count:'exact',head:true}),
   db.from('task_submissions').select('id',{count:'exact',head:true}),
   db.from('posts').select('id',{count:'exact',head:true}),
   db.from('profiles').select('id,email,role,country,language,created_at').order('created_at',{ascending:false}).limit(500),
   db.from('wallets').select('user_id,balance,is_unlimited').limit(500),
-  db.from('point_transactions').select('user_id,amount,transaction_type,description,performed_by,created_at').order('created_at',{ascending:false}).limit(1000)
+  db.from('point_transactions').select('user_id,amount,transaction_type,description,performed_by,created_at').order('created_at',{ascending:false}).limit(1000),
+  db.from('point_purchase_requests').select('*').order('created_at',{ascending:false}).limit(200),
+  db.from('site_articles').select('*').order('created_at',{ascending:false}).limit(100)
  ]);
- for(const x of [u,t,s,p,profiles,wallets,transactions])if(x.error)throw x.error;
+ for(const x of [u,t,s,p,profiles,wallets,transactions,purchases,articles])if(x.error)throw x.error;
  const people=profiles.data||[], ws=wallets.data||[], ledger=transactions.data||[];
  $('susers').textContent=u.count??0;$('stasks').textContent=t.count??0;$('ssubs').textContent=s.count??0;$('sposts').textContent=p.count??0;
  $('sapproved').textContent=subs.filter(x=>x.status==='approved').length;
@@ -405,7 +411,9 @@ async function loadAdmin(){
  $('languageStats').innerHTML=bars(group(people,'language'));
  const approved=subs.filter(x=>x.status==='approved').length;
  $('engagementStats').innerHTML=bars({'المهام المنشورة':tasks.length,'طلبات الإنجاز':subs.length,'إنجازات مقبولة':approved,'المنشورات':posts.length,'عمليات النقاط':ledger.length});
-  $('adminUsers').innerHTML=people.length?people.map(person=>{const w=ws.find(x=>x.user_id===person.id);const role=String(person.role||'user');const roleAction='';return '<article class="item"><div class="row"><div><b>'+esc(person.email||person.id)+'</b><div class="muted">'+esc(person.country||'الدولة غير محددة')+' · '+date(person.created_at)+'</div></div><span class="pill">'+(role==='admin'?'مدير':'مستخدم')+'</span><strong>'+(w?.is_unlimited?'غير محدود':money(w?.balance||0)+' نقطة')+'</strong></div><div class="actions">'+roleAction+'</div></article>'}).join(''):'<div class="empty">لا يوجد مستخدمون.</div>';
+  $('adminPurchases').innerHTML=(purchases.data||[]).filter(x=>x.status==='pending').map(x=>'<article class="item"><b>'+esc(x.payment_method)+' · '+money(x.points)+' نقطة</b><div class="muted">'+esc(x.sender_name)+' · '+esc(x.transfer_reference)+'</div><button onclick="window.reviewPurchase(\''+x.id+'\',true)">اعتماد وإضافة النقاط</button> <button class="danger" onclick="window.reviewPurchase(\''+x.id+'\',false)">رفض</button></article>').join('')||'<div class="empty">لا توجد طلبات شراء معلّقة.</div>';
+ $('adminArticles').innerHTML=(articles.data||[]).map(a=>'<article class="item">'+esc(a.title)+' · '+(a.published?'منشور':'مسودة')+'</article>').join('');
+ $('adminUsers').innerHTML=people.length?people.map(person=>{const w=ws.find(x=>x.user_id===person.id);const role=String(person.role||'user');const roleAction='';return '<article class="item"><div class="row"><div><b>'+esc(person.email||person.id)+'</b><div class="muted">'+esc(person.country||'الدولة غير محددة')+' · '+date(person.created_at)+'</div></div><span class="pill">'+(role==='admin'?'مدير':'مستخدم')+'</span><strong>'+(w?.is_unlimited?'غير محدود':money(w?.balance||0)+' نقطة')+'</strong></div><div class="actions">'+roleAction+'</div></article>'}).join(''):'<div class="empty">لا يوجد مستخدمون.</div>';
  $('adminLedger').innerHTML=ledger.length?ledger.slice().sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,100).map(x=>{const person=people.find(p=>p.id===x.user_id);const actor=people.find(p=>p.id===x.performed_by);return '<article class="item"><div class="row"><b>'+esc(person?.email||x.user_id)+'</b><span class="pill">'+esc(x.transaction_type)+'</span><b style="color:'+(Number(x.amount)>=0?'#43d6a0':'#ff9aae')+'">'+(Number(x.amount)>0?'+':'')+money(x.amount)+'</b></div><div class="muted">'+esc(x.description||'بدون وصف')+' · المنفذ: '+esc(actor?.email||'النظام')+' · '+date(x.created_at)+'</div></article>'}).join(''):'<div class="empty">لا توجد معاملات مسجلة.</div>';
  $('allcompleted').innerHTML=subs.length?subs.slice().sort((a,b)=>new Date(b.reviewed_at||b.created_at)-new Date(a.reviewed_at||a.created_at)).map(s=>{const task=tasks.find(x=>x.id===s.task_id);const person=people.find(x=>x.id===s.worker_id);return '<article class="item"><b>'+esc(task?.title||'مهمة محذوفة')+'</b> <span class="pill">'+esc(s.status)+'</span><div class="muted">المستخدم: '+esc(person?.email||s.worker_id)+' · أُرسل: '+date(s.created_at)+' · تاريخ المراجعة/الاعتماد: '+date(s.reviewed_at)+'</div><p>'+esc(s.proof_text||'لا يوجد وصف للإثبات')+'</p>'+(s.proof_url?'<a target="_blank" rel="noopener" href="'+esc(s.proof_url)+'">فتح إثبات الإنجاز ↗</a>':'')+'</article>'}).join(''):'<div class="empty">لا توجد إنجازات مسجلة.</div>';
  $('admintasks').innerHTML=tasks.map(t=>'<article class="item"><b>'+esc(t.title)+'</b> <span class="pill">'+esc(t.status)+'</span><div class="muted">'+money(t.points_per_completion)+' نقطة × '+money(t.max_completions)+' · '+date(t.created_at)+'</div><div class="actions">'+(t.status==='open'?'<button class="secondary" onclick="window.taskStatus(\''+t.id+'\',\'paused\')">إيقاف</button>':'')+(t.status==='paused'?'<button onclick="window.taskStatus(\''+t.id+'\',\'open\')">إعادة فتح</button>':'')+(!['cancelled','completed'].includes(t.status)?'<button class="danger" onclick="window.cancelTask(\''+t.id+'\')">إلغاء واسترجاع المتبقي</button>':'')+'</div></article>').join('')||'<div class="empty">لا توجد مهام.</div>';
@@ -450,6 +458,11 @@ $('createTask').onclick=async()=>{try{
  await rpc('create_task',{p_title:title,p_description:$('tdesc').value,p_platform:platform,p_action_type:action,p_target_url:url,p_points_per_completion:points,p_max_completions:count.toString(),p_target_countries:countries});
  note('newtaskmsg','تم حفظ طلب التفاعل وحجز النقاط بنجاح.','success');$('turl').value='';$('tdesc').value='';await load();
 }catch(e){note('newtaskmsg',e.message,'error')}};
+function renderMyPurchases(){ $('myPurchases').innerHTML=purchaseRequests.map(x=>'<article class="item">'+esc(x.payment_method)+' · '+money(x.points)+' نقطة · '+esc(x.transfer_reference)+' · '+(x.status==='pending'?'قيد المراجعة':x.status==='approved'?'تمت الموافقة':'مرفوض')+'</article>').join('')||'<div class="empty">لا توجد طلبات سابقة.</div>'; }
+function renderPublicArticles(){ $('publicArticleList').innerHTML=siteArticles.map(a=>'<article class="item"><h3>'+esc(a.title)+'</h3><p>'+esc(a.excerpt)+'</p><details><summary>قراءة المقال</summary><p style="white-space:pre-wrap">'+esc(a.body)+'</p></details></article>').join('')||'<div class="empty">لا توجد مقالات منشورة حالياً.</div>'; }
+$('submitPurchase').onclick=async()=>{try{const points=Number($('purchasePoints').value),sender=$('purchaseSender').value.trim(),reference=$('purchaseReference').value.trim();if(!Number.isSafeInteger(points)||points<100)throw new Error('الحد الأدنى 100 نقطة.');if(sender.length<2||reference.length<3)throw new Error('أدخل اسم المرسل ورقم الحوالة.');const {error}=await db.from('point_purchase_requests').insert({user_id:user.id,payment_method:$('purchaseMethod').value,points,sender_name:sender,transfer_reference:reference});if(error)throw error;note('purchaseMsg','تم إرسال الطلب. ستضاف النقاط بعد التحقق من التحويل.','success');await load()}catch(e){note('purchaseMsg',e.message,'error')}};
+window.reviewPurchase=async(id,approve)=>{if(!isAdmin())return;const n=prompt('ملاحظة أو سبب الرفض (اختياري):')||'';try{await rpc('admin_review_point_purchase',{p_request_id:id,p_approve:approve,p_note:n});note('adminmsg',approve?'تم اعتماد التحويل وإضافة النقاط.':'تم رفض الطلب.','success');await load()}catch(e){note('adminmsg',e.message,'error')}};
+$('saveArticle').onclick=async()=>{try{if(!isAdmin())throw new Error('للمدير فقط.');const title=$('articleTitle').value.trim(),slug=$('articleSlug').value.trim(),excerpt=$('articleExcerpt').value.trim(),body=$('articleBody').value.trim();if(title.length<5||slug.length<3||excerpt.length<20||body.length<100)throw new Error('أكمل الحقول؛ نص المقال 100 حرف على الأقل.');const {error}=await db.from('site_articles').insert({title,slug,excerpt,body,published:$('articlePublished').checked,created_by:user.id});if(error)throw error;note('articleMsg','تم حفظ المقال.','success');await load()}catch(e){note('articleMsg',e.message,'error')}};
 $('addpost').onclick=async()=>{try{await rpc('add_post',{p_content:$('postcontent').value});$('postcontent').value='';await load()}catch(e){note('dashmsg',e.message,'error')}};
 $('saveSettings').onclick=async()=>{try{const {error}=await db.from('profiles').update({language:$('language').value}).eq('id',user.id);if(error)throw error;note('settingsmsg','تم حفظ الإعدادات.','success');await load()}catch(e){note('settingsmsg',e.message,'error')}};
 $('sendpointsbtn').onclick=async()=>{try{const {data,error}=await db.from('profiles').select('id').eq('email',$('recipient').value.trim()).single();if(error)throw error;await rpc('admin_transfer_points',{p_recipient_id:data.id,p_amount:Number($('sendpoints').value),p_description:$('senddesc').value});note('adminmsg','تم إرسال النقاط بنجاح.','success');await load()}catch(e){note('adminmsg',e.message,'error')}};
