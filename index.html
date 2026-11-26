@@ -497,10 +497,11 @@ function showPage(page,updateUrl=true){
  const stats=$('app').querySelector(':scope > .grid'),dashboard=$('app').querySelector(':scope > .panel');
  if(stats)stats.classList.toggle('hidden',!home);
  if(dashboard)dashboard.classList.toggle('hidden',!home);
- $('tabs').classList.toggle('hidden',!menu&&!home); $('pagebar').classList.remove('hidden'); $('pageTitle').textContent=menu?'القائمة الرئيسية':pageNames[page]; $('userbox').classList.toggle('hidden',menu);
+ $('tabs').classList.remove('hidden'); $('pagebar').classList.remove('hidden'); $('pageTitle').textContent=pageNames[page]; $('userbox').classList.remove('hidden');
  document.querySelectorAll('#tabs button[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===page));
  if(page==='wallet'){ $('walletPageBalance').textContent=$('settingsBalance').textContent; $('walletPageTransactions').innerHTML=$('transactions').innerHTML; }
  if(updateUrl&&location.hash!=='#'+page)history.pushState({page},'', '#'+page);
+ window.scrollTo({top:0,behavior:'smooth'});
  refreshIcons();
 }
 $('tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(!b)return;showPage(b.dataset.tab)};
