@@ -15,7 +15,7 @@ input,textarea,select{width:100%;background:#0c1428;border:1px solid var(--line)
 .wrap{max-width:1150px;margin:auto;padding:22px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}.brand{font-size:24px;font-weight:950;letter-spacing:1px;color:var(--cyan)}.brand span{color:var(--gold)}.muted{color:var(--muted)}.hidden{display:none!important}
 .panel{background:linear-gradient(145deg,rgba(22,34,60,.96),rgba(13,22,42,.96));border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 12px 35px #0003}
 .auth{max-width:430px;margin:8vh auto}.auth h1{margin:0 0 8px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:16px 0}.stat{background:#101a30;border:1px solid var(--line);border-radius:16px;padding:15px}.stat b{display:block;font-size:25px;color:var(--gold);margin-top:4px}
-.tabs{display:flex;gap:8px;overflow:auto;padding:5px 0 14px;flex-wrap:wrap}.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 18px;padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:#111a30}.pagebar h2{margin:0}.pagebar button{white-space:nowrap}.tabpane{min-height:260px}.stat{cursor:pointer}.stat:focus{outline:2px solid var(--cyan)}.tabs button{white-space:nowrap}.tabs button.active{outline:2px solid var(--cyan);background:#183c56;color:#fff}
+.tabs{display:flex;gap:8px;overflow:auto;padding:5px 0 14px;flex-wrap:wrap}.pagebar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 18px;padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:#111a30}.pagebar h2{margin:0}.pagebar button{white-space:nowrap}.pagebar .actions{margin:0;flex-wrap:nowrap}.tabpane{min-height:260px}.stat{cursor:pointer}.stat:focus{outline:2px solid var(--cyan)}.tabs button{white-space:nowrap}.tabs button.active{outline:2px solid var(--cyan);background:#183c56;color:#fff}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stack{display:grid;gap:12px}.item{padding:14px;border:1px solid var(--line);border-radius:14px;background:#0d172b;margin:10px 0}.item h3{margin:0 0 6px}.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.row button{flex:0 0 auto}.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#263653;color:#cfe8ff;font-size:12px}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.empty{text-align:center;padding:25px;color:var(--muted)}.notice{padding:10px 12px;border-radius:10px;background:#152943;color:#bdeeff;margin:10px 0}.error{background:#47243a;color:#ffd1dc}.success{background:#16423e;color:#c6fff0}.foot{font-size:12px;color:var(--muted);text-align:center;margin:25px 0}
 @media(max-width:780px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}.wrap{padding:14px}.top{align-items:flex-start}.brand{font-size:20px}}
 
@@ -287,7 +287,7 @@ body.auth-only #auth{display:block!important}
 <div class="row"><div><h2 style="margin:0">لوحة التحكم</h2><span class="muted">كل مستخدم لديه محفظته وسجل نقاطه الخاص</span></div><div class="actions"><button id="refreshData" class="secondary" type="button"><i data-lucide="refresh-cw"></i> تحديث البيانات</button><button id="daily" class="good"><i data-lucide="gift"></i> استلام 500 نقطة يومية</button><button id="adminQuick" class="good hidden" type="button"><i data-lucide="crown"></i> لوحة تحكم المدير</button></div></div>
 <div id="dashmsg"></div>
 </div>
-<div class="pagebar hidden" id="pagebar"><div><div class="muted">RABII4LIKE / الصفحات</div><h2 id="pageTitle">الرئيسية</h2></div><button type="button" class="secondary" id="homePageBtn">⌂ الرئيسية</button></div>
+<div class="pagebar hidden" id="pagebar"><div><div class="muted">RABII4LIKE / الصفحات</div><h2 id="pageTitle">الرئيسية</h2></div><div class="actions"><button type="button" class="secondary" id="backPageBtn">← رجوع</button><button type="button" class="secondary" id="homePageBtn">⌂ الرئيسية</button></div></div>
 <nav class="tabs" id="tabs">
 <button class="active" data-tab="home"><i data-lucide="home"></i> الرئيسية</button>
 <button class="active" data-tab="tasks"><i data-lucide="list-checks"></i> المهام</button><button data-tab="newtask"><i data-lucide="plus-circle"></i> نشر مهمة</button><button data-tab="submissions"><i data-lucide="clipboard-check"></i> طلبات التحقق</button><button data-tab="completed"><i data-lucide="check-check"></i> مهامي المكتملة</button><button data-tab="publish"><i data-lucide="file-plus-2"></i> أضف محتواك</button><button data-tab="posts"><i data-lucide="messages-square"></i> المنشورات</button><button data-tab="wallet"><i data-lucide="wallet"></i> المحفظة</button><button data-tab="settings"><i data-lucide="settings"></i> الإعدادات</button><button data-tab="admin" id="admintab" class="hidden"><i data-lucide="crown"></i> المدير والإحصائيات</button>
@@ -490,24 +490,26 @@ $('adjustPointsBtn').onclick=async()=>{const b=$('adjustPointsBtn');b.disabled=t
  $('adjustAmount').value='';$('adjustDescription').value='';await load();
 }catch(e){note('adminmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
 const pageNames={menu:'القائمة الرئيسية',home:'الرئيسية ولوحة التحكم',tasks:'المهام المتاحة',newtask:'نشر طلب تفاعل',publish:'أضف محتواك',submissions:'طلبات التحقق',completed:'مهامي المكتملة',posts:'المنشورات',wallet:'المحفظة وسجل العمليات',settings:'إعدادات الحساب',admin:'لوحة المدير والإحصائيات'};
+let pageTrail=['home'];
 function showPage(page,updateUrl=true){
  if(page==='admin'&&!isAdmin())page='home'; if(page==='purchase')page='home'; if(!pageNames[page])page='home'; if(page==='menu')page='home';
- const menu=page==='menu',home=page==='home';
- document.querySelectorAll('.tabpane').forEach(x=>x.classList.toggle('hidden',menu||x.id!==page));
+ const home=page==='home';
+ document.querySelectorAll('.tabpane').forEach(x=>x.classList.toggle('hidden',x.id!==page));
  const stats=$('app').querySelector(':scope > .grid'),dashboard=$('app').querySelector(':scope > .panel');
  if(stats)stats.classList.toggle('hidden',!home);
  if(dashboard)dashboard.classList.toggle('hidden',!home);
  $('tabs').classList.remove('hidden'); $('pagebar').classList.remove('hidden'); $('pageTitle').textContent=pageNames[page]; $('userbox').classList.remove('hidden');
  document.querySelectorAll('#tabs button[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===page));
  if(page==='wallet'){ $('walletPageBalance').textContent=$('settingsBalance').textContent; $('walletPageTransactions').innerHTML=$('transactions').innerHTML; }
- if(updateUrl&&location.hash!=='#'+page)history.pushState({page},'', '#'+page);
+ if(updateUrl&&location.hash!=='#'+page){if(pageTrail[pageTrail.length-1]!==page)pageTrail.push(page);history.pushState({page},'', '#'+page);}
  window.scrollTo({top:0,behavior:'smooth'});
  refreshIcons();
 }
 $('tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(!b)return;showPage(b.dataset.tab)};
 $('homePageBtn').textContent='⌂ الرئيسية';
 $('homePageBtn').onclick=()=>showPage('home');
-window.addEventListener('popstate',()=>showPage(location.hash.slice(1)||'home',false));
+$('backPageBtn').onclick=()=>{if(pageTrail.length>1){history.back()}else if(pageTrail[pageTrail.length-1]!=='home'){showPage('home')}};
+window.addEventListener('popstate',()=>{if(pageTrail.length>1)pageTrail.pop();showPage(location.hash.slice(1)||'home',false)});
 document.querySelectorAll('#app .stat').forEach((card,i)=>{card.setAttribute('role','button');card.setAttribute('tabindex','0');const pages=['wallet','tasks','completed','settings'];card.addEventListener('click',()=>showPage(pages[i]));card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();showPage(pages[i])}})});
 
 const questions=[
