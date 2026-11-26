@@ -256,6 +256,7 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 /* Strict first-screen gate: show only authentication until a valid session is loaded */
 body.auth-only #siteHeader,body.auth-only #landingFeatures,body.auth-only .landing-social,body.auth-only #publicArticles,body.auth-only #app,body.auth-only #userbox,body.auth-only #siteFooter{display:none!important}
 body.auth-only #auth{display:block!important}
+.open-native{display:inline-flex;align-items:center;gap:7px;margin:8px 0;padding:10px 14px;border:1px solid #6e58ad;border-radius:12px;background:linear-gradient(110deg,#234f80,#633b9b);color:#fff;text-decoration:none;font-weight:700}.open-native:active{transform:scale(.98)}
 /* Never show the login panel after a valid session has been accepted. */
 body:not(.auth-only) #auth{display:none!important}
 .section-menu{margin:20px 0 30px}
@@ -322,6 +323,7 @@ body:not(.auth-only) #auth{display:none!important}
 <section id="newtask" class="panel tabpane hidden"><h2><i data-lucide="plus-circle"></i> أضف محتواك – طلب تفاعل جديد</h2>
 <p class="muted">اختر المنصة أولاً، ثم نوع التفاعل المطلوب. كل تفاعل يبدأ من 20 نقطة، ويتم حجز مجموع النقاط من محفظتك عند الحفظ.</p>
 <label>رابط المنشور أو الحساب</label><input id="turl" type="url" placeholder="https://..." />
+<label>مكان التفاعل المطلوب</label><select id="tplace"><option value="منشور">منشور</option><option value="فيديو">فيديو</option><option value="حساب شخصي">حساب شخصي</option><option value="صفحة">صفحة</option><option value="قناة">قناة</option></select><p class="muted">عند فتح الرابط، سيحاول الهاتف تشغيل التطبيق الأصلي للمنصة إذا كان مثبتاً.</p>
 <div class="two">
 <div><label>اختر المنصة</label><select id="tplatform"><option value="TikTok">TikTok</option><option value="Facebook">Facebook</option><option value="Facebook Page">Facebook Page</option><option value="Instagram">Instagram</option><option value="YouTube">YouTube</option></select></div>
 <div><label>نوع التفاعل</label><select id="taction"></select></div>
@@ -404,11 +406,13 @@ async function load(){
  renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();renderMyPurchases();renderPublicArticles();refreshIcons();
  if(adminMode)await loadAdmin();refreshIcons();
 }
+function taskPlace(t){const m=String(t.description||'').match(/^\\[مكان التفاعل: ([^\\]]+)\\](?:\\n|$)/);return m?m[1]:'غير محدد';}
+function taskDescription(t){return String(t.description||'').replace(/^\\[مكان التفاعل: [^\\]]+\\]\\n?/,'');}
 function renderTasks(){
  const isAdmin=String(profile.role||'').trim().toLowerCase()==='admin';
  const list=tasks.filter(t=>t.status==='open'&&t.creator_id!==user.id&&(isAdmin||!profile.country||!Array.isArray(t.target_countries)||t.target_countries.length===0||t.target_countries.includes(profile.country)));
  const visibleTasks=list;
- $('tasklist').innerHTML=visibleTasks.length?visibleTasks.map(t=>`<article class="item"><h3><i data-lucide="target"></i> ${esc(t.title)}</h3><div class="muted">${esc(t.platform)} · ${esc(t.action_type)} · ${t.points_per_completion} نقطة لكل إنجاز</div><div class="muted">الدول المستهدفة: ${esc((t.target_countries||[]).join('، ')||'جميع الدول')}</div><p>${esc(t.description||'')}</p><a href="${esc(t.target_url)}" target="_blank" rel="noopener noreferrer">فتح المنشور ↗</a><div class="actions"><button onclick="window.submitTask('${t.id}')"><i data-lucide="send"></i> إرسال إثبات الإنجاز</button></div></article>`).join(''):'<div class="empty">لا توجد مهام متاحة حالياً.</div>';
+ $('tasklist').innerHTML=visibleTasks.length?visibleTasks.map(t=>`<article class="item"><h3><i data-lucide="target"></i> ${esc(t.title)}</h3><div class="muted">${esc(t.platform)} · ${esc(t.action_type)} · ${t.points_per_completion} نقطة لكل إنجاز</div><div class="muted">مكان التفاعل: ${esc(taskPlace(t))}</div><div class="muted">الدول المستهدفة: ${esc((t.target_countries||[]).join('، ')||'جميع الدول')}</div><p>${esc(taskDescription(t))}</p><a class="open-native" href="${esc(t.target_url)}" rel="noopener noreferrer">فتح في التطبيق الأصلي ↗</a><div class="actions"><button onclick="window.submitTask('${t.id}')"><i data-lucide="send"></i> إرسال إثبات الإنجاز</button></div></article>`).join(''):'<div class="empty">لا توجد مهام متاحة حالياً.</div>';
 }
 function renderSubs(){
  const mine=subs.filter(s=>{const t=tasks.find(x=>x.id===s.task_id);return t&&(t.creator_id===user.id||isAdmin())&&s.status==='pending'});
@@ -486,13 +490,13 @@ $('tplatform').onchange=refreshInteractionOptions;refreshInteractionOptions();
 function updateTaskCostPreview(){const countText=$('tmax').value.trim(),points=Number($('tpoints').value);try{if(!/^\\d+$/.test(countText)||!Number.isSafeInteger(points)||points<20){$('taskCostPreview').textContent='اكتب عدد التفاعلات وحدد نقاط كل تفاعل لحساب التكلفة.';return}const total=BigInt(countText)*BigInt(points);$('taskCostPreview').textContent='التكلفة الإجمالية: '+total.toString()+' نقطة · رصيدك: '+(wallet?.is_unlimited?'غير محدود':String(wallet?.balance??0))+' نقطة. سيتم قبول العدد حسب رصيدك.'}catch{$('taskCostPreview').textContent='راجع عدد التفاعلات المدخل.'}}
 $('tmax').addEventListener('input',updateTaskCostPreview);$('tpoints').addEventListener('input',updateTaskCostPreview);
 $('createTask').onclick=async()=>{try{
- const url=$('turl').value.trim(),countries=Array.from($('tcountries').selectedOptions).map(o=>o.value),points=Number($('tpoints').value),countText=$('tmax').value.trim(),platform=$('tplatform').value,action=$('taction').value;
+ const url=$('turl').value.trim(),place=$('tplace').value,countries=Array.from($('tcountries').selectedOptions).map(o=>o.value),points=Number($('tpoints').value),countText=$('tmax').value.trim(),platform=$('tplatform').value,action=$('taction').value;
  const maxCount=9223372036854775807n; if(!/^\\d+$/.test(countText))throw new Error('اكتب عدد التفاعلات بأرقام صحيحة فقط.'); const count=BigInt(countText); if(count<=0n||count>maxCount)throw new Error('عدد التفاعلات غير صالح.'); if(!Number.isSafeInteger(points)||points<20)throw new Error('نقاط كل تفاعل يجب أن تكون 20 على الأقل.'); const totalCost=BigInt(points)*count; if(totalCost>maxCount)throw new Error('التكلفة الإجمالية تتجاوز الحد التقني المسموح.'); if(!wallet.is_unlimited&&totalCost>BigInt(String(wallet.balance)))throw new Error('رصيدك غير كافٍ. التكلفة المطلوبة: '+totalCost.toString()+' نقطة.');
  if(!/^https?:\/\//i.test(url))throw new Error('أدخل رابطاً صحيحاً يبدأ بـ https://');
  if(points<20)throw new Error('الحد الأدنى هو 20 نقطة لكل تفاعل');
  if(!countries.length)throw new Error('اختر دولة واحدة على الأقل');
  const title=platform+' - '+action;
- await rpc('create_task',{p_title:title,p_description:$('tdesc').value,p_platform:platform,p_action_type:action,p_target_url:url,p_points_per_completion:points,p_max_completions:count.toString(),p_target_countries:countries});
+ await rpc('create_task',{p_title:title,p_description:'[مكان التفاعل: '+place+']\\n'+$('tdesc').value,p_platform:platform,p_action_type:action,p_target_url:url,p_points_per_completion:points,p_max_completions:count.toString(),p_target_countries:countries});
  note('newtaskmsg','تم حفظ طلب التفاعل وحجز النقاط بنجاح.','success');$('turl').value='';$('tdesc').value='';await load();
 }catch(e){note('newtaskmsg',e.message,'error')}};
 function renderMyPurchases(){ $('myPurchases').innerHTML=purchaseRequests.map(x=>'<article class="item">'+esc(x.payment_method)+' · '+money(x.points)+' نقطة · '+esc(x.transfer_reference)+' · '+(x.status==='pending'?'قيد المراجعة':x.status==='approved'?'تمت الموافقة':'مرفوض')+'</article>').join('')||'<div class="empty">لا توجد طلبات سابقة.</div>'; }
