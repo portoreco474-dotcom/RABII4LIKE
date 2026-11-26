@@ -256,6 +256,16 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 /* Strict first-screen gate: show only authentication until a valid session is loaded */
 body.auth-only #siteHeader,body.auth-only #landingFeatures,body.auth-only .landing-social,body.auth-only #publicArticles,body.auth-only #app,body.auth-only #userbox,body.auth-only #siteFooter{display:none!important}
 body.auth-only #auth{display:block!important}
+.section-menu{margin:20px 0 30px}
+.section-menu h2{margin:0 0 5px}
+.section-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}
+.section-card{min-height:125px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:8px;text-align:right;padding:18px;background:linear-gradient(145deg,#171a43,#10172e);border:1px solid #493b87;border-radius:16px;color:#f4f2ff;box-shadow:0 8px 24px #03040d66}
+.section-card:hover{border-color:#9a76ff;transform:translateY(-2px)}
+.section-card i{width:25px;height:25px;color:#70dcff}
+.section-card span{font-weight:900;font-size:16px}
+.section-card small{color:#b6b8d7;font-weight:500}
+#tabs{display:none!important}
+@media(max-width:780px){.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-card{min-height:115px;padding:14px}}
 </style>
 </head>
 <body class="auth-only"><div class="wrap">
@@ -287,6 +297,20 @@ body.auth-only #auth{display:block!important}
 <div class="row"><div><h2 style="margin:0">لوحة التحكم</h2><span class="muted">كل مستخدم لديه محفظته وسجل نقاطه الخاص</span></div><div class="actions"><button id="refreshData" class="secondary" type="button"><i data-lucide="refresh-cw"></i> تحديث البيانات</button><button id="daily" class="good"><i data-lucide="gift"></i> استلام 500 نقطة يومية</button><button id="adminQuick" class="good hidden" type="button"><i data-lucide="crown"></i> لوحة تحكم المدير</button></div></div>
 <div id="dashmsg"></div>
 </div>
+<section id="sectionMenu" class="section-menu">
+ <h2>أقسام المنصة</h2><p class="muted">اختر القسم لفتحه في صفحة مستقلة</p>
+ <div class="section-grid">
+  <button class="section-card" data-tab="tasks"><i data-lucide="list-checks"></i><span>المهام المتاحة</span><small>اكتشف المهام وأنجزها</small></button>
+  <button class="section-card" data-tab="newtask"><i data-lucide="plus-circle"></i><span>نشر طلب تفاعل</span><small>أنشئ طلباً جديداً</small></button>
+  <button class="section-card" data-tab="submissions"><i data-lucide="clipboard-check"></i><span>طلبات التحقق</span><small>راجع الطلبات المرسلة</small></button>
+  <button class="section-card" data-tab="completed"><i data-lucide="check-check"></i><span>مهامي المكتملة</span><small>تابع إنجازاتك</small></button>
+  <button class="section-card" data-tab="publish"><i data-lucide="file-plus-2"></i><span>أضف محتواك</span><small>شارك محتوى جديداً</small></button>
+  <button class="section-card" data-tab="posts"><i data-lucide="messages-square"></i><span>المنشورات</span><small>تصفح منشورات المجتمع</small></button>
+  <button class="section-card" data-tab="wallet"><i data-lucide="wallet"></i><span>المحفظة</span><small>الرصيد وسجل العمليات</small></button>
+  <button class="section-card" data-tab="settings"><i data-lucide="settings"></i><span>الإعدادات</span><small>إعدادات الحساب والخروج</small></button>
+  <button id="adminMenuCard" class="section-card hidden" data-tab="admin"><i data-lucide="crown"></i><span>لوحة المدير</span><small>الإدارة والإحصائيات</small></button>
+ </div>
+</section>
 <div class="pagebar hidden" id="pagebar"><div><div class="muted">RABII4LIKE / الصفحات</div><h2 id="pageTitle">الرئيسية</h2></div><div class="actions"><button type="button" class="secondary" id="backPageBtn">← رجوع</button><button type="button" class="secondary" id="homePageBtn">⌂ الرئيسية</button></div></div>
 <nav class="tabs" id="tabs">
 <button class="active" data-tab="home"><i data-lucide="home"></i> الرئيسية</button>
@@ -373,7 +397,7 @@ async function load(){
  const availableTasks=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id&&(adminMode||!profile.country||!Array.isArray(x.target_countries)||x.target_countries.length===0||x.target_countries.includes(profile.country)));
  $('taskcount').textContent=availableTasks.length;
  $('donecount').textContent=subs.filter(x=>x.worker_id===user.id&&x.status==='approved').length;
- $('admintab').classList.toggle('hidden',!adminMode); $('adminQuick').classList.toggle('hidden',!adminMode); document.querySelector('#tabs [data-tab="newtask"]').classList.remove('hidden'); document.querySelector('#tabs [data-tab="submissions"]').classList.remove('hidden');
+ $('admintab').classList.toggle('hidden',!adminMode); $('adminMenuCard').classList.toggle('hidden',!adminMode); $('adminQuick').classList.toggle('hidden',!adminMode); document.querySelector('#tabs [data-tab="newtask"]').classList.remove('hidden'); document.querySelector('#tabs [data-tab="submissions"]').classList.remove('hidden');
  $('language').value=profile.language||'ar';
  renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();renderMyPurchases();renderPublicArticles();refreshIcons();
  if(adminMode)await loadAdmin();refreshIcons();
@@ -498,14 +522,17 @@ function showPage(page,updateUrl=true){
  const stats=$('app').querySelector(':scope > .grid'),dashboard=$('app').querySelector(':scope > .panel');
  if(stats)stats.classList.toggle('hidden',!home);
  if(dashboard)dashboard.classList.toggle('hidden',!home);
- $('tabs').classList.remove('hidden'); $('pagebar').classList.remove('hidden'); $('pageTitle').textContent=pageNames[page]; $('userbox').classList.remove('hidden');
- document.querySelectorAll('#tabs button[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===page));
+ $('sectionMenu').classList.toggle('hidden',!home);
+ $('tabs').classList.add('hidden');
+ $('pagebar').classList.toggle('hidden',home);
+ $('pageTitle').textContent=pageNames[page]; $('userbox').classList.remove('hidden');
+ document.querySelectorAll('#sectionMenu button[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===page));
  if(page==='wallet'){ $('walletPageBalance').textContent=$('settingsBalance').textContent; $('walletPageTransactions').innerHTML=$('transactions').innerHTML; }
  if(updateUrl&&location.hash!=='#page='+page){if(pageTrail[pageTrail.length-1]!==page)pageTrail.push(page);history.pushState({page},'', '#page='+encodeURIComponent(page));}
  window.scrollTo({top:0,behavior:'smooth'});
  refreshIcons();
 }
-$('tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(!b)return;showPage(b.dataset.tab)};
+$('sectionMenu').onclick=e=>{const b=e.target.closest('button[data-tab]');if(!b)return;if(b.dataset.tab==='admin'&&!isAdmin())return;showPage(b.dataset.tab)};
 $('homePageBtn').textContent='⌂ الرئيسية';
 $('homePageBtn').onclick=()=>showPage('home');
 $('backPageBtn').onclick=()=>{if(pageTrail.length>1){history.back()}else if(pageTrail[pageTrail.length-1]!=='home'){showPage('home')}};
