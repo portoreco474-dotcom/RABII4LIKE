@@ -276,6 +276,7 @@ body:not(.auth-only) #auth{display:none!important}
 .section-card small{color:#b6b8d7;font-weight:500}
 #tabs{display:none!important}
 @media(max-width:780px){.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-card{min-height:115px;padding:14px}}
+ .media-preview{display:block;width:100%;max-height:560px;object-fit:contain;background:#050914;border-radius:14px;margin:12px 0}.media-post{margin:14px 0}.media-comments{display:grid;gap:7px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.media-composer input[type=file]{width:100%;padding:12px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--txt)}
 </style>
   <meta name="google-site-verification" content="dd99ZkNC1PAl_qMSXr9u7t4SSb16fVZsIgJijNqVxf4" />
 </head>
@@ -345,12 +346,12 @@ body:not(.auth-only) #auth{display:none!important}
 <label>تفاصيل إضافية (اختياري)</label><textarea id="tdesc" placeholder="اكتب أي تعليمات خاصة بالتفاعل..."></textarea>
 <div id="taskCostPreview" class="notice">سيتم حساب التكلفة حسب عدد التفاعلات ورصيد محفظتك.</div><div class="actions"><button id="createTask"><i data-lucide="rocket"></i> حفظ المنشور وحجز النقاط</button></div><div id="newtaskmsg"></div></section>
 <section id="submissions" class="panel tabpane hidden"><h2><i data-lucide="clipboard-check"></i> طلبات التحقق</h2><div id="submissionlist"></div></section>
-<section id="completed" class="panel tabpane hidden"><h2><i data-lucide="check-check"></i> المهام التي أنجزتها</h2><div id="completedlist"></div><div class="item" style="margin-top:16px"><h3><i data-lucide="brain"></i> الأسئلة الثقافية والألغاز</h3><p class="muted">اختبر معلوماتك في الثقافة والرياضة والعلوم والألغاز.</p><div id="quizbox"><button id="startquiz" type="button">ابدأ الأسئلة الثقافية</button></div></div></section> <section id="publish" class="panel tabpane hidden"><h2><i data-lucide="file-plus-2"></i> أضف محتواك</h2><p class="muted">شارك منشوراً مع أعضاء RABII4LIKE. أضف عنواناً وتصنيفاً ورابطاً اختيارياً.</p><label>عنوان المحتوى</label><input id="postTitle" maxlength="120" placeholder="اكتب عنواناً واضحاً للمحتوى"><div class="two"><div><label>تصنيف المحتوى</label><select id="postCategory"><option value="عام">عام</option><option value="ألعاب">ألعاب</option><option value="تقنية">تقنية</option><option value="تعليم">تعليم</option><option value="رياضة">رياضة</option><option value="ترفيه">ترفيه</option><option value="نصائح">نصائح</option><option value="أخبار">أخبار</option></select></div><div><label>رابط اختياري (صورة، فيديو، أو صفحة خارجية)</label><input id="postLink" type="url" maxlength="500" placeholder="https://..."></div></div><div class="actions"><button id="publishContent"><i data-lucide="send"></i> نشر المحتوى</button><button id="clearContent" class="secondary" type="button"><i data-lucide="eraser"></i> مسح الحقول</button></div><div id="publishMsg"></div></section><section id="posts" class="panel tabpane hidden"><h2><i data-lucide="messages-square"></i> المنشورات</h2><p class="muted">جميع المنشورات المنشورة في المجتمع، ويمكنك حذف منشوراتك فقط.</p><div id="postlist"></div></section>
+<section id="completed" class="panel tabpane hidden"><h2><i data-lucide="check-check"></i> المهام التي أنجزتها</h2><div id="completedlist"></div><div class="item" style="margin-top:16px"><h3><i data-lucide="brain"></i> الأسئلة الثقافية والألغاز</h3><p class="muted">اختبر معلوماتك في الثقافة والرياضة والعلوم والألغاز.</p><div id="quizbox"><button id="startquiz" type="button">ابدأ الأسئلة الثقافية</button></div></div></section> <section id="publish" class="panel tabpane hidden"><h2><i data-lucide="file-plus-2"></i> أضف محتواك</h2><p class="muted">شارك منشوراً مع أعضاء RABII4LIKE. أضف عنواناً وتصنيفاً ورابطاً اختيارياً.</p><label>عنوان المحتوى</label><input id="postTitle" maxlength="120" placeholder="اكتب عنواناً واضحاً للمحتوى"><div class="two"><div><label>تصنيف المحتوى</label><select id="postCategory"><option value="عام">عام</option><option value="ألعاب">ألعاب</option><option value="تقنية">تقنية</option><option value="تعليم">تعليم</option><option value="رياضة">رياضة</option><option value="ترفيه">ترفيه</option><option value="نصائح">نصائح</option><option value="أخبار">أخبار</option></select></div><div><label>رابط اختياري (صورة، فيديو، أو صفحة خارجية)</label><input id="postLink" type="url" maxlength="500" placeholder="https://..."></div></div><div class="actions"><button id="publishContent"><i data-lucide="send"></i> نشر المحتوى</button><button id="clearContent" class="secondary" type="button"><i data-lucide="eraser"></i> مسح الحقول</button></div><div id="publishMsg"></div></section><section id="posts" class="panel tabpane hidden"><h2><i data-lucide="messages-square"></i> منشورات المجتمع</h2><div class="item media-composer"><h3><i data-lucide="upload-cloud"></i> شارك صورة أو فيديو</h3><label>وصف المنشور (اختياري)</label><textarea id="mediaCaption" maxlength="1000" placeholder="اكتب شيئاً عن الصورة أو الفيديو..."></textarea><label>اختر صورة أو فيديو من هاتفك</label><input id="mediaFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"><p class="muted">الحد الأقصى لحجم الملف 50 ميغابايت. الصور والفيديوهات تظهر داخل المنصة.</p><div class="actions"><button id="publishMedia" type="button"><i data-lucide="send"></i> نشر الصورة أو الفيديو</button></div><div id="mediaUploadMsg"></div></div><h3>منشورات الأعضاء</h3><div id="mediapostlist"></div><h3>المنشورات النصية والروابط</h3><div id="postlist"></div></section>
 <section id="purchase" class="panel tabpane hidden"><h2>شراء النقاط</h2><p class="muted">اختر Western Union أو Cash Plus. لا تُضاف النقاط إلا بعد مراجعة المدير.</p><div class="notice"><strong>ثمن النقاط:</strong> 4000 نقطة = 50 درهماً مغربياً. <br><strong>المستلم:</strong> malak jymmy<br><strong>رقم الهاتف لاستلام كود الحوالة:</strong> +212779264577<br><strong>مهم:</strong> أرسل الحوالة عبر الطريقة المختارة، واحتفظ برقمها. لا تُضاف النقاط إلا بعد التحقق من وصول المبلغ.<br><strong>💳 عند وصول المبلغ وتأكيد استلامه، سيتم إضافة رصيد النقاط إلى حسابك مباشرة.</strong><br>يرجى التأكد من إرسال المبلغ الصحيح وإدخال معلومات الحوالة بشكل صحيح. شكراً لثقتكم بنا ❤️</div><p class="muted">المبلغ المطلوب: <strong id="purchasePrice">12.50 درهم مغربي</strong></p><div class="two"><div><label>طريقة التحويل</label><select id="purchaseMethod"><option>Western Union</option><option>Cash Plus</option></select></div><div><label>عدد النقاط (100 على الأقل)</label><input id="purchasePoints" type="number" min="100" step="100" value="1000"></div><div><label>اسم المرسل</label><input id="purchaseSender" maxlength="120"></div><div><label>رقم الحوالة / مرجع التحويل</label><input id="purchaseReference" maxlength="120"></div></div><div class="actions"><button id="submitPurchase">إرسال طلب شراء النقاط</button></div><div id="purchaseMsg"></div><h3>طلباتي السابقة</h3><div id="myPurchases"></div></section>
 <section id="wallet" class="panel tabpane hidden"><h2><i data-lucide="wallet"></i> محفظتي وسجل النقاط</h2><p class="muted">رصيدك الحالي: <strong id="walletPageBalance">0</strong> نقطة</p><div id="walletPageTransactions"></div></section>
 <div id="walletCompat" class="hidden" aria-hidden="true"><strong id="settingsBalance">0</strong><div id="transactions"></div></div>
 <section id="settings" class="panel tabpane hidden"><h2><i data-lucide="settings"></i> إعدادات الحساب</h2><div><label>اللغة</label><select id="language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div><div class="actions"><button id="saveSettings"><i data-lucide="save"></i> حفظ الإعدادات</button><button id="logout" class="danger" type="button"><i data-lucide="log-out"></i> تسجيل الخروج</button></div><div id="settingsmsg"></div></section>
-<section id="admin" class="panel tabpane hidden"><h2><i data-lucide="crown"></i> لوحة المدير</h2><div class="grid"><div class="stat">المستخدمون<b id="susers">0</b></div><div class="stat">المهام<b id="stasks">0</b></div><div class="stat">طلبات التحقق<b id="ssubs">0</b></div><div class="stat">المنشورات<b id="sposts">0</b></div></div>
+<section id="admin" class="panel tabpane hidden"><h2><i data-lucide="crown"></i> لوحة المدير</h2><div class="grid"><div class="stat">المستخدمون<b id="susers">0</b></div><div class="stat">المهام<b id="stasks">0</b></div><div class="stat">طلبات التحقق<b id="ssubs">0</b></div><div class="stat">المنشورات<b id="sposts">0</b></div><div class="stat">منشورات الصور والفيديو<b id="smediaPosts">0</b></div><div class="stat">التفاعلات<b id="smediaActions">0</b></div><div class="stat">المشاهدات<b id="smediaViews">0</b></div></div>
 <h3><i data-lucide="send"></i> إرسال النقاط</h3><div class="two"><div><label>بريد المستلم</label><input id="recipient" type="email"></div><div><label>عدد النقاط</label><input id="sendpoints" type="number" min="1"></div></div><label>الوصف</label><input id="senddesc" placeholder="هدية من الإدارة"><div class="actions"><button id="sendpointsbtn"><i data-lucide="send"></i> إرسال النقاط</button></div><div id="adminmsg"></div>
 <h3><i data-lucide="sliders-horizontal"></i> تعديل رصيد المستخدم</h3>
 <div class="two">
@@ -381,7 +382,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const SUPABASE_URL='https://hhrqfhffainiboncsekp.supabase.co';
 const SUPABASE_KEY='sb_publishable_AEq00cksyGY19Vl4E9SnIQ_tiwXiCm3';
 const db=createClient(SUPABASE_URL,SUPABASE_KEY);
-let user=null,profile=null,wallet=null,tasks=[],subs=[],posts=[],tx=[],purchaseRequests=[],siteArticles=[];
+let user=null,profile=null,wallet=null,tasks=[],subs=[],posts=[],mediaPosts=[],mediaInteractions=[],mediaViews=[],mediaPostCount=0,mediaActionCount=0,mediaViewCount=0,tx=[],purchaseRequests=[],siteArticles=[];
 const $=id=>document.getElementById(id);
 function isAdmin(){return String(profile?.role||'').trim().toLowerCase()==='admin';}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -391,7 +392,7 @@ function money(n){try{return BigInt(String(n??0)).toLocaleString('en-US')}catch{
 function date(s){return s?new Date(s).toLocaleString():'—'}
 async function rpc(name,args={}){const {data,error}=await db.rpc(name,args);if(error)throw error;return data}
 async function load(){
- const [p,w,t,s,po,tr,pr,ar]=await Promise.all([
+ const [p,w,t,s,po,tr,pr,ar,mp]=await Promise.all([
   db.from('profiles').select('*').eq('id',user.id).single(),
   db.from('wallets').select('*').eq('user_id',user.id).single(),
   db.from('tasks').select('*').order('created_at',{ascending:false}).limit(100),
@@ -399,10 +400,11 @@ async function load(){
   db.from('posts').select('*').order('created_at',{ascending:false}).limit(100),
   db.from('point_transactions').select('*').order('created_at',{ascending:false}).limit(100),
   db.from('point_purchase_requests').select('*').order('created_at',{ascending:false}).limit(100),
-  db.from('site_articles').select('*').eq('published',true).order('created_at',{ascending:false}).limit(50)
+  db.from('site_articles').select('*').eq('published',true).order('created_at',{ascending:false}).limit(50),
+  db.from('media_posts').select('*').order('created_at',{ascending:false}).limit(100)
  ]);
- for(const x of [p,w,t,s,po,tr,pr,ar])if(x.error)throw x.error;
- profile=p.data;wallet=w.data;$('daily').innerHTML='<i data-lucide="gift"></i> '+(String(profile.role||'').trim().toLowerCase()==='admin'?'استلام مليون نقطة يومية':'استلام 500 نقطة يومية');tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;purchaseRequests=pr.data||[];siteArticles=ar.data||[];
+ for(const x of [p,w,t,s,po,tr,pr,ar,mp])if(x.error)throw x.error;
+ profile=p.data;wallet=w.data;mediaPosts=mp.data||[];const mediaIds=mediaPosts.map(x=>x.id);if(mediaIds.length){const [mi,mv]=await Promise.all([db.from('media_post_interactions').select('*').in('post_id',mediaIds).order('created_at',{ascending:false}).limit(1000),db.from('media_post_views').select('post_id').in('post_id',mediaIds)]);if(mi.error)throw mi.error;if(mv.error)throw mv.error;mediaInteractions=mi.data||[];mediaViews=mv.data||[]}else{mediaInteractions=[];mediaViews=[]}$('daily').innerHTML='<i data-lucide="gift"></i> '+(String(profile.role||'').trim().toLowerCase()==='admin'?'استلام مليون نقطة يومية':'استلام 500 نقطة يومية');tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;purchaseRequests=pr.data||[];siteArticles=ar.data||[];
  $('balance').textContent=money(wallet.balance);$('settingsBalance').textContent=money(wallet.balance);$('walletmode').textContent=isAdmin()?'محفظة المدير — مليون نقطة تضاف يومياً':'رصيدك الحالي';
  $('role').textContent=profile.role;
  const adminMode=String(profile.role||'').trim().toLowerCase()==='admin';
@@ -411,7 +413,7 @@ async function load(){
  $('donecount').textContent=subs.filter(x=>x.worker_id===user.id&&x.status==='approved').length;
  $('admintab').classList.toggle('hidden',!adminMode); $('adminMenuCard').classList.toggle('hidden',!adminMode); $('adminQuick').classList.toggle('hidden',!adminMode); document.querySelector('#tabs [data-tab="newtask"]').classList.remove('hidden'); document.querySelector('#tabs [data-tab="submissions"]').classList.remove('hidden');
  $('language').value=profile.language||'ar';
- renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();renderMyPurchases();renderPublicArticles();refreshIcons();
+ renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();renderMediaPosts();renderMyPurchases();renderPublicArticles();refreshIcons();
  if(adminMode)await loadAdmin();refreshIcons();
 }
 function taskPlace(t){const m=String(t.description||'').match(/^\[مكان التفاعل: ([^\]]+)\](?:\n|$)/);return m?m[1]:'غير محدد';}
@@ -431,8 +433,49 @@ function renderCompleted(){
  $('completedlist').innerHTML=done.length?done.map(s=>{const t=tasks.find(x=>x.id===s.task_id);return `<article class="item"><h3>${esc(t?.title||'مهمة')}</h3><span class="pill">${esc(s.status)}</span><p class="muted">تاريخ الإرسال: ${date(s.created_at)} · ${s.status==='approved'?'تاريخ الاعتماد: '+date(s.reviewed_at):''}</p>${s.review_note?`<p>${esc(s.review_note)}</p>`:''}</article>`}).join(''):'<div class="empty">لم تنجز أي مهمة بعد.</div>';
 }
 function renderTx(){ $('transactions').innerHTML=tx.length?tx.map(x=>`<article class="item row"><div><b>${esc(x.description||x.transaction_type)}</b><div class="muted">${date(x.created_at)} · ${esc(x.transaction_type)}</div></div><strong style="color:${x.amount>0?'var(--green)':'var(--red)'}">${x.amount>0?'+':''}${money(x.amount)}</strong></article>`).join(''):'<div class="empty">لا توجد عمليات بعد.</div>'; }
+
+function mediaPublicUrl(path){return db.storage.from('community-media').getPublicUrl(path).data.publicUrl}
+window.recordMediaView=async(id)=>{try{await db.rpc('record_media_post_view',{p_post_id:id})}catch(e){}};
+function renderMediaPosts(){
+ const count=(id,type)=>mediaInteractions.filter(x=>x.post_id===id&&x.action_type===type).length;
+ $('mediapostlist').innerHTML=mediaPosts.length?mediaPosts.map(p=>{
+  const url=mediaPublicUrl(p.media_path),mine=p.author_id===user.id;
+  const comments=mediaInteractions.filter(x=>x.post_id===p.id&&x.action_type==='comment');
+  const viewed=mediaViews.filter(x=>x.post_id===p.id).length;
+  const media=p.media_type==='video'?'<video class="media-preview" controls playsinline preload="metadata" onplay="window.recordMediaView(\''+p.id+'\')" src="'+esc(url)+'"></video>':'<img class="media-preview" loading="lazy" onload="window.recordMediaView(\''+p.id+'\')" src="'+esc(url)+'" alt="منشور من المجتمع">';
+  return '<article class="item media-post"><div class="row"><b>عضو في RABII4LIKE</b><span class="muted">'+date(p.created_at)+'</span></div>'+media+(p.caption?'<p style="white-space:pre-wrap">'+esc(p.caption)+'</p>':'')+'<div class="row muted"><span>👁 '+viewed+' مشاهدة</span><span>❤ '+count(p.id,'like')+'</span><span>💬 '+comments.length+'</span><span>↗ '+count(p.id,'share')+'</span><span>⬇ '+count(p.id,'download')+'</span></div><div class="actions"><button class="secondary" onclick="window.mediaAction(\''+p.id+'\',\'like\')">❤ إعجاب · 10 نقاط</button><button class="secondary" onclick="window.mediaAction(\''+p.id+'\',\'comment\')">💬 تعليق · 10 نقاط</button><button class="secondary" onclick="window.mediaAction(\''+p.id+'\',\'share\')">↗ مشاركة · 10 نقاط</button><button class="secondary" onclick="window.mediaDownload(\''+p.id+'\')">⬇ تنزيل · 30 نقطة</button></div><div class="media-comments">'+(comments.length?comments.slice(0,8).map(c=>'<div class="muted">💬 عضو: '+esc(c.comment_text)+' <small>· '+date(c.created_at)+'</small></div>').join(''):'<div class="muted">لا توجد تعليقات بعد.</div>')+'</div>'+(mine||isAdmin()?'<div class="actions"><button class="danger" onclick="window.deleteMediaPost(\''+p.id+'\')">حذف المنشور</button></div>':'')+'</article>';
+ }).join(''):'<div class="empty">لا توجد منشورات صور أو فيديوهات بعد. كن أول من يشارك!</div>';
+}
+window.mediaAction=async(id,action)=>{
+ try{let comment=null;if(action==='comment'){comment=prompt('اكتب تعليقك (حتى 500 حرف):');if(comment===null)return;comment=comment.trim();if(!comment)throw new Error('اكتب تعليقاً أولاً.')}
+  if(action==='share'){const url=location.origin+location.pathname+'#page=posts';try{if(navigator.share)await navigator.share({title:'منشور RABII4LIKE',url});else await navigator.clipboard.writeText(url)}catch(e){if(e.name==='AbortError')return;throw e}}
+  const {data,error}=await db.rpc('interact_with_media_post',{p_post_id:id,p_action:action,p_comment:comment});if(error)throw error;
+  note('mediaUploadMsg',data?.duplicate?'سبق واحتُسب هذا التفاعل، لن تحصل على نقاط إضافية.':(data?.message||'تم تسجيل التفاعل.')+(data?.points?' · +'+data.points+' نقطة':''),data?.duplicate?'notice':'success');await load();
+ }catch(e){note('mediaUploadMsg',e.message,'error')}
+};
+window.mediaDownload=async(id)=>{
+ try{const p=mediaPosts.find(x=>x.id===id);if(!p)throw new Error('المنشور غير موجود.');const {data,error}=await db.rpc('interact_with_media_post',{p_post_id:id,p_action:'download',p_comment:null});if(error)throw error;
+  const a=document.createElement('a');a.href=mediaPublicUrl(p.media_path);a.download=p.original_name||'rabii4like-media';a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
+  note('mediaUploadMsg',data?.duplicate?'تم التنزيل؛ سبق احتساب مكافأة التنزيل لهذا المنشور.':'تم تسجيل التنزيل '+(data?.points?'وإضافة '+data.points+' نقطة.':''),'success');await load();
+ }catch(e){note('mediaUploadMsg',e.message,'error')}
+};
+window.deleteMediaPost=async(id)=>{
+ if(!confirm('هل تريد حذف هذا المنشور؟'))return;
+ try{const p=mediaPosts.find(x=>x.id===id);const {error}=await db.from('media_posts').delete().eq('id',id);if(error)throw error;if(p)await db.storage.from('community-media').remove([p.media_path]);note('mediaUploadMsg','تم حذف المنشور.','success');await load()}catch(e){note('mediaUploadMsg',e.message,'error')}
+};
+$('publishMedia').onclick=async()=>{
+ const b=$('publishMedia'),file=$('mediaFile').files?.[0],caption=$('mediaCaption').value.trim();b.disabled=true;
+ try{if(!file)throw new Error('اختر صورة أو فيديو أولاً.');if(file.size>52428800)throw new Error('حجم الملف يتجاوز 50 ميغابايت.');
+  const allowed=['image/jpeg','image/png','image/webp','image/gif','video/mp4','video/webm','video/quicktime'];if(!allowed.includes(file.type))throw new Error('نوع الملف غير مدعوم. استخدم صورة أو فيديو بصيغة معروفة.');
+  const mediaType=file.type.startsWith('video/')?'video':'image',ext=(file.name.split('.').pop()||'file').toLowerCase().replace(/[^a-z0-9]/g,'');
+  const path=user.id+'/'+crypto.randomUUID()+'.'+ext;const {error:uploadError}=await db.storage.from('community-media').upload(path,file,{contentType:file.type,upsert:false});if(uploadError)throw uploadError;
+  const {error:postError}=await db.from('media_posts').insert({author_id:user.id,caption,media_path:path,media_type:mediaType,original_name:file.name});if(postError){await db.storage.from('community-media').remove([path]);throw postError}
+  $('mediaCaption').value='';$('mediaFile').value='';note('mediaUploadMsg','تم نشر المحتوى بنجاح.','success');await load();
+ }catch(e){note('mediaUploadMsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}
+};
+
 function renderPosts(){ $('postlist').innerHTML=posts.length?posts.map(p=>`<article class="item"><div class="row"><span class="pill">${esc(p.category||'عام')}</span><span class="muted">${date(p.created_at)}</span></div>${p.title?`<h3>${esc(p.title)}</h3>`:''}${p.content?`<p style="white-space:pre-wrap">${esc(p.content)}</p>`:''}${p.link_url?`<p><a href="${esc(p.link_url)}" target="_blank" rel="noopener noreferrer">فتح الرابط المرفق ↗</a></p>`:''}<div class="muted">${esc(p.author_id===user.id?'أنت':'عضو')}</div>${p.author_id===user.id||isAdmin()?`<div class="actions"><button class="danger" onclick="window.delPost('${p.id}')"><i data-lucide="trash-2"></i> حذف المنشور</button></div>`:''}</article>`).join(''):'<div class="empty">لا توجد منشورات بعد. كن أول من يشارك محتوى!</div>'; }
-async function loadAdmin(){ if(!isAdmin()){ $('admin').classList.add('hidden'); $('admintab').classList.add('hidden'); return; } const [u,t,s,p,profiles,wallets,transactions,purchases,articles]=await Promise.all([
+async function loadAdmin(){ if(!isAdmin()){ $('admin').classList.add('hidden'); $('admintab').classList.add('hidden'); return; } const [u,t,s,p,profiles,wallets,transactions,purchases,articles,mpc,mic,mvc]=await Promise.all([
   db.from('profiles').select('id',{count:'exact',head:true}),
   db.from('tasks').select('id',{count:'exact',head:true}),
   db.from('task_submissions').select('id',{count:'exact',head:true}),
@@ -441,11 +484,14 @@ async function loadAdmin(){ if(!isAdmin()){ $('admin').classList.add('hidden'); 
   db.from('wallets').select('user_id,balance,is_unlimited').limit(500),
   db.from('point_transactions').select('user_id,amount,transaction_type,description,performed_by,created_at').order('created_at',{ascending:false}).limit(1000),
   db.from('point_purchase_requests').select('*').order('created_at',{ascending:false}).limit(200),
-  db.from('site_articles').select('*').order('created_at',{ascending:false}).limit(100)
+  db.from('site_articles').select('*').order('created_at',{ascending:false}).limit(100),
+  db.from('media_posts').select('id',{count:'exact',head:true}),
+  db.from('media_post_interactions').select('id',{count:'exact',head:true}),
+  db.from('media_post_views').select('post_id',{count:'exact',head:true})
  ]);
  for(const x of [u,t,s,p,profiles,wallets,transactions,purchases,articles])if(x.error)throw x.error;
- const people=profiles.data||[], ws=wallets.data||[], ledger=transactions.data||[];
- $('susers').textContent=u.count??0;$('stasks').textContent=t.count??0;$('ssubs').textContent=s.count??0;$('sposts').textContent=p.count??0;
+ const people=profiles.data||[], ws=wallets.data||[], ledger=transactions.data||[];mediaPostCount=mpc.count||0;mediaActionCount=mic.count||0;mediaViewCount=mvc.count||0;
+ $('susers').textContent=u.count??0;$('stasks').textContent=t.count??0;$('ssubs').textContent=s.count??0;$('sposts').textContent=p.count??0;$('smediaPosts').textContent=mediaPostCount;$('smediaActions').textContent=mediaActionCount;$('smediaViews').textContent=mediaViewCount;
  $('sapproved').textContent=subs.filter(x=>x.status==='approved').length;
  $('srejected').textContent=subs.filter(x=>x.status==='rejected').length;
  $('spending').textContent=subs.filter(x=>x.status==='pending').length;
@@ -455,7 +501,7 @@ async function loadAdmin(){ if(!isAdmin()){ $('admin').classList.add('hidden'); 
  $('countryStats').innerHTML=bars(group(people,'country'));
  $('languageStats').innerHTML=bars(group(people,'language'));
  const approved=subs.filter(x=>x.status==='approved').length;
- $('engagementStats').innerHTML=bars({'المهام المنشورة':tasks.length,'طلبات الإنجاز':subs.length,'إنجازات مقبولة':approved,'المنشورات':posts.length,'عمليات النقاط':ledger.length});
+ $('engagementStats').innerHTML=bars({'المهام المنشورة':tasks.length,'طلبات الإنجاز':subs.length,'إنجازات مقبولة':approved,'المنشورات النصية':posts.length,'منشورات الصور والفيديو':mediaPostCount,'التفاعلات':mediaActionCount,'المشاهدات الفريدة':mediaViewCount,'عمليات النقاط':ledger.length});
   $('adminPurchases').innerHTML=(purchases.data||[]).filter(x=>x.status==='pending').map(x=>'<article class="item"><b>'+esc(x.payment_method)+' · '+money(x.points)+' نقطة</b><div class="muted">'+esc(x.sender_name)+' · '+esc(x.transfer_reference)+'</div><button onclick="window.reviewPurchase(\''+x.id+'\',true)">اعتماد وإضافة النقاط</button> <button class="danger" onclick="window.reviewPurchase(\''+x.id+'\',false)">رفض</button></article>').join('')||'<div class="empty">لا توجد طلبات شراء معلّقة.</div>';
  $('adminArticles').innerHTML=(articles.data||[]).map(a=>'<article class="item">'+esc(a.title)+' · '+(a.published?'منشور':'مسودة')+'</article>').join('');
  $('adminUsers').innerHTML=people.length?people.map(person=>{const w=ws.find(x=>x.user_id===person.id);const role=String(person.role||'user');const roleAction='';return '<article class="item"><div class="row"><div><b>'+esc(person.role==='admin'?'المدير':(person.email||person.id))+'</b><div class="muted">'+esc(person.country||'الدولة غير محددة')+' · '+date(person.created_at)+'</div></div><span class="pill">'+(role==='admin'?'مدير':'مستخدم')+'</span><strong>'+(w?.is_unlimited?'غير محدود':money(w?.balance||0)+' نقطة')+'</strong></div><div class="actions">'+roleAction+'</div></article>'}).join(''):'<div class="empty">لا يوجد مستخدمون.</div>';
