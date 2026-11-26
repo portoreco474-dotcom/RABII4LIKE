@@ -394,7 +394,7 @@ async function load(){
   db.from('site_articles').select('*').eq('published',true).order('created_at',{ascending:false}).limit(50)
  ]);
  for(const x of [p,w,t,s,po,tr,pr,ar])if(x.error)throw x.error;
- profile=p.data;wallet=w.data;tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;purchaseRequests=pr.data||[];siteArticles=ar.data||[];
+ profile=p.data;wallet=w.data;$('daily').innerHTML='<i data-lucide="gift"></i> '+(String(profile.role||'').trim().toLowerCase()==='admin'?'استلام مليون نقطة يومية':'استلام 500 نقطة يومية');tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;purchaseRequests=pr.data||[];siteArticles=ar.data||[];
  $('balance').textContent=money(wallet.balance);$('settingsBalance').textContent=money(wallet.balance);$('walletmode').textContent=isAdmin()?'محفظة المدير — مليون نقطة تضاف يومياً':'رصيدك الحالي';
  $('role').textContent=profile.role;
  const adminMode=String(profile.role||'').trim().toLowerCase()==='admin';
