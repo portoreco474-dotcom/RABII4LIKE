@@ -501,7 +501,7 @@ function showPage(page,updateUrl=true){
  $('tabs').classList.remove('hidden'); $('pagebar').classList.remove('hidden'); $('pageTitle').textContent=pageNames[page]; $('userbox').classList.remove('hidden');
  document.querySelectorAll('#tabs button[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===page));
  if(page==='wallet'){ $('walletPageBalance').textContent=$('settingsBalance').textContent; $('walletPageTransactions').innerHTML=$('transactions').innerHTML; }
- if(updateUrl&&location.hash!=='#'+page){if(pageTrail[pageTrail.length-1]!==page)pageTrail.push(page);history.pushState({page},'', '#'+page);}
+ if(updateUrl&&location.hash!=='#page='+page){if(pageTrail[pageTrail.length-1]!==page)pageTrail.push(page);history.pushState({page},'', '#page='+encodeURIComponent(page));}
  window.scrollTo({top:0,behavior:'smooth'});
  refreshIcons();
 }
@@ -509,7 +509,7 @@ $('tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(!b)return;
 $('homePageBtn').textContent='⌂ الرئيسية';
 $('homePageBtn').onclick=()=>showPage('home');
 $('backPageBtn').onclick=()=>{if(pageTrail.length>1){history.back()}else if(pageTrail[pageTrail.length-1]!=='home'){showPage('home')}};
-window.addEventListener('popstate',()=>{if(pageTrail.length>1)pageTrail.pop();showPage(location.hash.slice(1)||'home',false)});
+window.addEventListener('popstate',()=>{if(pageTrail.length>1)pageTrail.pop();const target=location.hash.startsWith('#page=')?decodeURIComponent(location.hash.slice(6)):location.hash.slice(1);showPage(target||'home',false)});
 document.querySelectorAll('#app .stat').forEach((card,i)=>{card.setAttribute('role','button');card.setAttribute('tabindex','0');const pages=['wallet','tasks','completed','settings'];card.addEventListener('click',()=>showPage(pages[i]));card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();showPage(pages[i])}})});
 
 const questions=[
