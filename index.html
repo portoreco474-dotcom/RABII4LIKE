@@ -3,9 +3,16 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090d1c">
-<title>RABII4LIKE | مقالات ونصائح ومجتمع التفاعل</title>
-<meta name="description" content="RABII4LIKE منصة مجتمعية للمحتوى والنصائح والمهام الرقمية. اكتشف المقالات والمعلومات المفيدة.">
+<title>RABII4LIKE | منصة تبادل التفاعلات والمهام الرقمية وجمع النقاط</title>
+<meta name="description" content="انضم إلى RABII4LIKE لإنجاز المهام الرقمية وتبادل التفاعلات وجمع النقاط وإدارة رصيدك في محفظة شخصية. أنشئ حسابك وابدأ الآن.">
 <meta name="robots" content="index,follow">
+<link rel="canonical" href="https://portoreco474-dotcom.github.io/RABII4LIKE/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RABII4LIKE | تبادل التفاعلات وجمع النقاط">
+<meta property="og:description" content="أنشئ حسابك في RABII4LIKE وابدأ إنجاز المهام الرقمية وجمع النقاط.">
+<meta property="og:url" content="https://portoreco474-dotcom.github.io/RABII4LIKE/">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"RABII4LIKE","url":"https://portoreco474-dotcom.github.io/RABII4LIKE/","description":"منصة لتبادل التفاعلات وإنجاز المهام الرقمية وجمع النقاط.","applicationCategory":"SocialNetworkingApplication","inLanguage":"ar"}</script>
 <style>
 :root{--bg:#090d1c;--panel:#111a30;--panel2:#17233e;--line:#293858;--txt:#edf3ff;--muted:#9eacc7;--cyan:#43d9ff;--purple:#a78bfa;--gold:#ffd166;--green:#43d6a0;--red:#ff6b85}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#20234e 0,transparent 35%),var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
@@ -274,7 +281,7 @@ body:not(.auth-only) #auth{display:none!important}
 <body class="auth-only"><div class="wrap">
 <header id="siteHeader" class="top hidden"><div><div class="brand">♛ RABII<span>4</span>LIKE</div><div class="muted">منصة تبادل التفاعلات وجمع النقاط</div></div><div id="userbox" class="row hidden"><button id="profileAvatar" class="avatar-trigger" type="button" aria-label="فتح الإعدادات" title="الإعدادات"><img id="siteAvatar" alt="RABII4LIKE"/></button></div></header>
 <div id="auth" class="panel auth">
-<h1 id="authTitle">تسجيل الدخول</h1><p class="muted" id="authIntro">أدخل بريدك الإلكتروني وكلمة المرور للدخول إلى حسابك.</p>
+<h1 id="authTitle">تسجيل الدخول</h1><p class="muted" id="authIntro">RABII4LIKE منصة لتبادل التفاعلات وإنجاز المهام الرقمية وجمع النقاط. أنشئ حسابك مجاناً أو أدخل بياناتك للعودة إلى محفظتك ومهامك.</p>
 <div id="msg"></div><label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="email" placeholder="البريد الإلكتروني">
 <label>كلمة السر</label><input id="password" type="password" autocomplete="current-password" placeholder="كلمة السر">
 <div class="actions" id="authActions"><button id="login" type="button"><i data-lucide="log-in"></i> دخول</button><button id="signup" class="secondary" type="button"><i data-lucide="user-plus"></i> إنشاء حساب</button></div>
@@ -564,5 +571,6 @@ try{await load()}catch(e){note('dashmsg','تم تسجيل الدخول، لكن 
 }catch(e){$('app').classList.add('hidden');$('siteHeader').classList.add('hidden');$('userbox').classList.add('hidden');$('siteFooter').classList.add('hidden');document.body.classList.add('auth-only');$('auth').classList.remove('hidden');note('msg',e.message,'error')}finally{entering=false;const queuedUser=pendingStartUser;pendingStartUser=null;if(queuedUser)start(queuedUser)}}
 db.auth.onAuthStateChange((event,session)=>{if(event==='PASSWORD_RECOVERY'){recoveringPassword=true;user=session?.user||user;showRecoveryForm();return}if(recoveringPassword)return;if(session&&!user){setTimeout(()=>start(session.user),0)}else if(!session){user=null;profile=null;wallet=null;pageTrail=['home'];document.body.classList.add('auth-only');resetAuthForm();$('siteHeader').classList.add('hidden');$('auth').classList.remove('hidden');$('landingFeatures').classList.add('hidden');document.querySelector('.landing-social').classList.add('hidden');$('publicArticles').classList.add('hidden');$('app').classList.add('hidden');$('userbox').classList.add('hidden');$('siteFooter').classList.add('hidden')}});
 db.from('site_articles').select('title,slug,excerpt,body,created_at').eq('published',true).order('created_at',{ascending:false}).limit(50).then(({data,error})=>{if(!error){siteArticles=data||[];renderPublicArticles();}});
+if(new URLSearchParams(location.search).get('signup')==='1'){ $('authTitle').textContent='إنشاء حساب جديد'; $('authIntro').textContent='أنشئ حسابك في RABII4LIKE باستعمال بريدك الإلكتروني وكلمة مرور، ثم أكد بريدك إذا طُلب منك ذلك.'; $('signup').classList.remove('secondary'); $('login').classList.add('secondary'); }
 refreshIcons();start();
 </script></body></html>
