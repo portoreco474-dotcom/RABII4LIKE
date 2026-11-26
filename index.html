@@ -256,6 +256,8 @@ button.danger{background:linear-gradient(110deg,#64243e,#a63b60);color:#fff}
 /* Strict first-screen gate: show only authentication until a valid session is loaded */
 body.auth-only #siteHeader,body.auth-only #landingFeatures,body.auth-only .landing-social,body.auth-only #publicArticles,body.auth-only #app,body.auth-only #userbox,body.auth-only #siteFooter{display:none!important}
 body.auth-only #auth{display:block!important}
+/* Never show the login panel after a valid session has been accepted. */
+body:not(.auth-only) #auth{display:none!important}
 .section-menu{margin:20px 0 30px}
 .section-menu h2{margin:0 0 5px}
 .section-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}
@@ -519,7 +521,7 @@ function showPage(page,updateUrl=true){
  if(page==='admin'&&!isAdmin())page='home'; if(page==='purchase')page='home'; if(!pageNames[page])page='home'; if(page==='menu')page='home';
  const home=page==='home';
  document.querySelectorAll('.tabpane').forEach(x=>x.classList.toggle('hidden',x.id!==page));
- const stats=$('app').querySelector(':scope > .grid'),dashboard=$('app').querySelector(':scope > .panel');
+ const stats=Array.from($('app').children).find(x=>x.classList.contains('grid')),dashboard=Array.from($('app').children).find(x=>x.classList.contains('panel'));
  // Keep the post-login landing screen dedicated to the section icon menu.
  if(stats)stats.classList.add('hidden');
  if(dashboard)dashboard.classList.add('hidden');
