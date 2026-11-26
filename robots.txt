@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://portoreco474-dotcom.github.io/RABII4LIKE/sitemap.xml
