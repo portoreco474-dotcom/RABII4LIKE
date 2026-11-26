@@ -454,7 +454,7 @@ window.mediaAction=async(id,action)=>{
  }catch(e){note('mediaUploadMsg',e.message,'error')}
 };
 window.mediaDownload=async(id)=>{
- try{const p=mediaPosts.find(x=>x.id===id);if(!p)throw new Error('المنشور غير موجود.');const {data:file,fileError}=await db.storage.from('community-media').download(p.media_path);if(fileError)throw fileError;
+ try{const p=mediaPosts.find(x=>x.id===id);if(!p)throw new Error('المنشور غير موجود.');const {data:file,error:fileError}=await db.storage.from('community-media').download(p.media_path);if(fileError)throw fileError;
   const {data,error}=await db.rpc('interact_with_media_post',{p_post_id:id,p_action:'download',p_comment:null});if(error)throw error;
   const blobUrl=URL.createObjectURL(file),a=document.createElement('a');a.href=blobUrl;a.download=p.original_name||'rabii4like-media';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(blobUrl),60000);
   note('mediaUploadMsg',data?.duplicate?'تم التنزيل؛ سبق احتساب مكافأة التنزيل لهذا المنشور.':'تم تسجيل التنزيل '+(data?.points?'وإضافة '+data.points+' نقطة.':''),'success');await load();
