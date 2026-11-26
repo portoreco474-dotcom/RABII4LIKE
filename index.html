@@ -406,8 +406,8 @@ async function load(){
  renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();renderMyPurchases();renderPublicArticles();refreshIcons();
  if(adminMode)await loadAdmin();refreshIcons();
 }
-function taskPlace(t){const m=String(t.description||'').match(/^\\[مكان التفاعل: ([^\\]]+)\\](?:\\n|$)/);return m?m[1]:'غير محدد';}
-function taskDescription(t){return String(t.description||'').replace(/^\\[مكان التفاعل: [^\\]]+\\]\\n?/,'');}
+function taskPlace(t){const m=String(t.description||'').match(/^\[مكان التفاعل: ([^\]]+)\](?:\n|$)/);return m?m[1]:'غير محدد';}
+function taskDescription(t){return String(t.description||'').replace(/^\[مكان التفاعل: [^\]]+\]\n?/,'');}
 function renderTasks(){
  const isAdmin=String(profile.role||'').trim().toLowerCase()==='admin';
  const list=tasks.filter(t=>t.status==='open'&&t.creator_id!==user.id&&(isAdmin||!profile.country||!Array.isArray(t.target_countries)||t.target_countries.length===0||t.target_countries.includes(profile.country)));
@@ -496,7 +496,7 @@ $('createTask').onclick=async()=>{try{
  if(points<20)throw new Error('الحد الأدنى هو 20 نقطة لكل تفاعل');
  if(!countries.length)throw new Error('اختر دولة واحدة على الأقل');
  const title=platform+' - '+action;
- await rpc('create_task',{p_title:title,p_description:'[مكان التفاعل: '+place+']\\n'+$('tdesc').value,p_platform:platform,p_action_type:action,p_target_url:url,p_points_per_completion:points,p_max_completions:count.toString(),p_target_countries:countries});
+ await rpc('create_task',{p_title:title,p_description:'[مكان التفاعل: '+place+']\n'+$('tdesc').value,p_platform:platform,p_action_type:action,p_target_url:url,p_points_per_completion:points,p_max_completions:count.toString(),p_target_countries:countries});
  note('newtaskmsg','تم حفظ طلب التفاعل وحجز النقاط بنجاح.','success');$('turl').value='';$('tdesc').value='';await load();
 }catch(e){note('newtaskmsg',e.message,'error')}};
 function renderMyPurchases(){ $('myPurchases').innerHTML=purchaseRequests.map(x=>'<article class="item">'+esc(x.payment_method)+' · '+money(x.points)+' نقطة · '+esc(x.transfer_reference)+' · '+(x.status==='pending'?'قيد المراجعة':x.status==='approved'?'تمت الموافقة':'مرفوض')+'</article>').join('')||'<div class="empty">لا توجد طلبات سابقة.</div>'; }
