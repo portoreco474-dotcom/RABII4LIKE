@@ -520,8 +520,9 @@ function showPage(page,updateUrl=true){
  const home=page==='home';
  document.querySelectorAll('.tabpane').forEach(x=>x.classList.toggle('hidden',x.id!==page));
  const stats=$('app').querySelector(':scope > .grid'),dashboard=$('app').querySelector(':scope > .panel');
- if(stats)stats.classList.toggle('hidden',!home);
- if(dashboard)dashboard.classList.toggle('hidden',!home);
+ // Keep the post-login landing screen dedicated to the section icon menu.
+ if(stats)stats.classList.add('hidden');
+ if(dashboard)dashboard.classList.add('hidden');
  $('sectionMenu').classList.toggle('hidden',!home);
  $('tabs').classList.add('hidden');
  $('pagebar').classList.toggle('hidden',home);
