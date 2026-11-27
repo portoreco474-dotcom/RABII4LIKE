@@ -438,6 +438,13 @@ async function load(){
  const earlyProfile=await db.from('profiles').select('*').eq('id',user.id).single();
  if(earlyProfile.error)throw earlyProfile.error;
  profile=earlyProfile.data;
+ // Load the authenticated user's wallet independently so unrelated dashboard queries
+ // cannot leave the wallet page showing its default zero balance.
+ const walletCheck=await db.from('wallets').select('user_id,balance,is_unlimited').eq('user_id',user.id).maybeSingle();
+ if(walletCheck.error)throw walletCheck.error;
+ if(!walletCheck.data)throw new Error('لم يتم العثور على محفظة هذا الحساب.');
+ wallet=walletCheck.data;
+ $('balance').textContent=money(wallet.balance);$('settingsBalance').textContent=money(wallet.balance);$('walletPageBalance').textContent=money(wallet.balance);
  const earlyAdmin=String(profile?.role||'').trim().toLowerCase()==='admin';
  $('admintab').classList.toggle('hidden',!earlyAdmin);
  $('adminMenuCard').classList.toggle('hidden',!earlyAdmin);
