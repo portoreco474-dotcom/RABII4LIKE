@@ -368,7 +368,11 @@ body:not(.auth-only) #auth{display:none!important}
 <h3>إحصائيات المنصة الكاملة</h3>
 <div class="grid"><div class="stat">الإنجازات المقبولة<b id="sapproved">0</b></div><div class="stat">الإنجازات المرفوضة<b id="srejected">0</b></div><div class="stat">المعلّقة<b id="spending">0</b></div><div class="stat">إجمالي النقاط المحوّلة<b id="spoints">0</b></div></div>
 <div class="two"><div class="item"><h3>توزيع المستخدمين حسب الدولة</h3><div id="countryStats"></div></div><div class="item"><h3>توزيع اللغات</h3><div id="languageStats"></div></div></div>
-<h3><i data-lucide="activity"></i> استبيان / مؤشرات التفاعل</h3><div class="item"><p class="muted">مؤشرات نشاط المنصة حسب البيانات المسجلة حالياً</p><div id="engagementStats"></div></div>
+<h3><i data-lucide="activity"></i> التفاعل وإحصائيات المنصة</h3>
+<div class="grid"><div class="stat">إجمالي التفاعلات<b id="adminTotalInteractions">0</b></div><div class="stat">مشاهدات المنشورات<b id="adminTotalViews">0</b></div><div class="stat">منشورات الوسائط<b id="adminTotalMediaPosts">0</b></div><div class="stat">طلبات الإنجاز<b id="adminTotalSubmissions">0</b></div></div>
+<div class="item"><div class="row"><div><h3>الرسم البياني التفاعلي</h3><p class="muted">غيّر المؤشر لعرض نشاط المنصة خلال آخر 7 أيام.</p></div><select id="adminChartMetric"><option value="subs">طلبات الإنجاز</option><option value="approved">الإنجازات المقبولة</option><option value="transactions">معاملات النقاط</option></select></div><div id="adminActivityChart" style="display:flex;align-items:end;gap:8px;min-height:190px;padding:16px 4px 4px"></div></div>
+<div class="item"><h3>مؤشرات التفاعل التفصيلية</h3><div id="engagementStats"></div></div>
+<h3><i data-lucide="wallet"></i> محفظة المدير</h3><div class="item"><div class="row"><div><b>رصيد المدير</b><p class="muted">محفظة إدارية مستقلة بصلاحية غير محدودة</p></div><span class="pill" id="adminWalletStatus">غير محدود</span></div><div class="grid"><div class="stat">حالة المحفظة<b id="adminWalletBalance">غير محدود</b></div><div class="stat">عمليات المدير<b id="adminWalletTransactions">0</b></div></div><p class="muted">لا تُخصم نقاط المهام من محفظة المدير، ويمكن للمدير إرسال النقاط للمستخدمين من قسم إرسال النقاط.</p></div>
 <h3>جميع المستخدمين ومحافظهم</h3><div id="adminUsers"></div>
 <h3>سجل معاملات النقاط للمنصة</h3><div id="adminLedger"></div>
 <h3>جميع الإنجازات وتواريخها</h3><div id="allcompleted"></div>
@@ -503,6 +507,24 @@ async function loadAdmin(){ if(!isAdmin()){ $('admin').classList.add('hidden'); 
  const bars=(obj)=>{const entries=Object.entries(obj).sort((a,b)=>b[1]-a[1]);return entries.length?entries.map(([k,v])=>'<div class="row" style="margin:8px 0"><span>'+esc(k)+'</span><div style="flex:3;background:#0a1225;border-radius:9px;overflow:hidden;height:13px"><div style="height:13px;width:'+Math.max(3,Math.round(v/Math.max(...entries.map(e=>e[1]))*100))+'%;background:linear-gradient(90deg,#43d9ff,#a78bfa)"></div></div><b>'+v+'</b></div>').join(''):'<div class="empty">لا توجد بيانات بعد.</div>'};
  $('countryStats').innerHTML=bars(group(people,'country'));
  $('languageStats').innerHTML=bars(group(people,'language'));
+ $('adminTotalInteractions').textContent=mediaActionCount;
+ $('adminTotalViews').textContent=mediaViewCount;
+ $('adminTotalMediaPosts').textContent=mediaPostCount;
+ $('adminTotalSubmissions').textContent=subs.length;
+ const manager=people.find(x=>String(x.role||'').trim().toLowerCase()==='admin');
+ const managerWallet=ws.find(x=>x.user_id===manager?.id);
+ $('adminWalletBalance').textContent=managerWallet?.is_unlimited?'غير محدود':money(managerWallet?.balance||0)+' نقطة';
+ $('adminWalletStatus').textContent=managerWallet?.is_unlimited?'رصيد غير محدود':'رصيد محدد';
+ $('adminWalletTransactions').textContent=ledger.filter(x=>x.user_id===manager?.id||x.performed_by===manager?.id).length;
+ const renderAdminChart=()=>{
+  const metric=$('adminChartMetric').value;
+  const labels=Array.from({length:7},(_,i)=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-(6-i));return d;});
+  const source=metric==='transactions'?ledger:subs;
+  const values=labels.map(d=>source.filter(x=>{const z=new Date(x.created_at);return z.toDateString()===d.toDateString()&&(metric!=='approved'||x.status==='approved')}).length);
+  const max=Math.max(1,...values);
+  $('adminActivityChart').innerHTML=labels.map((d,i)=>'<div title="'+d.toLocaleDateString()+' : '+values[i]+'" style="flex:1;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:7px;height:170px"><b style="font-size:12px">'+values[i]+'</b><div style="width:75%;height:'+Math.max(5,values[i]/max*125)+'px;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,#43d9ff,#8875ff)"></div><small class="muted">'+d.toLocaleDateString(undefined,{weekday:'short'})+'</small></div>').join('');
+ };
+ $('adminChartMetric').onchange=renderAdminChart;renderAdminChart();
  const approved=subs.filter(x=>x.status==='approved').length;
  $('engagementStats').innerHTML=bars({'المهام المنشورة':tasks.length,'طلبات الإنجاز':subs.length,'إنجازات مقبولة':approved,'المنشورات النصية':posts.length,'منشورات الصور والفيديو':mediaPostCount,'التفاعلات':mediaActionCount,'المشاهدات الفريدة':mediaViewCount,'عمليات النقاط':ledger.length});
   $('adminPurchases').innerHTML=(purchases.data||[]).filter(x=>x.status==='pending').map(x=>'<article class="item"><b>'+esc(x.payment_method)+' · '+money(x.points)+' نقطة</b><div class="muted">'+esc(x.sender_name)+' · '+esc(x.transfer_reference)+'</div><button onclick="window.reviewPurchase(\''+x.id+'\',true)">اعتماد وإضافة النقاط</button> <button class="danger" onclick="window.reviewPurchase(\''+x.id+'\',false)">رفض</button></article>').join('')||'<div class="empty">لا توجد طلبات شراء معلّقة.</div>';
