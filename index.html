@@ -628,7 +628,7 @@ function refreshInteractionOptions(){
  $('taction').innerHTML=actions.map(a=>'<option value="'+a+'">'+a+'</option>').join('');
 }
 $('tplatform').onchange=refreshInteractionOptions;refreshInteractionOptions();
-function normalizeTaskDigits(value){return String(value).replace(/[٠-٩۰-۹]/g,ch=>String(ch.charCodeAt(0)>='۰'.charCodeAt(0)?ch.charCodeAt(0)-'۰'.charCodeAt(0):ch.charCodeAt(0)-'٠'.charCodeAt(0));}
+function normalizeTaskDigits(value){return String(value).replace(/[٠-٩]/g,ch=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(ch))).replace(/[۰-۹]/g,ch=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(ch)));}
 function updateTaskCostPreview(){const countText=normalizeTaskDigits($('tmax').value.trim()),points=Number($('tpoints').value);try{if(!/^\d+$/.test(countText)||!Number.isSafeInteger(points)||points<1){$('taskCostPreview').textContent='اكتب عدد التفاعلات وحدد نقاط كل تفاعل لحساب التكلفة.';return}const total=BigInt(countText)*BigInt(points);$('taskCostPreview').textContent='التكلفة الإجمالية: '+total.toString()+' نقطة · رصيدك: '+(wallet?.is_unlimited?'غير محدود':String(wallet?.balance??0))+' نقطة. سيتم قبول العدد حسب رصيدك.'}catch{$('taskCostPreview').textContent='راجع عدد التفاعلات المدخل.'}}
 $('tmax').addEventListener('input',updateTaskCostPreview);$('tpoints').addEventListener('input',updateTaskCostPreview);
 $('createTask').onclick=async()=>{try{
