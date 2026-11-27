@@ -371,7 +371,7 @@ body:not(.auth-only) #auth{display:none!important}
 <div class="two">
 <div><label>اختر المنصة</label><select id="tplatform"><option value="TikTok">TikTok</option><option value="Facebook">Facebook</option><option value="Facebook Page">Facebook Page</option><option value="Instagram">Instagram</option><option value="YouTube">YouTube</option></select></div>
 <div><label>نوع التفاعل</label><select id="taction"></select></div>
-<div><label>نقاط كل تفاعل (الحد الأدنى 20)</label><input id="tpoints" type="number" min="20" step="1" value="20"></div>
+<div><label>نقاط كل تفاعل (ابتداءً من نقطة واحدة)</label><input id="tpoints" type="number" min="1" step="1" value="1"></div>
 <div><label>عدد التفاعلات المطلوبة</label><input id="tmax" type="text" inputmode="numeric" autocomplete="off" maxlength="19" value="10" placeholder="اكتب العدد الذي يسمح به رصيدك"></div>
 </div>
 <label>الدول التي تريد التفاعل منها (يمكن اختيار أكثر من دولة)</label>
@@ -625,13 +625,13 @@ function refreshInteractionOptions(){
  $('taction').innerHTML=actions.map(a=>'<option value="'+a+'">'+a+'</option>').join('');
 }
 $('tplatform').onchange=refreshInteractionOptions;refreshInteractionOptions();
-function updateTaskCostPreview(){const countText=$('tmax').value.trim(),points=Number($('tpoints').value);try{if(!/^\\d+$/.test(countText)||!Number.isSafeInteger(points)||points<20){$('taskCostPreview').textContent='اكتب عدد التفاعلات وحدد نقاط كل تفاعل لحساب التكلفة.';return}const total=BigInt(countText)*BigInt(points);$('taskCostPreview').textContent='التكلفة الإجمالية: '+total.toString()+' نقطة · رصيدك: '+(wallet?.is_unlimited?'غير محدود':String(wallet?.balance??0))+' نقطة. سيتم قبول العدد حسب رصيدك.'}catch{$('taskCostPreview').textContent='راجع عدد التفاعلات المدخل.'}}
+function updateTaskCostPreview(){const countText=$('tmax').value.trim(),points=Number($('tpoints').value);try{if(!/^\\d+$/.test(countText)||!Number.isSafeInteger(points)||points<1){$('taskCostPreview').textContent='اكتب عدد التفاعلات وحدد نقاط كل تفاعل لحساب التكلفة.';return}const total=BigInt(countText)*BigInt(points);$('taskCostPreview').textContent='التكلفة الإجمالية: '+total.toString()+' نقطة · رصيدك: '+(wallet?.is_unlimited?'غير محدود':String(wallet?.balance??0))+' نقطة. سيتم قبول العدد حسب رصيدك.'}catch{$('taskCostPreview').textContent='راجع عدد التفاعلات المدخل.'}}
 $('tmax').addEventListener('input',updateTaskCostPreview);$('tpoints').addEventListener('input',updateTaskCostPreview);
 $('createTask').onclick=async()=>{try{
  const url=$('turl').value.trim(),place=$('tplace').value,countries=Array.from($('tcountries').selectedOptions).map(o=>o.value),points=Number($('tpoints').value),countText=$('tmax').value.trim(),platform=$('tplatform').value,action=$('taction').value;
- const maxCount=9223372036854775807n; if(!/^\\d+$/.test(countText))throw new Error('اكتب عدد التفاعلات بأرقام صحيحة فقط.'); const count=BigInt(countText); if(count<=0n||count>maxCount)throw new Error('عدد التفاعلات غير صالح.'); if(!Number.isSafeInteger(points)||points<20)throw new Error('نقاط كل تفاعل يجب أن تكون 20 على الأقل.'); const totalCost=BigInt(points)*count; if(totalCost>maxCount)throw new Error('التكلفة الإجمالية تتجاوز الحد التقني المسموح.'); if(!wallet.is_unlimited&&totalCost>BigInt(String(wallet.balance)))throw new Error('رصيدك غير كافٍ. التكلفة المطلوبة: '+totalCost.toString()+' نقطة.');
+ const maxCount=9223372036854775807n; if(!/^\\d+$/.test(countText))throw new Error('اكتب عدد التفاعلات بأرقام صحيحة فقط.'); const count=BigInt(countText); if(count<=0n||count>maxCount)throw new Error('عدد التفاعلات غير صالح.'); if(!Number.isSafeInteger(points)||points<1)throw new Error('نقاط كل تفاعل يجب أن تكون 20 على الأقل.'); const totalCost=BigInt(points)*count; if(totalCost>maxCount)throw new Error('التكلفة الإجمالية تتجاوز الحد التقني المسموح.'); if(!wallet.is_unlimited&&totalCost>BigInt(String(wallet.balance)))throw new Error('رصيدك غير كافٍ. التكلفة المطلوبة: '+totalCost.toString()+' نقطة.');
  if(!/^https?:\/\//i.test(url))throw new Error('أدخل رابطاً صحيحاً يبدأ بـ https://');
- if(points<20)throw new Error('الحد الأدنى هو 20 نقطة لكل تفاعل');
+ if(points<1)throw new Error('يجب أن تكون نقطة واحدة على الأقل لكل تفاعل');
  if(!countries.length)throw new Error('اختر دولة واحدة على الأقل');
  const title=platform+' - '+action;
  await rpc('create_task',{p_title:title,p_description:'[مكان التفاعل: '+place+']\n'+$('tdesc').value,p_platform:platform,p_action_type:action,p_target_url:url,p_points_per_completion:points,p_max_completions:count.toString(),p_target_countries:countries});
