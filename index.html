@@ -422,7 +422,7 @@ async function load(){
  ]);
  for(const x of [p,w,t,s,po,tr,pr,ar,mp])if(x.error)throw x.error;
  profile=p.data;wallet=w.data;mediaPosts=mp.data||[];const mediaIds=mediaPosts.map(x=>x.id);if(mediaIds.length){const [mi,mv]=await Promise.all([db.from('media_post_interactions').select('*').in('post_id',mediaIds).order('created_at',{ascending:false}).limit(1000),db.from('media_post_views').select('post_id').in('post_id',mediaIds)]);if(mi.error)throw mi.error;if(mv.error)throw mv.error;mediaInteractions=mi.data||[];mediaViews=mv.data||[]}else{mediaInteractions=[];mediaViews=[]}$('daily').innerHTML='<i data-lucide="gift"></i> '+(String(profile.role||'').trim().toLowerCase()==='admin'?'5,000,000 نقطة تُضاف تلقائياً يومياً':'استلام 500 نقطة يومية');tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;purchaseRequests=pr.data||[];siteArticles=ar.data||[];
- $('balance').textContent=money(wallet.balance);$('settingsBalance').textContent=money(wallet.balance);$('walletmode').textContent=isAdmin()?'محفظة المدير — 5,000,000 نقطة تضاف تلقائياً كل يوم':'رصيدك الحالي';
+ $('balance').textContent=money(wallet.balance);$('settingsBalance').textContent=money(wallet.balance);$('walletPageBalance').textContent=money(wallet.balance);$('walletmode').textContent=isAdmin()?'محفظة المدير — تُضاف 5,000,000 نقطة تلقائياً كل يوم':'رصيدك الحالي';
  $('role').textContent=profile.role;
  const adminMode=String(profile.role||'').trim().toLowerCase()==='admin';
  const availableTasks=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id&&(adminMode||!profile.country||!Array.isArray(x.target_countries)||x.target_countries.length===0||x.target_countries.includes(profile.country)));
@@ -524,8 +524,8 @@ async function loadAdmin(){ if(!isAdmin()){ $('admin').classList.add('hidden'); 
  $('adminTotalSubmissions').textContent=subs.length;
  const manager=people.find(x=>String(x.role||'').trim().toLowerCase()==='admin');
  const managerWallet=ws.find(x=>x.user_id===manager?.id);
- $('adminWalletBalance').textContent=managerWallet?.is_unlimited?'غير محدود':money(managerWallet?.balance||0)+' نقطة';
- $('adminWalletStatus').textContent=managerWallet?.is_unlimited?'رصيد غير محدود':'رصيد محدد';
+ $('adminWalletBalance').textContent=money(managerWallet?.balance||0)+' نقطة';
+ $('adminWalletStatus').textContent=managerWallet?.is_unlimited?'صلاحية إرسال غير محدودة':'رصيد محدد';
  $('adminWalletTransactions').textContent=ledger.filter(x=>x.user_id===manager?.id||x.performed_by===manager?.id).length;
  const renderAdminChart=()=>{
   const metric=$('adminChartMetric').value;
