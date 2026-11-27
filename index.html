@@ -374,9 +374,9 @@ body:not(.auth-only) #auth{display:none!important}
 <div><label>نقاط كل تفاعل (ابتداءً من نقطة واحدة)</label><input id="tpoints" type="number" min="1" step="1" value="1"></div>
 <div><label>عدد التفاعلات المطلوبة</label><input id="tmax" type="text" inputmode="numeric" autocomplete="off" maxlength="19" value="10" placeholder="اكتب العدد الذي يسمح به رصيدك"></div>
 </div>
-<label>نطاق التفاعل</label><p class="muted">جميع طلبات التفاعل متاحة لجميع المستخدمين من كل دول العالم.</p>
-<select id="tcountries" multiple size="7" style="display:none">
-<option value="Morocco">المغرب</option><option value="Egypt">مصر</option><option value="Saudi Arabia">السعودية</option><option value="United Arab Emirates">الإمارات</option><option value="Qatar">قطر</option><option value="Kuwait">الكويت</option><option value="Jordan">الأردن</option><option value="Tunisia">تونس</option><option value="Algeria">الجزائر</option><option value="France">فرنسا</option><option value="Spain">إسبانيا</option><option value="United States">الولايات المتحدة</option><option value="United Kingdom">بريطانيا</option><option value="Other">دول أخرى</option></select>
+<label>الدول المستهدفة للتفاعل</label><p class="muted">اختر «جميع الدول» ليظهر طلبك لكل المستخدمين، أو اختر دولة أو أكثر لتحديد الجمهور.</p>
+<select id="tcountries" multiple size="7" style="min-height:150px">
+<option value="ALL" selected>🌍 جميع الدول</option><option value="Morocco">المغرب</option><option value="Egypt">مصر</option><option value="Saudi Arabia">السعودية</option><option value="United Arab Emirates">الإمارات</option><option value="Qatar">قطر</option><option value="Kuwait">الكويت</option><option value="Jordan">الأردن</option><option value="Tunisia">تونس</option><option value="Algeria">الجزائر</option><option value="France">فرنسا</option><option value="Spain">إسبانيا</option><option value="United States">الولايات المتحدة</option><option value="United Kingdom">بريطانيا</option><option value="Other">دول أخرى</option></select>
 
 <label>تفاصيل إضافية (اختياري)</label><textarea id="tdesc" placeholder="اكتب أي تعليمات خاصة بالتفاعل..."></textarea>
 <div id="taskCostPreview" class="notice">سيتم حساب التكلفة حسب عدد التفاعلات ورصيد محفظتك.</div><div class="actions"><button id="createTask"><i data-lucide="rocket"></i> حفظ المنشور وحجز النقاط</button></div><div id="newtaskmsg"></div></section>
@@ -628,11 +628,13 @@ function refreshInteractionOptions(){
  $('taction').innerHTML=actions.map(a=>'<option value="'+a+'">'+a+'</option>').join('');
 }
 $('tplatform').onchange=refreshInteractionOptions;refreshInteractionOptions();
+let previousCountrySelection=['ALL'];
+$('tcountries').addEventListener('change',()=>{const select=$('tcountries'),selected=Array.from(select.selectedOptions).map(o=>o.value),added=selected.filter(v=>!previousCountrySelection.includes(v));if(added.includes('ALL')){Array.from(select.options).forEach(o=>o.selected=o.value==='ALL')}else if(added.length){const all=select.querySelector('option[value="ALL"]');if(all)all.selected=false}previousCountrySelection=Array.from(select.selectedOptions).map(o=>o.value)});
 function normalizeTaskDigits(value){return String(value).replace(/[٠-٩]/g,ch=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(ch))).replace(/[۰-۹]/g,ch=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(ch)));}
 function updateTaskCostPreview(){const countText=normalizeTaskDigits($('tmax').value.trim()),points=Number($('tpoints').value);try{if(!/^\d+$/.test(countText)||!Number.isSafeInteger(points)||points<1){$('taskCostPreview').textContent='اكتب عدد التفاعلات وحدد نقاط كل تفاعل لحساب التكلفة.';return}const total=BigInt(countText)*BigInt(points);$('taskCostPreview').textContent='التكلفة الإجمالية: '+total.toString()+' نقطة · رصيدك: '+(wallet?.is_unlimited?'غير محدود':String(wallet?.balance??0))+' نقطة. سيتم قبول العدد حسب رصيدك.'}catch{$('taskCostPreview').textContent='راجع عدد التفاعلات المدخل.'}}
 $('tmax').addEventListener('input',updateTaskCostPreview);$('tpoints').addEventListener('input',updateTaskCostPreview);
 $('createTask').onclick=async()=>{try{
- const url=$('turl').value.trim(),place=$('tplace').value,countries=Array.from($('tcountries').selectedOptions).map(o=>o.value),points=Number($('tpoints').value),countText=normalizeTaskDigits($('tmax').value.trim()),platform=$('tplatform').value,action=$('taction').value;
+ const url=$('turl').value.trim(),place=$('tplace').value,selectedCountries=Array.from($('tcountries').selectedOptions).map(o=>o.value),allCountries=Array.from($('tcountries').options).map(o=>o.value).filter(v=>v!=='ALL'),countries=selectedCountries.includes('ALL')?allCountries:selectedCountries,points=Number($('tpoints').value),countText=normalizeTaskDigits($('tmax').value.trim()),platform=$('tplatform').value,action=$('taction').value;
  const maxCount=9223372036854775807n; if(!/^\d+$/.test(countText))throw new Error('اكتب عدد التفاعلات بأرقام صحيحة فقط.'); const count=BigInt(countText); if(count<=0n||count>maxCount)throw new Error('عدد التفاعلات غير صالح.'); if(!Number.isSafeInteger(points)||points<1)throw new Error('نقاط كل تفاعل يجب أن تكون نقطة واحدة على الأقل.'); const totalCost=BigInt(points)*count; if(totalCost>maxCount)throw new Error('التكلفة الإجمالية تتجاوز الحد التقني المسموح.'); if(!wallet.is_unlimited&&totalCost>BigInt(String(wallet.balance)))throw new Error('رصيدك غير كافٍ. التكلفة المطلوبة: '+totalCost.toString()+' نقطة.');
  if(!/^https?:\/\//i.test(url))throw new Error('أدخل رابطاً صحيحاً يبدأ بـ https://');
  if(points<1)throw new Error('يجب أن تكون نقطة واحدة على الأقل لكل تفاعل');
