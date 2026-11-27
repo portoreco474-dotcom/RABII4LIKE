@@ -291,7 +291,7 @@ body:not(.auth-only) #auth{display:none!important}
 .section-card small{color:#b6b8d7;font-weight:500}
 #tabs{display:none!important}
 @media(max-width:780px){.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-card{min-height:115px;padding:14px}}
- .media-preview{display:block;width:100%;max-height:560px;object-fit:contain;background:#050914;border-radius:14px;margin:12px 0}.media-post{margin:14px 0}.media-comments{display:grid;gap:7px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.media-composer input[type=file]{width:100%;padding:12px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--txt)}
+ .media-preview{display:block;width:100%;max-height:560px;object-fit:contain;background:#050914;border-radius:14px;margin:12px 0}.media-post{margin:14px 0}.media-comments{display:grid;gap:7px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.media-composer input[type=file]{width:100%;padding:12px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--txt)}.media-comment-form{display:grid;gap:8px;margin-top:12px}.media-comment-form textarea{min-height:65px}.media-comment{padding:10px;border:1px solid var(--line);border-radius:12px;background:#0c1428}.media-comment-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.media-comment p{white-space:pre-wrap;margin:8px 0}.media-comment .actions button{font-size:12px;padding:8px 10px}
 
 /* Wallet page: prevent icon/text collisions on narrow screens */
 .wallet-page{min-width:0;overflow-wrap:anywhere}
@@ -346,7 +346,7 @@ body:not(.auth-only) #auth{display:none!important}
  <h2>أقسام المنصة</h2><p class="muted">اختر القسم لفتحه في صفحة مستقلة</p>
  <div class="section-grid">
   <button id="adminMenuCard" class="section-card hidden" data-tab="admin"><i data-lucide="crown"></i><span>لوحة المدير</span><small>الإدارة والإحصائيات</small></button>
-  <button class="section-card" data-tab="tasks"><i data-lucide="list-checks"></i><span>شاهد المنشورات وتفاعل</span><small>افتح المنشور ونفّذ التفاعل المطلوب</small></button>
+  <button class="section-card" data-tab="tasks"><i data-lucide="list-checks"></i><span>التفاعل والمهام</span><small>تصفح منشورات المجتمع أو أنجز المهام الخارجية</small></button>
   <button class="section-card" data-tab="newtask"><i data-lucide="plus-circle"></i><span>نشر طلب تفاعل</span><small>أنشئ طلباً جديداً</small></button>
   <button class="section-card" data-tab="submissions"><i data-lucide="clipboard-check"></i><span>طلبات التحقق</span><small>راجع الطلبات المرسلة</small></button>
   <button class="section-card" data-tab="completed"><i data-lucide="check-check"></i><span>مهامي المكتملة</span><small>تابع إنجازاتك</small></button>
@@ -469,7 +469,7 @@ async function load(){
   db.from('media_posts').select('*').order('created_at',{ascending:false}).limit(100)
  ]);
  for(const x of [p,w,t,s,po,tr,pr,ar,mp])if(x.error)throw x.error;
- profile=p.data;wallet=w.data;mediaPosts=mp.data||[];const mediaIds=mediaPosts.map(x=>x.id);if(mediaIds.length){const [mi,mv]=await Promise.all([db.from('media_post_interactions').select('*').in('post_id',mediaIds).order('created_at',{ascending:false}).limit(1000),db.from('media_post_views').select('post_id').in('post_id',mediaIds)]);if(mi.error)throw mi.error;if(mv.error)throw mv.error;mediaInteractions=mi.data||[];mediaViews=mv.data||[]}else{mediaInteractions=[];mediaViews=[]}$('daily').innerHTML='<i data-lucide="gift"></i> '+(String(profile.role||'').trim().toLowerCase()==='admin'?'5,000,000 نقطة تُضاف تلقائياً يومياً':'استلام 500 نقطة يومية');tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;purchaseRequests=pr.data||[];siteArticles=ar.data||[];
+ profile=p.data;wallet=w.data;mediaPosts=mp.data||[];const mediaIds=mediaPosts.map(x=>x.id);if(mediaIds.length){const [mi,mv]=await Promise.all([db.from('media_post_interactions_public').select('*').in('post_id',mediaIds).order('created_at',{ascending:false}).limit(1000),db.from('media_post_views').select('post_id').in('post_id',mediaIds)]);if(mi.error)throw mi.error;if(mv.error)throw mv.error;mediaInteractions=mi.data||[];mediaViews=mv.data||[]}else{mediaInteractions=[];mediaViews=[]}$('daily').innerHTML='<i data-lucide="gift"></i> '+(String(profile.role||'').trim().toLowerCase()==='admin'?'5,000,000 نقطة تُضاف تلقائياً يومياً':'استلام 500 نقطة يومية');tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;purchaseRequests=pr.data||[];siteArticles=ar.data||[];
  $('balance').textContent=money(wallet.balance);$('settingsBalance').textContent=money(wallet.balance);$('walletPageBalance').textContent=money(wallet.balance);$('walletmode').textContent=isAdmin()?'محفظة المدير — تُضاف 5,000,000 نقطة تلقائياً كل يوم':'رصيدك الحالي';
  $('role').textContent=profile.role;
  const adminMode=String(profile.role||'').trim().toLowerCase()==='admin';
@@ -484,9 +484,21 @@ async function load(){
 function taskPlace(t){const m=String(t.description||'').match(/^\[مكان التفاعل: ([^\]]+)\](?:\n|$)/);return m?m[1]:'غير محدد';}
 function taskDescription(t){return String(t.description||'').replace(/^\[مكان التفاعل: [^\]]+\]\n?/,'');}
 function taskCountriesLabel(t){const c=Array.isArray(t.target_countries)?t.target_countries:[];return c.length>=14?'جميع الدول':(c.length?c.join('، '):'جميع الدول');}
+window.openExternalTask=(event,taskId)=>{
+ try{sessionStorage.setItem('rabii4like_external_task',JSON.stringify({taskId,openedAt:Date.now(),page:location.hash}));}catch(e){}
+};
+let externalReturnRefresh=false;
+document.addEventListener('visibilitychange',()=>{
+ if(document.visibilityState!=='visible'||externalReturnRefresh)return;
+ let saved=null;try{saved=JSON.parse(sessionStorage.getItem('rabii4like_external_task')||'null');}catch(e){}
+ if(!saved||!user)return;
+ externalReturnRefresh=true;
+ note('taskMediaMsg','رجعت من المنصة الخارجية. لم تُضف أي نقاط بمجرد فتح الرابط؛ أرسل إثبات الإنجاز ليبدأ التحقق.','notice');
+ load().catch(e=>note('taskMediaMsg','تعذر تحديث حالة المهمة: '+e.message,'error')).finally(()=>{externalReturnRefresh=false;});
+});
 function renderTasks(){
  const list=tasks.filter(t=>t.status==='open'&&t.creator_id!==user.id&&(isAdmin()||!profile?.country||!Array.isArray(t.target_countries)||t.target_countries.length===0||t.target_countries.includes(profile.country)));
- $('tasklist').innerHTML=list.length?list.map(t=>{const total=BigInt(String(t.points_per_completion||0))*BigInt(String(t.max_completions||0));return `<article class="item task-card"><h3><i data-lucide="target"></i> ${esc(t.title)}</h3><div class="task-meta"><span class="pill">${esc(t.platform)}</span><span class="pill">${esc(t.action_type)}</span><span class="pill">${esc(taskPlace(t))}</span></div><div class="task-details"><div><b>التفاعل المطلوب</b><strong>${esc(t.action_type)}</strong></div><div><b>عدد التفاعلات المطلوبة</b><strong>${money(t.max_completions)}</strong></div><div><b>نقاط كل تفاعل</b><strong>${money(t.points_per_completion)} نقطة</strong></div><div><b>إجمالي النقاط المحجوزة</b><strong>${money(total.toString())} نقطة</strong></div></div><div class="muted task-countries"><b>الدول المستهدفة:</b> ${esc(taskCountriesLabel(t))}</div>${taskDescription(t)?`<p>${esc(taskDescription(t))}</p>`:''}<a class="open-native" href="${esc(t.target_url)}" target="_blank" rel="noopener noreferrer"><i data-lucide="external-link"></i> مشاهدة المنشور الأصلي على ${esc(t.platform)}</a><div class="actions"><button onclick="window.submitTask('${t.id}')"><i data-lucide="send"></i> إرسال إثبات الإنجاز</button></div></article>`}).join(''):'<div class="empty">لا توجد مهام متاحة حالياً.</div>';
+ $('tasklist').innerHTML=list.length?list.map(t=>{const total=BigInt(String(t.points_per_completion||0))*BigInt(String(t.max_completions||0));return `<article class="item task-card"><h3><i data-lucide="target"></i> ${esc(t.title)}</h3><div class="task-meta"><span class="pill">${esc(t.platform)}</span><span class="pill">${esc(t.action_type)}</span><span class="pill">${esc(taskPlace(t))}</span></div><div class="task-details"><div><b>التفاعل المطلوب</b><strong>${esc(t.action_type)}</strong></div><div><b>عدد التفاعلات المطلوبة</b><strong>${money(t.max_completions)}</strong></div><div><b>نقاط كل تفاعل</b><strong>${money(t.points_per_completion)} نقطة</strong></div><div><b>إجمالي النقاط المحجوزة</b><strong>${money(total.toString())} نقطة</strong></div></div><div class="muted task-countries"><b>الدول المستهدفة:</b> ${esc(taskCountriesLabel(t))}</div>${taskDescription(t)?`<p>${esc(taskDescription(t))}</p>`:''}<a class="open-native" href="${esc(t.target_url)}" target="_blank" rel="noopener noreferrer" onclick="window.openExternalTask(event,'${t.id}')"><i data-lucide="external-link"></i> مشاهدة المنشور الأصلي على ${esc(t.platform)}</a><div class="actions"><button onclick="window.submitTask('${t.id}')"><i data-lucide="send"></i> إرسال إثبات الإنجاز</button></div></article>`}).join(''):'<div class="empty">لا توجد مهام متاحة حالياً.</div>';
  renderMyTasks();
 }
 function renderMyTasks(){
@@ -511,8 +523,14 @@ function renderMediaList(list,targetId){
   const url=mediaPublicUrl(p.media_path),mine=p.author_id===user.id;
   const comments=mediaInteractions.filter(x=>x.post_id===p.id&&x.action_type==='comment');
   const viewed=mediaViews.filter(x=>x.post_id===p.id).length;
+  const liked=mediaInteractions.some(x=>x.post_id===p.id&&x.user_id===user.id&&x.action_type==='like');
   const media=p.media_type==='video'?'<video class="media-preview" controls playsinline preload="metadata" onplay="window.recordMediaView(\''+p.id+'\')" src="'+esc(url)+'"></video>':'<img class="media-preview" loading="lazy" onload="window.recordMediaView(\''+p.id+'\')" src="'+esc(url)+'" alt="منشور من المجتمع">';
-  return '<article data-media-post="'+p.id+'" class="item media-post"><div class="row"><b>عضو في RABII4LIKE</b><span class="muted">'+date(p.created_at)+'</span></div>'+media+(p.caption?'<p style="white-space:pre-wrap">'+esc(p.caption)+'</p>':'')+'<div class="row muted"><span class="media-view-count">👁 '+viewed+' مشاهدة</span><span>❤ '+count(p.id,'like')+'</span><span>💬 '+comments.length+'</span><span>↗ '+count(p.id,'share')+'</span><span>⬇ '+count(p.id,'download')+'</span></div>'+(mine?'<div class="muted">التفاعل مع منشورك لا يمنحك نقاطاً.</div>':'<div class="actions"><button class="secondary" onclick="window.mediaAction(\''+p.id+'\',\'like\')">❤ إعجاب · 10 نقاط</button><button class="secondary" onclick="window.mediaAction(\''+p.id+'\',\'comment\')">💬 تعليق · 10 نقاط</button><button class="secondary" onclick="window.mediaAction(\''+p.id+'\',\'share\')">↗ مشاركة · 10 نقاط</button><button class="secondary" onclick="window.mediaDownload(\''+p.id+'\')">⬇ تنزيل · 30 نقطة</button></div>')+'<div class="media-comments">'+(comments.length?comments.slice(0,8).map(c=>'<div class="muted">💬 عضو: '+esc(c.comment_text)+' <small>· '+date(c.created_at)+'</small></div>').join(''):'<div class="muted">لا توجد تعليقات بعد.</div>')+'</div>'+(mine||isAdmin()?'<div class="actions"><button class="danger" onclick="window.deleteMediaPost(\''+p.id+'\')">حذف المنشور</button></div>':'')+'</article>';
+  const commentHtml=comments.length?comments.map(comment=>{
+   const likes=mediaInteractions.filter(x=>x.action_type==='comment_like'&&x.parent_comment_id===comment.id);
+   const iLiked=likes.some(x=>x.user_id===user.id),canDelete=comment.user_id===user.id||mine||isAdmin();
+   return '<div class="media-comment"><div class="media-comment-head"><b>'+esc(comment.author_name||'عضو')+'</b><small class="muted">'+date(comment.created_at)+'</small></div><p>'+esc(comment.comment_text)+'</p><div class="actions"><button class="secondary" onclick="window.toggleMediaCommentLike(\''+p.id+'\',\''+comment.id+'\')">'+(iLiked?'💜 إلغاء الإعجاب':'♡ إعجاب')+' · '+likes.length+'</button>'+(canDelete?'<button class="danger" onclick="window.deleteMediaComment(\''+p.id+'\',\''+comment.id+'\')">حذف التعليق</button>':'')+'</div></div>';
+  }).join(''):'<div class="muted">لا توجد تعليقات بعد.</div>';
+  return '<article data-media-post="'+p.id+'" class="item media-post"><div class="row"><b>عضو في RABII4LIKE</b><span class="muted">'+date(p.created_at)+'</span></div>'+media+(p.caption?'<p style="white-space:pre-wrap">'+esc(p.caption)+'</p>':'')+'<div class="row muted"><span class="media-view-count">👁 '+viewed+' مشاهدة</span><span>❤ '+count(p.id,'like')+'</span><span>💬 '+comments.length+'</span></div><div class="actions"><button class="secondary" onclick="window.mediaAction(\''+p.id+'\',\'like\')">'+(liked?'💜 إلغاء الإعجاب':'♡ إعجاب')+' · '+count(p.id,'like')+'</button></div><div class="media-comment-form"><textarea id="media-comment-'+p.id+'" maxlength="500" placeholder="اكتب تعليقك (حتى 500 حرف)..."></textarea><button type="button" onclick="window.submitMediaComment(\''+p.id+'\')">إرسال التعليق</button></div><div class="media-comments">'+commentHtml+'</div>'+(mine||isAdmin()?'<div class="actions"><button class="danger" onclick="window.deleteMediaPost(\''+p.id+'\')">حذف المنشور</button></div>':'')+'</article>';
  }).join(''):'<div class="empty">لا توجد منشورات صور أو فيديوهات بعد. كن أول من يشارك!</div>';
  $(targetId).innerHTML=html;
 }
@@ -522,18 +540,22 @@ function renderMediaPosts(){
  renderMediaList(mine,'myMediaPostsList');renderMediaList(others,'otherMediaPostsList');
 }
 window.mediaAction=async(id,action)=>{
- try{let comment=null;if(action==='comment'){comment=prompt('اكتب تعليقك (حتى 500 حرف):');if(comment===null)return;comment=comment.trim();if(!comment)throw new Error('اكتب تعليقاً أولاً.')}
-  if(action==='share'){const url=location.origin+location.pathname+'?post='+encodeURIComponent(id)+'#page=posts';try{if(navigator.share)await navigator.share({title:'منشور RABII4LIKE',url});else await navigator.clipboard.writeText(url)}catch(e){if(e.name==='AbortError')return;throw e}}
-  const {data,error}=await db.rpc('interact_with_media_post',{p_post_id:id,p_action:action,p_comment:comment});if(error)throw error;
-  note('mediaUploadMsg',data?.duplicate?'سبق واحتُسب هذا التفاعل، لن تحصل على نقاط إضافية.':(data?.message||'تم تسجيل التفاعل.')+(data?.points?' · +'+data.points+' نقطة':''),data?.duplicate?'notice':'success');await load();
- }catch(e){note('mediaUploadMsg',e.message,'error')}
+ try{const {data,error}=await db.rpc('interact_with_media_post',{p_post_id:id,p_action:action,p_comment:null});if(error)throw error;note('mediaUploadMsg',data?.message||'تم تحديث الإعجاب.','success');await load();}
+ catch(e){note('mediaUploadMsg',e.message,'error')}
 };
-window.mediaDownload=async(id)=>{
- try{const p=mediaPosts.find(x=>x.id===id);if(!p)throw new Error('المنشور غير موجود.');const {data:file,error:fileError}=await db.storage.from('community-media').download(p.media_path);if(fileError)throw fileError;
-  const {data,error}=await db.rpc('interact_with_media_post',{p_post_id:id,p_action:'download',p_comment:null});if(error)throw error;
-  const blobUrl=URL.createObjectURL(file),a=document.createElement('a');a.href=blobUrl;a.download=p.original_name||'rabii4like-media';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(blobUrl),60000);
-  note('mediaUploadMsg',data?.duplicate?'تم التنزيل؛ سبق احتساب مكافأة التنزيل لهذا المنشور.':'تم تسجيل التنزيل '+(data?.points?'وإضافة '+data.points+' نقطة.':''),'success');await load();
- }catch(e){note('mediaUploadMsg',e.message,'error')}
+window.submitMediaComment=async(id)=>{
+ const field=$('media-comment-'+id),comment=field?.value.trim();
+ try{if(!comment)throw new Error('اكتب تعليقاً أولاً.');const {error}=await db.rpc('interact_with_media_post',{p_post_id:id,p_action:'comment',p_comment:comment});if(error)throw error;if(field)field.value='';note('mediaUploadMsg','تم نشر تعليقك.','success');await load();}
+ catch(e){note('mediaUploadMsg',e.message,'error')}
+};
+window.toggleMediaCommentLike=async(postId,commentId)=>{
+ try{const {error}=await db.rpc('interact_with_media_post',{p_post_id:postId,p_action:'comment_like',p_comment:commentId});if(error)throw error;await load();}
+ catch(e){note('mediaUploadMsg',e.message,'error')}
+};
+window.deleteMediaComment=async(postId,commentId)=>{
+ if(!confirm('هل تريد حذف هذا التعليق؟'))return;
+ try{const {error}=await db.rpc('interact_with_media_post',{p_post_id:postId,p_action:'delete_comment',p_comment:commentId});if(error)throw error;note('mediaUploadMsg','تم حذف التعليق.','success');await load();}
+ catch(e){note('mediaUploadMsg',e.message,'error')}
 };
 window.deleteMediaPost=async(id)=>{
  if(!confirm('هل تريد حذف هذا المنشور؟'))return;
