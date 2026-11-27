@@ -545,8 +545,10 @@ async function loadAdmin(){ if(!isAdmin()){ $('admin').classList.add('hidden'); 
  $('adminTotalMediaPosts').textContent=mediaPostCount;
  $('adminTotalSubmissions').textContent=subs.length;
  const manager=people.find(x=>String(x.role||'').trim().toLowerCase()==='admin');
- const managerWallet=ws.find(x=>x.user_id===manager?.id);
- $('adminWalletBalance').textContent=money(managerWallet?.balance||0)+' نقطة';
+ // Use the authenticated manager's freshly loaded wallet first; the 500-row
+ // admin overview may not include that wallet when the platform grows.
+ const managerWallet=(manager?.id===user?.id&&wallet)?wallet:ws.find(x=>x.user_id===manager?.id);
+ $('adminWalletBalance').textContent=money(managerWallet?.balance??0)+' نقطة';
  $('adminWalletStatus').textContent=managerWallet?.is_unlimited?'صلاحية إرسال غير محدودة':'رصيد محدد';
  $('adminWalletTransactions').textContent=ledger.filter(x=>x.user_id===manager?.id||x.performed_by===manager?.id).length;
  const renderAdminChart=()=>{
