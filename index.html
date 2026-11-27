@@ -310,6 +310,7 @@ body:not(.auth-only) #auth{display:none!important}
 <div id="dashmsg"></div>
 </div>
 <section id="sectionMenu" class="section-menu">
+ <button type="button" id="adminAccessBanner" style="display:none;width:100%;margin:0 0 18px;padding:18px;border:2px solid #b58cff;border-radius:18px;background:linear-gradient(120deg,#24164d,#111a3b);color:white;font-size:18px;font-weight:800" onclick="if(isAdmin())showPage('admin')">👑 فتح لوحة تحكم المدير</button>
  <h2>أقسام المنصة</h2><p class="muted">اختر القسم لفتحه في صفحة مستقلة</p>
  <div class="section-grid">
   <button id="adminMenuCard" class="section-card hidden" data-tab="admin"><i data-lucide="crown"></i><span>لوحة المدير</span><small>الإدارة والإحصائيات</small></button>
@@ -417,7 +418,7 @@ async function load(){
  const availableTasks=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id&&(adminMode||!profile.country||!Array.isArray(x.target_countries)||x.target_countries.length===0||x.target_countries.includes(profile.country)));
  $('taskcount').textContent=availableTasks.length;
  $('donecount').textContent=subs.filter(x=>x.worker_id===user.id&&x.status==='approved').length;
- $('admintab').classList.toggle('hidden',!adminMode); $('adminMenuCard').classList.toggle('hidden',!adminMode); $('adminQuick').classList.toggle('hidden',!adminMode); document.querySelector('#tabs [data-tab="newtask"]').classList.remove('hidden'); document.querySelector('#tabs [data-tab="submissions"]').classList.remove('hidden');
+ $('admintab').classList.toggle('hidden',!adminMode); $('adminMenuCard').classList.toggle('hidden',!adminMode); $('adminMenuCard').style.display=adminMode?'flex':'none'; $('adminAccessBanner').style.display=adminMode?'block':'none'; $('adminQuick').classList.toggle('hidden',!adminMode); document.querySelector('#tabs [data-tab="newtask"]').classList.remove('hidden'); document.querySelector('#tabs [data-tab="submissions"]').classList.remove('hidden');
  $('language').value=profile.language||'ar';
  renderTasks();renderSubs();renderCompleted();renderTx();renderPosts();renderMediaPosts();renderMyPurchases();renderPublicArticles();refreshIcons();
  if(adminMode)await loadAdmin();refreshIcons();
