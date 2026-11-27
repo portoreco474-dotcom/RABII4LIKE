@@ -318,6 +318,7 @@ body:not(.auth-only) #auth{display:none!important}
   <button class="section-card" data-tab="completed"><i data-lucide="check-check"></i><span>مهامي المكتملة</span><small>تابع إنجازاتك</small></button>
   <button class="section-card" data-tab="publish"><i data-lucide="file-plus-2"></i><span>أضف محتواك</span><small>شارك محتوى جديداً</small></button>
   <button class="section-card" data-tab="posts"><i data-lucide="messages-square"></i><span>المنشورات</span><small>تصفح منشورات المجتمع</small></button>
+  <button class="section-card" data-tab="dailyreward"><i data-lucide="gift"></i><span>الهدية اليومية</span><small>احصل على نقاطك اليومية</small></button>
   <button class="section-card" data-tab="wallet"><i data-lucide="wallet"></i><span>المحفظة</span><small>الرصيد وسجل العمليات</small></button>
   <button class="section-card" data-tab="settings"><i data-lucide="settings"></i><span>الإعدادات</span><small>إعدادات الحساب والخروج</small></button>
   <button id="adminMenuCard" class="section-card hidden" data-tab="admin"><i data-lucide="crown"></i><span>لوحة المدير</span><small>الإدارة والإحصائيات</small></button>
@@ -328,6 +329,7 @@ body:not(.auth-only) #auth{display:none!important}
 <button class="active" data-tab="home"><i data-lucide="home"></i> الرئيسية</button>
 <button class="active" data-tab="tasks"><i data-lucide="list-checks"></i> المهام</button><button data-tab="newtask"><i data-lucide="plus-circle"></i> نشر مهمة</button><button data-tab="submissions"><i data-lucide="clipboard-check"></i> طلبات التحقق</button><button data-tab="completed"><i data-lucide="check-check"></i> مهامي المكتملة</button><button data-tab="publish"><i data-lucide="file-plus-2"></i> أضف محتواك</button><button data-tab="posts"><i data-lucide="messages-square"></i> المنشورات</button><button data-tab="wallet"><i data-lucide="wallet"></i> المحفظة</button><button data-tab="settings"><i data-lucide="settings"></i> الإعدادات</button><button data-tab="admin" id="admintab" class="hidden"><i data-lucide="crown"></i> المدير والإحصائيات</button>
 </nav>
+<section id="dailyreward" class="panel tabpane hidden"><h2><i data-lucide="gift"></i> الهدية اليومية</h2><p class="muted">احصل على مكافأتك اليومية وأضف النقاط مباشرة إلى محفظتك. يمكنك المطالبة بها مرة واحدة كل 24 ساعة.</p><div class="stat" style="margin:18px 0"><span class="stat-icon"><i data-lucide="coins"></i></span><span class="muted">المكافأة اليومية للمستخدم</span><b>500 نقطة</b></div><button id="dailyClaimButton" class="good" type="button"><i data-lucide="gift"></i> استلام الهدية اليومية</button><div id="dailyRewardMsg" style="margin-top:12px"></div></section>
 <section id="tasks" class="panel tabpane"><h2><i data-lucide="target"></i> المهام المتاحة</h2><div id="tasklist"></div></section>
 <section id="newtask" class="panel tabpane hidden"><h2><i data-lucide="plus-circle"></i> أضف محتواك – طلب تفاعل جديد</h2>
 <p class="muted">اختر المنصة أولاً، ثم نوع التفاعل المطلوب. كل تفاعل يبدأ من 20 نقطة، ويتم حجز مجموع النقاط من محفظتك عند الحفظ.</p>
@@ -532,7 +534,8 @@ $('profileAvatar').onclick=()=>document.querySelector('[data-tab="settings"]').c
 const heroBackground=getComputedStyle($('auth'),'::before').backgroundImage;const heroImage=heroBackground.match(/url\(["']?(.*?)["']?\)/);if(heroImage&&heroImage[1])$('siteAvatar').src=heroImage[1];
 $('adminQuick').onclick=()=>{if(!isAdmin())return;$('admintab').click()};
 $('daily').classList.remove('hidden');
-$('daily').onclick=async()=>{const b=$('daily');b.disabled=true;try{await rpc('claim_daily_reward');note('dashmsg','مبروك! تمت إضافة 500 نقطة إلى محفظتك.','success');await load()}catch(e){const msg=String(e.message||e);note('dashmsg',msg.includes('available once every 24 hours')?'لقد استلمت الهدية خلال آخر 24 ساعة. حاول مرة أخرى بعد اكتمال المدة.':'تعذر استلام الهدية: '+msg,'error')}finally{b.disabled=false;refreshIcons()}};
+async function claimDailyReward(){const buttons=[$('daily'),$('dailyClaimButton')].filter(Boolean);buttons.forEach(b=>b.disabled=true);try{await rpc('claim_daily_reward');['dashmsg','dailyRewardMsg'].forEach(id=>note(id,'مبروك! تمت إضافة الهدية اليومية إلى محفظتك.','success'));await load()}catch(e){const msg=String(e.message||e);const friendly=msg.includes('available once every 24 hours')?'لقد استلمت الهدية خلال آخر 24 ساعة. حاول مرة أخرى بعد اكتمال المدة.':'تعذر استلام الهدية: '+msg;['dashmsg','dailyRewardMsg'].forEach(id=>note(id,friendly,'error'))}finally{buttons.forEach(b=>b.disabled=false);refreshIcons()}}
+$('daily').onclick=claimDailyReward;$('dailyClaimButton').onclick=claimDailyReward;
 $('refreshData').onclick=async()=>{const b=$('refreshData');b.disabled=true;try{await load();note('dashmsg','تم تحديث جميع البيانات من قاعدة البيانات.','success')}catch(e){note('dashmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
 function refreshInteractionOptions(){
  const platform=$('tplatform').value;
@@ -575,7 +578,7 @@ $('adjustPointsBtn').onclick=async()=>{const b=$('adjustPointsBtn');b.disabled=t
  note('adminmsg',mode==='subtract'?'تم خصم النقاط وتسجيل العملية.':'تمت إضافة النقاط وتسجيل العملية.','success');
  $('adjustAmount').value='';$('adjustDescription').value='';await load();
 }catch(e){note('adminmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
-const pageNames={menu:'القائمة الرئيسية',home:'الرئيسية ولوحة التحكم',tasks:'المهام المتاحة',newtask:'نشر طلب تفاعل',publish:'أضف محتواك',submissions:'طلبات التحقق',completed:'مهامي المكتملة',posts:'المنشورات',wallet:'المحفظة وسجل العمليات',settings:'إعدادات الحساب',admin:'لوحة المدير والإحصائيات'};
+const pageNames={menu:'القائمة الرئيسية',home:'الرئيسية ولوحة التحكم',tasks:'المهام المتاحة',newtask:'نشر طلب تفاعل',publish:'أضف محتواك',submissions:'طلبات التحقق',completed:'مهامي المكتملة',posts:'المنشورات',wallet:'المحفظة وسجل العمليات',settings:'إعدادات الحساب',dailyreward:'الهدية اليومية',admin:'لوحة المدير والإحصائيات'};
 let pageTrail=['home'];
 function showPage(page,updateUrl=true){
  if(page==='admin'&&!isAdmin())page='home'; if(page==='purchase')page='home'; if(!pageNames[page])page='home'; if(page==='menu')page='home';
