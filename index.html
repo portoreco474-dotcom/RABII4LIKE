@@ -399,6 +399,16 @@ function money(n){try{return BigInt(String(n??0)).toLocaleString('en-US')}catch{
 function date(s){return s?new Date(s).toLocaleString():'—'}
 async function rpc(name,args={}){const {data,error}=await db.rpc(name,args);if(error)throw error;return data}
 async function load(){
+ const earlyProfile=await db.from('profiles').select('*').eq('id',user.id).single();
+ if(earlyProfile.error)throw earlyProfile.error;
+ profile=earlyProfile.data;
+ const earlyAdmin=String(profile?.role||'').trim().toLowerCase()==='admin';
+ $('admintab').classList.toggle('hidden',!earlyAdmin);
+ $('adminMenuCard').classList.toggle('hidden',!earlyAdmin);
+ $('adminMenuCard').style.display=earlyAdmin?'flex':'none';
+ $('adminAccessBanner').style.display=earlyAdmin?'block':'none';
+ $('adminQuick').classList.toggle('hidden',!earlyAdmin);
+ if(earlyAdmin){$('adminMenuCard').textContent='👑 لوحة تحكم المدير';$('adminAccessBanner').textContent='👑 فتح لوحة تحكم المدير';}
  const [p,w,t,s,po,tr,pr,ar,mp]=await Promise.all([
   db.from('profiles').select('*').eq('id',user.id).single(),
   db.from('wallets').select('*').eq('user_id',user.id).single(),
