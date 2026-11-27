@@ -408,7 +408,7 @@ async function load(){
  $('adminMenuCard').style.display=earlyAdmin?'flex':'none';
  $('adminAccessBanner').style.display=earlyAdmin?'block':'none';
  $('adminQuick').classList.toggle('hidden',!earlyAdmin);
- if(earlyAdmin){$('adminMenuCard').textContent='👑 لوحة تحكم المدير';$('adminAccessBanner').textContent='👑 فتح لوحة تحكم المدير';}
+ if(earlyAdmin){$('adminMenuCard').textContent='👑 لوحة تحكم المدير';$('adminAccessBanner').textContent='👑 فتح لوحة تحكم المدير';$('dailyClaimButton').style.display='none';}
  const [p,w,t,s,po,tr,pr,ar,mp]=await Promise.all([
   db.from('profiles').select('*').eq('id',user.id).single(),
   db.from('wallets').select('*').eq('user_id',user.id).single(),
@@ -421,8 +421,8 @@ async function load(){
   db.from('media_posts').select('*').order('created_at',{ascending:false}).limit(100)
  ]);
  for(const x of [p,w,t,s,po,tr,pr,ar,mp])if(x.error)throw x.error;
- profile=p.data;wallet=w.data;mediaPosts=mp.data||[];const mediaIds=mediaPosts.map(x=>x.id);if(mediaIds.length){const [mi,mv]=await Promise.all([db.from('media_post_interactions').select('*').in('post_id',mediaIds).order('created_at',{ascending:false}).limit(1000),db.from('media_post_views').select('post_id').in('post_id',mediaIds)]);if(mi.error)throw mi.error;if(mv.error)throw mv.error;mediaInteractions=mi.data||[];mediaViews=mv.data||[]}else{mediaInteractions=[];mediaViews=[]}$('daily').innerHTML='<i data-lucide="gift"></i> '+(String(profile.role||'').trim().toLowerCase()==='admin'?'استلام مليون نقطة يومية':'استلام 500 نقطة يومية');tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;purchaseRequests=pr.data||[];siteArticles=ar.data||[];
- $('balance').textContent=money(wallet.balance);$('settingsBalance').textContent=money(wallet.balance);$('walletmode').textContent=isAdmin()?'محفظة المدير — مليون نقطة تضاف يومياً':'رصيدك الحالي';
+ profile=p.data;wallet=w.data;mediaPosts=mp.data||[];const mediaIds=mediaPosts.map(x=>x.id);if(mediaIds.length){const [mi,mv]=await Promise.all([db.from('media_post_interactions').select('*').in('post_id',mediaIds).order('created_at',{ascending:false}).limit(1000),db.from('media_post_views').select('post_id').in('post_id',mediaIds)]);if(mi.error)throw mi.error;if(mv.error)throw mv.error;mediaInteractions=mi.data||[];mediaViews=mv.data||[]}else{mediaInteractions=[];mediaViews=[]}$('daily').innerHTML='<i data-lucide="gift"></i> '+(String(profile.role||'').trim().toLowerCase()==='admin'?'5,000,000 نقطة تُضاف تلقائياً يومياً':'استلام 500 نقطة يومية');tasks=t.data;subs=s.data;posts=po.data;tx=tr.data;purchaseRequests=pr.data||[];siteArticles=ar.data||[];
+ $('balance').textContent=money(wallet.balance);$('settingsBalance').textContent=money(wallet.balance);$('walletmode').textContent=isAdmin()?'محفظة المدير — 5,000,000 نقطة تضاف تلقائياً كل يوم':'رصيدك الحالي';
  $('role').textContent=profile.role;
  const adminMode=String(profile.role||'').trim().toLowerCase()==='admin';
  const availableTasks=tasks.filter(x=>x.status==='open'&&x.creator_id!==user.id&&(adminMode||!profile.country||!Array.isArray(x.target_countries)||x.target_countries.length===0||x.target_countries.includes(profile.country)));
@@ -566,7 +566,7 @@ $('logout').onclick=async()=>{await db.auth.signOut();location.reload()};
 $('profileAvatar').onclick=()=>document.querySelector('[data-tab="settings"]').click();
 const heroBackground=getComputedStyle($('auth'),'::before').backgroundImage;const heroImage=heroBackground.match(/url\(["']?(.*?)["']?\)/);if(heroImage&&heroImage[1])$('siteAvatar').src=heroImage[1];
 $('adminQuick').onclick=()=>{if(!isAdmin())return;$('admintab').click()};
-$('daily').classList.remove('hidden');
+$('daily').classList.toggle('hidden',String(profile?.role||'').trim().toLowerCase()==='admin'); $('dailyClaimButton').style.display=String(profile?.role||'').trim().toLowerCase()==='admin'?'none':'';
 async function claimDailyReward(){const buttons=[$('daily'),$('dailyClaimButton')].filter(Boolean);buttons.forEach(b=>b.disabled=true);try{await rpc('claim_daily_reward');['dashmsg','dailyRewardMsg'].forEach(id=>note(id,'مبروك! تمت إضافة الهدية اليومية إلى محفظتك.','success'));await load()}catch(e){const msg=String(e.message||e);const friendly=msg.includes('available once every 24 hours')?'لقد استلمت الهدية خلال آخر 24 ساعة. حاول مرة أخرى بعد اكتمال المدة.':'تعذر استلام الهدية: '+msg;['dashmsg','dailyRewardMsg'].forEach(id=>note(id,friendly,'error'))}finally{buttons.forEach(b=>b.disabled=false);refreshIcons()}}
 $('daily').onclick=claimDailyReward;$('dailyClaimButton').onclick=claimDailyReward;
 $('refreshData').onclick=async()=>{const b=$('refreshData');b.disabled=true;try{await load();note('dashmsg','تم تحديث جميع البيانات من قاعدة البيانات.','success')}catch(e){note('dashmsg',e.message,'error')}finally{b.disabled=false;refreshIcons()}};
